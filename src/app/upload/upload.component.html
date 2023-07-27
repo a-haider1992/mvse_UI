@@ -1,0 +1,75 @@
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <div class="container overflow-auto">
+        <div class="row fixed-top" style="height: 70px;">
+            <table class="table">
+                <tr class="border-bottom border-1">
+                    <td style="float: left;">
+                        <div class="mx-5">
+                            <img src="../assets/images/logo.png" width="150px" height="50px">
+                        </div>
+                    </td>
+                    <td style="float: right;">
+                        <div class="container mx-5">
+                            <span style="font-size: large;color: deepskyblue;">
+                                Home |
+                            </span>
+                            <span style="font-size: large; color: deepskyblue;">
+                                Search History |
+                            </span>
+                            <span style="font-size: large; color: deepskyblue;">
+                                Library
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <div class="row-fluid m-5">
+                        <div class="span12 text-center">
+                            <span style="font-size: xx-large; color: deepskyblue;">
+                                Add or drop a video here to begin your search query
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="custom-file span text-center">
+                            <div class="col border container p-1" style="width:fit-content;">
+                                <img src="../assets/images/link-file.png" width="30px" height="30px" />
+                                <label class="custom-file-label" for="fileInput"
+                                    style="width: 100px;height: auto;margin-right: 150px;">Choose file</label>
+                                <input id="fileInput" type="file" multiple style="display:none;"
+                                    (change)="onImagesSelected($event)" #fileInput />
+                                <input type="button" class="btn" value="Go"
+                                    style="width: 60px;height: 60px;background-color: deepskyblue;"
+                                    onclick="" /> &nbsp;
+                                <button (click)="clearImages()" class="btn"
+                                    style="width: 60px;height: 60px;background-color: deepskyblue;">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container" style="display: flex;">
+                        <div *ngFor="let imageSrc of selectedImageSrcList">
+                            <video [src]="imageSrc" controls class="img-fluid img-thumbnail" width="150" height="150">
+                                <source type="video/mp4"> <!-- You may add additional source tags for different video formats -->
+                                Your browser does not support the video tag.
+                              </video>
+                            <!-- <img [src]="imageSrc" class="uploaded-image" class="img-fluid img-thumbnail" alt="" width="70" height="70"/> -->
+                        </div>
+                        <div class="col span text-center">
+                            
+                        </div>
+                    </div>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
