@@ -34,7 +34,7 @@
                     <div class="row-fluid m-5">
                         <div class="span12 text-center">
                             <span style="font-size: xx-large; color: deepskyblue;">
-                                Add or drop a video here to begin your search query
+                                Add a media here to begin your search query
                             </span>
                         </div>
                     </div>
@@ -45,25 +45,34 @@
                                 <label class="custom-file-label" for="fileInput"
                                     style="width: 100px;height: auto;margin-right: 150px;">Choose file</label>
                                 <input id="fileInput" type="file" multiple style="display:none;"
-                                    (change)="onImagesSelected($event)" #fileInput />
+                                    (change)="onFileSelected($event)" #fileInput />
                                 <input type="button" class="btn" value="Go"
-                                    style="width: 60px;height: 60px;background-color: deepskyblue;"
-                                    onclick="" /> &nbsp;
+                                    style="width: 60px;height: 60px;background-color: deepskyblue;" onclick="" /> &nbsp;
                                 <button (click)="clearImages()" class="btn"
                                     style="width: 60px;height: 60px;background-color: deepskyblue;">Clear</button>
                             </div>
                         </div>
                     </div>
                     <div class="container" style="display: flex;">
-                        <div *ngFor="let imageSrc of selectedImageSrcList">
-                            <video [src]="imageSrc" controls class="img-fluid img-thumbnail" width="150" height="150">
-                                <source type="video/mp4"> <!-- You may add additional source tags for different video formats -->
+                        <div *ngFor="let video of selectedVideos; let i = index">
+                            <strong>Name:</strong> {{ video.name }} <br>
+                            <strong>Type:</strong> {{ video.type }} <br>
+                            <video [src]="objectURLs[i]" controls class="img-fluid img-thumbnail" width="150"
+                                height="150">
+                                <source type="video/mp4">
+                                <!-- You may add additional source tags for different video formats -->
                                 Your browser does not support the video tag.
-                              </video>
+                            </video>
                             <!-- <img [src]="imageSrc" class="uploaded-image" class="img-fluid img-thumbnail" alt="" width="70" height="70"/> -->
                         </div>
+                        <div *ngFor="let image of selectedImages; let i = index">
+                            <strong>Name:</strong> {{ image.name }} <br>
+                            <strong>Type:</strong> {{ image.type }} <br>
+                            <img [src]="objectURLs[i]" class="uploaded-image" class="img-fluid img-thumbnail" alt=""
+                                width="150" height="150" />
+                        </div>
                         <div class="col span text-center">
-                            
+
                         </div>
                     </div>
                 </tr>
