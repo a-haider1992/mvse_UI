@@ -41,6 +41,7 @@ export class UploadComponent implements OnDestroy {
       // Filter files based on their extensions
       this.selectedImages = this.selectedFiles.filter(file => this.isImageFile(file.name));
       this.selectedVideos = this.selectedFiles.filter(file => this.isVideoFile(file.name));
+      this.selectedAudios = this.selectedFiles.filter(file => this.isAudioFile(file.name));
 
       if (this.selectedImages.length > 0 && this.selectedVideos.length > 0) {
         alert("Eiher image(s) or video(s) can be choosen!!")
@@ -73,12 +74,17 @@ export class UploadComponent implements OnDestroy {
       || fileName.toLowerCase().endsWith('.mkv');
   }
 
+  isAudioFile(fileName: string): boolean {
+    return fileName.toLowerCase().endsWith('.wav')
+      || fileName.toLowerCase().endsWith('.wav');
+  }
+
   ngOnDestroy(): void {
     // Revoke all object URLs in the objectURLs array
     this.objectURLs.forEach(url => URL.revokeObjectURL(url));
   }
   clearImages() {
-    this.selectedImages = this.selectedVideos = [];
+    this.selectedImages = this.selectedVideos = this.selectedAudios = [];
     // Reset the file input to clear the selected files
     this.fileInput.nativeElement.value = '';
   }
