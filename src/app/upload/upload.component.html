@@ -12,12 +12,12 @@
             <table class="table">
                 <tr class="border-bottom border-1">
                     <td style="float: left;">
-                        <div class="mx-5">
-                            <img src="../assets/images/logo.png" width="150px" height="50px">
+                        <div class="m-1 p-2">
+                            <img src="../assets/images/logo.png" width="150px" height="60px">
                         </div>
                     </td>
                     <td style="float: right;">
-                        <div class="container mx-5">
+                        <div class="container m-2 p-3">
                             <span style="font-size: large;color: deepskyblue;">
                                 Home |
                             </span>
@@ -31,25 +31,25 @@
                     </td>
                 </tr>
                 <tr>
-                    <div class="row-fluid m-5">
+                    <div class="row-fluid m-5 p-5">
                         <div class="span12 text-center">
-                            <span style="font-size: xx-large; color: deepskyblue;">
+                            <span style="font-size: xxx-large; color: deepskyblue;">
                                 Add a media here to begin your search query
                             </span>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row p-2">
                         <div class="custom-file span text-center">
                             <div class="col border container p-1" style="width:fit-content;">
                                 <img src="../assets/images/link-file.png" width="30px" height="30px" />
                                 <label class="custom-file-label" for="fileInput"
-                                    style="width: 100px;height: auto;margin-right: 150px;">Choose file</label>
+                                    style="width: 150px;height: auto;margin-right: 150px;">Choose file</label>
                                 <input id="fileInput" type="file" multiple style="display:none;"
                                     (change)="onFileSelected($event)" #fileInput />
                                 <input type="button" class="btn" value="Go"
-                                    style="width: 60px;height: 60px;background-color: deepskyblue;" onclick="" /> &nbsp;
+                                    style="width: 70px;height: 70px;background-color: deepskyblue;" onclick="" /> &nbsp;
                                 <button (click)="clearImages()" class="btn"
-                                    style="width: 60px;height: 60px;background-color: deepskyblue;">Clear</button>
+                                    style="width: 70px;height: 70px;background-color: deepskyblue;">Clear</button>
                             </div>
                         </div>
                     </div>
@@ -68,6 +68,9 @@
                         <div *ngFor="let image of selectedImages; let i = index">
                             <strong>Name:</strong> {{ image.name }} <br>
                             <strong>Type:</strong> {{ image.type }} <br>
+                            <label>
+                                <input type="checkbox" src="selectedStatuses[i]" (change)="updateSelectedStatus(i, $event)"> Scene?
+                            </label> <br>
                             <img [src]="objectURLs[i]" class="uploaded-image" class="img-fluid img-thumbnail" alt=""
                                 width="150" height="150" />
                         </div>

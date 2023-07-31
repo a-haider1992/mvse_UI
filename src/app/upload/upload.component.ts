@@ -11,6 +11,7 @@ export class UploadComponent implements OnDestroy {
   selectedVideos: File[] = [];
   selectedAudios: File[] = [];
   objectURLs: string[] = []; // Array to store the object URLs
+  selectedStatuses: boolean[] = [];
 
   constructor() { }
 
@@ -33,12 +34,27 @@ export class UploadComponent implements OnDestroy {
     if (inputElement.files && inputElement.files.length > 0) {
       this.selectedFiles = Array.from(inputElement.files);
 
+      for (let i = 0; i < inputElement.files.length; i++) {
+        this.selectedStatuses.push(false);
+      };
+
       // Filter files based on their extensions
       this.selectedImages = this.selectedFiles.filter(file => this.isImageFile(file.name));
       this.selectedVideos = this.selectedFiles.filter(file => this.isVideoFile(file.name));
 
+      if (this.selectedImages.length > 0 && this.selectedVideos.length > 0) {
+        alert("Eiher image(s) or video(s) can be choosen!!")
+        this.clearImages()
+      }
+
       this.objectURLs = this.selectedFiles.map(file => URL.createObjectURL(file));
     }
+  }
+
+  // Function to update the selected status when the checkbox state changes
+  updateSelectedStatus(index: number, event: any): void {
+    this.selectedStatuses[index] = event.target.checked;
+    // alert(this.selectedStatuses[index]);
   }
 
   isImageFile(fileName: string): boolean {
@@ -56,7 +72,7 @@ export class UploadComponent implements OnDestroy {
       || fileName.toLowerCase().endsWith('.wmv')
       || fileName.toLowerCase().endsWith('.mkv');
   }
-  
+
   ngOnDestroy(): void {
     // Revoke all object URLs in the objectURLs array
     this.objectURLs.forEach(url => URL.revokeObjectURL(url));
