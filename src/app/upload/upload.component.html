@@ -46,7 +46,7 @@
                                     style="width: 150px;height: auto;margin-right: 150px;">Choose file</label>
                                 <input id="fileInput" type="file" multiple style="display:none;"
                                     (change)="onFileSelected($event)" #fileInput />
-                                <input type="button" class="btn" value="Go"
+                                <input type="button" class="btn" value="Go" (click)="goToSecondComponent()"
                                     style="width: 70px;height: 70px;background-color: deepskyblue;" onclick="" /> &nbsp;
                                 <button (click)="clearImages()" class="btn"
                                     style="width: 70px;height: 70px;background-color: deepskyblue;">Clear</button>

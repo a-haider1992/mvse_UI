@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
@@ -13,7 +13,7 @@ export class UploadComponent implements OnDestroy {
   objectURLs: string[] = []; // Array to store the object URLs
   selectedStatuses: boolean[] = [];
 
-  constructor() { }
+  constructor(private router: Router) {}
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -87,5 +87,9 @@ export class UploadComponent implements OnDestroy {
     this.selectedImages = this.selectedVideos = this.selectedAudios = [];
     // Reset the file input to clear the selected files
     this.fileInput.nativeElement.value = '';
+  }
+
+  goToSecondComponent(): void {
+    this.router.navigateByUrl('/searchResults');
   }
 }
