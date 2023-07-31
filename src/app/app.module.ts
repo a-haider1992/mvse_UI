@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UploadComponent } from './upload/upload.component';
 import { SearchedOutputComponent } from './searched-output/searched-output.component';
+import { ImageBasedSearchService } from './image-based-search.service';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { SearchedOutputComponent } from './searched-output/searched-output.compo
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [ImageBasedSearchService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

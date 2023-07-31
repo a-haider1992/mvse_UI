@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { ImageBasedSearchService } from '../image-based-search.service';
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
@@ -13,7 +14,7 @@ export class UploadComponent implements OnDestroy {
   objectURLs: string[] = []; // Array to store the object URLs
   selectedStatuses: boolean[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private imageBasedSearch: ImageBasedSearchService) {}
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -94,6 +95,7 @@ export class UploadComponent implements OnDestroy {
   }
 
   goToSecondComponent(): void {
-    this.router.navigateByUrl('/searchResults');
+    this.imageBasedSearch.performAction(this.selectedImages);
+    // this.router.navigateByUrl('/searchResults');
   }
 }
