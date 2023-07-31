@@ -48,6 +48,10 @@ export class UploadComponent implements OnDestroy {
         this.clearImages()
       }
 
+      if (this.selectedImages.length == 0 && this.selectedAudios.length == 0 && this.selectedVideos.length == 0){
+        alert("Invalid file type!!")
+      }
+
       this.objectURLs = this.selectedFiles.map(file => URL.createObjectURL(file));
     }
   }

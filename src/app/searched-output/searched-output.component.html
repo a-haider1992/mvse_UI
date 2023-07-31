@@ -1,1 +1,79 @@
-<p>searched-output works!</p>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <div class="container overflow-auto">
+        <div class="row fixed-top" style="height: 70px;">
+            <table class="table">
+                <tr class="border-bottom border-1">
+                    <td style="float: left;">
+                        <div class="m-1 p-2">
+                            <img src="../assets/images/logo.png" width="150px" height="60px">
+                        </div>
+                    </td>
+                    <td style="float: right;">
+                        <div class="container m-2 p-3">
+                            <span style="font-size: large;color: deepskyblue;">
+                                Home |
+                            </span>
+                            <span style="font-size: large; color: deepskyblue;">
+                                Search History |
+                            </span>
+                            <span style="font-size: large; color: deepskyblue;">
+                                Library
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <div class="row container m-5">
+                        <div class="col-sm-2 overflow-auto" style="max-height: 600px;" *ngIf="frames.length > 0">
+                            <span
+                                style="color: deepskyblue;font-family: Arial, Helvetica, sans-serif;font-size: large;">Select
+                                video frame</span><br>
+                            <div class="m-2" *ngFor="let frame of frames; let i = index">
+                                <img [src]="frame" class="uploaded-image" class="img-fluid img-thumbnail" alt=""
+                                    width="120" height="120" /><br>
+                                <label><span>Time: {{5}}s</span></label>
+                            </div>
+                        </div>
+                        <div class="col-sm-4" *ngIf="audios.length > 0">
+                            <span
+                                style="color: deepskyblue;font-family: Arial, Helvetica, sans-serif;font-size: large;">Select
+                                audio clip</span><br>
+                            <div class="m-2" *ngFor="let frame of audios; let i = index">
+                                <audio [src]="frame" controls>
+                                    <source type="audio/wav">
+                                    Your browser does not support the audio element.
+                                </audio><br>
+                                <label><span>Time: {{5}}s</span></label>
+                            </div>
+                            <button (click)="search()" class="btn" *ngIf="frames.length > 0 ? true : false"
+                                style="width: 70px;height: 70px;background-color: deepskyblue;">Go</button>
+                        </div>
+                        <div class="col-sm-6">
+                            <span
+                                style="color: deepskyblue;font-family: Arial, Helvetica, sans-serif;font-size: medium;">Search
+                                results <span style="font-size: large;">({{5+5}} videos found)</span></span><br>
+                            <div class="container">
+                                <div class="row overflow-auto" style="max-height: 600px;">
+                                    <div class="col-md-4 mb-2" *ngFor="let videoUrl of videoList">
+                                        <video [src]="videoUrl" controls class="w-100"
+                                            style="width: 150px;height: 150px;"></video>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
