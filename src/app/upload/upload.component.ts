@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ImageBasedSearchService } from '../image-based-search.service';
+import { DataSharingServiceService } from '../data-sharing-service.service';
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
@@ -14,7 +15,7 @@ export class UploadComponent implements OnDestroy {
   objectURLs: string[] = []; // Array to store the object URLs
   selectedStatuses: boolean[] = [];
 
-  constructor(private router: Router, private imageBasedSearch: ImageBasedSearchService) {}
+  constructor(private router: Router, private imageBasedSearch: ImageBasedSearchService, private dataSharingService: DataSharingServiceService) { }
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -49,7 +50,7 @@ export class UploadComponent implements OnDestroy {
         this.clearImages()
       }
 
-      if (this.selectedImages.length == 0 && this.selectedAudios.length == 0 && this.selectedVideos.length == 0){
+      if (this.selectedImages.length == 0 && this.selectedAudios.length == 0 && this.selectedVideos.length == 0) {
         alert("Invalid file type!!")
       }
 
@@ -95,7 +96,16 @@ export class UploadComponent implements OnDestroy {
   }
 
   goToSecondComponent(): void {
-    this.imageBasedSearch.performAction(this.selectedImages);
-    // this.router.navigateByUrl('/searchResults');
+    if (this.selectedFiles.length == 0) {
+      alert("Please upload file(s)!")
+    }
+    else {
+      this.imageBasedSearch.performAction(this.selectedImages).then(response => {
+        console.log(response);
+        const data = response.location;
+        this.dataSharingService.sharedData = data;
+      }).catch(error => { console.error(error) });
+      this.router.navigateByUrl('/searchResults');
+    }
   }
 }
