@@ -8,6 +8,8 @@ import { SearchedOutputComponent } from './searched-output/searched-output.compo
 import { ImageBasedSearchService } from './image-based-search.service';
 import { DataSharingServiceService } from './data-sharing-service.service';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatProgressBarModule
   ],
   providers: [ImageBasedSearchService, DataSharingServiceService],
   bootstrap: [AppComponent]

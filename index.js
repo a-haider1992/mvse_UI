@@ -17,16 +17,14 @@ const mvseTempVideoFiles = path.join (path.join( path.join (process.env.MVSE_LOC
 const mvseFrontEndRootPrefix = process.env.MVSE_LOCAL_SHARED_ROOT;
 
 const express = require('express');
-const path = require('path');
-const fs = require('fs').promises;
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, 'dist', 'mvse-front-1.0')));
 
 
 const getIndex = function (req, res) {
-	fs.readFile(path.join(__dirname, 'dist', 'index.html'))
+	fs.readFile(path.join(__dirname, 'dist', 'mvse-front-1.0', 'index.html'))
 	  .then(contents => {
 		res.setHeader('Content-Type', 'text/html');
 		res.writeHead(200);
@@ -273,6 +271,7 @@ const requestListener = function (req, res)
 		}
 	};
 
+app.use(requestListener);
 // const server = http.createServer(requestListener);
 app.listen(port, host, () =>
 	{

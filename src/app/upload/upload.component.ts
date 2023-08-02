@@ -14,6 +14,20 @@ export class UploadComponent implements OnDestroy {
   selectedAudios: File[] = [];
   objectURLs: string[] = []; // Array to store the object URLs
   selectedStatuses: boolean[] = [];
+  showProgressBar: boolean = false;
+  applyBlurEffect: boolean = false;
+
+  // Function to show the progress bar and apply blur effect
+  showProgressBarWithBlur() {
+    this.showProgressBar = true;
+    this.applyBlurEffect = true;
+  }
+
+  // Function to hide the progress bar and remove blur effect
+  hideProgressBar() {
+    this.showProgressBar = false;
+    this.applyBlurEffect = false;
+  }
 
   constructor(private router: Router, private imageBasedSearch: ImageBasedSearchService, private dataSharingService: DataSharingServiceService) { }
 
@@ -100,12 +114,15 @@ export class UploadComponent implements OnDestroy {
       alert("Please upload file(s)!")
     }
     else {
+      this.showProgressBarWithBlur();
       this.imageBasedSearch.performAction(this.selectedImages).then(response => {
         console.log(response);
         const data = response.location;
         this.dataSharingService.sharedData = data;
+        this.hideProgressBar();
+        this.router.navigateByUrl('/searchResults');
       }).catch(error => { console.error(error) });
-      this.router.navigateByUrl('/searchResults');
+      this.hideProgressBar();
     }
   }
 }

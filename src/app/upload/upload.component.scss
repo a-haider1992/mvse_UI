@@ -1,0 +1,6 @@
+/* Blur effect class */
+.blur-effect {
+    filter: blur(5px); /* Adjust the blur radius as needed */
+    pointer-events: none; /* Prevent interactions with blurred elements */
+  }
+  

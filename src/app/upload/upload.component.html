@@ -37,19 +37,24 @@
                                 Add a media here to begin your search query
                             </span>
                         </div>
+                        <mat-progress-bar *ngIf="showProgressBar" mode="indeterminate"></mat-progress-bar>
                     </div>
+
                     <div class="row p-2">
                         <div class="custom-file span text-center">
                             <div class="col border container p-1" style="width:fit-content;">
-                                <img src="../assets/images/link-file.png" width="30px" height="30px" />
-                                <label class="custom-file-label" for="fileInput"
-                                    style="width: 150px;height: auto;margin-right: 150px;">Choose file</label>
-                                <input id="fileInput" type="file" multiple style="display:none;"
-                                    (change)="onFileSelected($event)" #fileInput />
-                                <input type="button" class="btn" value="Go" (click)="goToSecondComponent()"
-                                    style="width: 70px;height: 70px;background-color: deepskyblue;" onclick="" /> &nbsp;
-                                <button (click)="clearImages()" class="btn"
-                                    style="width: 70px;height: 70px;background-color: deepskyblue;">Clear</button>
+                                <div [ngClass]="{'blur-effect': applyBlurEffect}">
+                                    <img src="../assets/images/link-file.png" width="30px" height="30px" />
+                                    <label class="custom-file-label" for="fileInput"
+                                        style="width: 150px;height: auto;margin-right: 150px;">Choose file</label>
+                                    <input id="fileInput" type="file" multiple style="display:none;"
+                                        (change)="onFileSelected($event)" #fileInput />
+                                    <input type="button" class="btn" value="Go" (click)="goToSecondComponent()"
+                                        style="width: 70px;height: 70px;background-color: deepskyblue;" onclick="" />
+                                    &nbsp;
+                                    <button (click)="clearImages()" class="btn"
+                                        style="width: 70px;height: 70px;background-color: deepskyblue;">Clear</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -71,13 +76,14 @@
                             <audio [src]="objectURLs[i]" controls>
                                 <source type="audio/wav">
                                 Your browser does not support the audio element.
-                              </audio>
+                            </audio>
                         </div>
                         <div *ngFor="let image of selectedImages; let i = index">
                             <strong>Name:</strong> {{ image.name }} <br>
                             <strong>Type:</strong> {{ image.type }} <br>
                             <label>
-                                <input type="checkbox" src="selectedStatuses[i]" (change)="updateSelectedStatus(i, $event)"> Scene?
+                                <input type="checkbox" src="selectedStatuses[i]"
+                                    (change)="updateSelectedStatus(i, $event)"> Scene?
                             </label> <br>
                             <img [src]="objectURLs[i]" class="uploaded-image" class="img-fluid img-thumbnail" alt=""
                                 width="150" height="150" />
