@@ -20,6 +20,7 @@ export class SearchedOutputComponent {
 
   ngOnInit(): void {
     this.data = this.dataSharingService.sharedData;
+    console.log("Inside second component!!");
     console.log(this.data);
   }
   

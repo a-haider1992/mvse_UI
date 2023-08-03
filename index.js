@@ -20,8 +20,6 @@ const express = require('express');
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'dist', 'mvse-front-1.0')));
-
 
 const getIndex = function (req, res) {
 	fs.readFile(path.join(__dirname, 'dist', 'mvse-front-1.0', 'index.html'))
@@ -211,6 +209,7 @@ const saveFiles = function (uploadDir, uploadCommand, req, res)
 
 const requestListener = function (req, res)
 	{
+		console.log("Inside request listener");
 		if (req.url.startsWith ("/mvse_shared"))
 		{
 			let contentType = "application/data";
@@ -244,7 +243,7 @@ const requestListener = function (req, res)
 			saveFile (mvseTempVideoFiles, "/upload_search_video", req,res);
 			return true;
 		}
-		else if (req.method == "POST" && req.url.startsWith ("/analyse_video"))
+		else if (req.method == "POST" && req.url.endsWith ("/analyse_video"))
 		{
 			saveFile (mvseTempVideoFiles, "/analyse_video", req,res);
 			return true;
@@ -254,8 +253,9 @@ const requestListener = function (req, res)
 			saveFile (mvseTempImageFiles, "/upload_image_search_video", req,res);
 			return true;
 		}
-		else if (req.method == "POST" && req.url.startsWith ("/multi_modals_search_video_new"))
+		else if (req.method == "POST" && req.url.endsWith("/multi_modals_search_video_new"))
 		{
+			console.log("Inside node from angular app!!");
 			saveFiles (mvseTempImageFiles, "/multi_modals_search_video_new", req,res);
 			return true;
 		}
@@ -266,10 +266,13 @@ const requestListener = function (req, res)
 		}
 		else
 		{
+			console.log("Index function of node!!");
 			getIndex (req, res);
 			return;
 		}
 	};
+
+app.use(express.static(path.join(__dirname, 'dist', 'mvse-front-1.0')));
 
 app.use(requestListener);
 // const server = http.createServer(requestListener);

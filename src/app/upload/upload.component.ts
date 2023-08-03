@@ -17,8 +17,13 @@ export class UploadComponent implements OnDestroy {
   showProgressBar: boolean = false;
   applyBlurEffect: boolean = false;
 
+  ngOnInit(){
+    // this.showProgressBarWithBlur();
+  }
+
   // Function to show the progress bar and apply blur effect
   showProgressBarWithBlur() {
+    console.log("Progress bar show called!!");
     this.showProgressBar = true;
     this.applyBlurEffect = true;
   }
@@ -109,20 +114,47 @@ export class UploadComponent implements OnDestroy {
     this.fileInput.nativeElement.value = '';
   }
 
+  // goToSecondComponent(): void {
+  //   this.showProgressBarWithBlur();
+  //   if (this.selectedFiles.length == 0) {
+  //     alert("Please upload file(s)!")
+  //     this.hideProgressBar();
+  //   }
+  //   else {
+  //     this.imageBasedSearch.performAction(this.selectedImages).then(response => {
+  //       console.log(response);
+  //       const data = response.location;
+  //       this.dataSharingService.sharedData = data;
+  //       this.hideProgressBar();
+  //       this.router.navigateByUrl('/searchResults');
+  //     }).catch(error => { console.error(error) });
+  //     this.hideProgressBar();
+  //   }
+  // }
   goToSecondComponent(): void {
+    this.showProgressBarWithBlur();
+  
     if (this.selectedFiles.length == 0) {
-      alert("Please upload file(s)!")
-    }
-    else {
-      this.showProgressBarWithBlur();
-      this.imageBasedSearch.performAction(this.selectedImages).then(response => {
-        console.log(response);
-        const data = response.location;
-        this.dataSharingService.sharedData = data;
-        this.hideProgressBar();
-        this.router.navigateByUrl('/searchResults');
-      }).catch(error => { console.error(error) });
+      alert("Please upload file(s)!");
       this.hideProgressBar();
+      return;
     }
+  
+    // Use setTimeout to create a delay and allow the progress bar to be displayed
+    setTimeout(() => {
+      this.imageBasedSearch.performAction(this.selectedImages)
+        .then(response => {
+          console.log(response);
+          const data = response.location;
+          this.dataSharingService.sharedData = data;
+          this.hideProgressBar();
+          this.router.navigateByUrl('/searchResults');
+        })
+        .catch(error => {
+          console.error(error);
+          this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
+        });
+    }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
   }
+  
 }

@@ -46,8 +46,8 @@
                             <span
                                 style="color: deepskyblue;font-family: Arial, Helvetica, sans-serif;font-size: large;">Select
                                 audio clip</span><br>
-                            <div class="m-2" *ngFor="let frame of audios; let i = index">
-                                <audio [src]="frame" controls>
+                            <div class="col-md-4 mb-2" *ngFor="let frame of audios; let i = index">
+                                <audio [src]="frame" controls class="w-100">
                                     <source type="audio/wav">
                                     Your browser does not support the audio element.
                                 </audio><br>
