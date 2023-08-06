@@ -65,6 +65,14 @@
                             </div>
                         </div>
                         <div class="col-sm-6">
+                            <div *ngIf="showVideoOverlay" class="video-overlay">
+                                <div class="modal-content">
+                                  <video width="640" height="360" controls [src]="source_video">
+                                    Your browser does not support the video tag.
+                                  </video>
+                                  <button (click)="closeVideoOverlay()">Close</button>
+                                </div>
+                              </div>
                             <span
                                 style="color: deepskyblue;font-family: Arial, Helvetica, sans-serif;font-size: medium;">Search
                                 results <span style="font-size: large;">({{5+5}} videos found)</span></span><br>
@@ -72,8 +80,8 @@
                                 <div class="row overflow-auto" style="max-height: 600px; width:950px;">
                                     <div class="col-md-4 mb-1" *ngFor="let videoUrl of videoList">
                                         <div class="video-wrapper border p-3">
-                                            <video [src]="videoUrl" controls class="w-100"
-                                                style="width: 150px;height: 150px;"></video>
+                                            <img [src]="videoUrl" controls class="w-100"
+                                                style="width: 100px;height: 120px;" (click)="onPosterClick(videoUrl)"/>
                                         </div>
                                     </div>
                                 </div>
