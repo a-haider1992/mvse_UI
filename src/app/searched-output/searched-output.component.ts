@@ -55,8 +55,31 @@ export class SearchedOutputComponent {
       starttime = parseFloat(starttime.toFixed(2));
     }
     alert(this.source_video);
-    if (this.source_video != " "){
-      this.showVideoOverlay = true;
+    if (this.source_video.trim().length !== 0){
+      this.openVideoWindow();
+    }
+    else{
+      alert("No video fetched!!");
+    }
+  }
+
+  openVideoWindow() {
+    const videoWindow = window.open('', '_blank', 'width=800,height=600');
+    if (videoWindow) {
+      videoWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Video Player</title>
+        </head>
+        <body>
+          <video controls width="100%" height="100%">
+            <source src="${this.source_video}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </body>
+        </html>
+      `);
     }
   }
 
