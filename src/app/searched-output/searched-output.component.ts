@@ -21,12 +21,14 @@ export class SearchedOutputComponent {
 
   data: any[] = []
   source_video: string = " ";
+  startTime: any = 0;
   showVideoOverlay = false;
 
   ngOnInit(): void {
     this.data = this.dataSharingService.sharedData;
     console.log(this.data);
     this.videoList = this.data;
+    this.frames = this.audios = [];
   }
 
   onPosterClick(image: any): void {
@@ -53,33 +55,41 @@ export class SearchedOutputComponent {
     } else {
       starttime = parseFloat(starttimestr) / 25.0;
       starttime = parseFloat(starttime.toFixed(2));
+      this.startTime = starttime;
     }
-    alert(this.source_video);
-    if (this.source_video.trim().length !== 0){
+    alert(this.source_video + " " + this.startTime);
+    if (this.source_video.trim().length !== 0) {
       this.openVideoWindow();
     }
-    else{
+    else {
       alert("No video fetched!!");
     }
   }
 
   openVideoWindow() {
-    const videoWindow = window.open('', '_blank', 'width=800,height=600');
-    if (videoWindow) {
-      videoWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Video Player</title>
-        </head>
-        <body>
-          <video controls width="100%" height="100%">
+    const dynamicHtml = `
+    <html>
+      <body>
+        <div>
+          <video id="videoPlayer" controls>
             <source src="${this.source_video}" type="video/mp4">
             Your browser does not support the video tag.
           </video>
-        </body>
-        </html>
-      `);
+        </div>
+        <script>
+          const video = document.getElementById('videoPlayer');
+          video.currentTime = ${this.startTime};
+        </script>
+      </body>
+    </html>
+  `;
+    const newWindow = window.open('', '_blank', 'width=800,height=600');
+    if (newWindow) {
+      newWindow.document.open();
+      newWindow.document.write(dynamicHtml);
+    } else {
+      // Handle the case where the new window couldn't be opened
+      console.error('Failed to open new window');
     }
   }
 
