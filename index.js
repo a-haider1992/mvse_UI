@@ -1,4 +1,5 @@
 const http = require("http");
+const cors = require('cors');
 //var XMLHttpRequest = require("xhr2");
 const fs = require('fs').promises;
 const formidable = require('formidable');
@@ -273,6 +274,7 @@ const requestListener = function (req, res)
 	};
 
 app.use(express.static(path.join(__dirname, 'dist', 'mvse-front-1.0')));
+app.use(cors());
 
 app.use(requestListener);
 // const server = http.createServer(requestListener);

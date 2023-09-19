@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DataSharingServiceService } from '../data-sharing-service.service';
+import { VideoDownloadService } from '../video-download.service';
 
 @Component({
   selector: 'app-searched-output',
@@ -8,7 +9,7 @@ import { DataSharingServiceService } from '../data-sharing-service.service';
 })
 export class SearchedOutputComponent {
 
-  constructor(private dataSharingService: DataSharingServiceService) { }
+  constructor(private dataSharingService: DataSharingServiceService, private videoDownloadService: VideoDownloadService) { }
   selectedImages: any[] = [];
 
   frames: any[] = ["../assets/images/image.png", "../assets/images/logo.png", "../assets/images/image.png", "../assets/images/logo.png", "../assets/images/logo.png"];
@@ -20,7 +21,7 @@ export class SearchedOutputComponent {
   posterList: string[] = [];
 
   data: any[] = []
-  source_video: string = " ";
+  source_video: string = '';
   startTime: any = 0;
   showVideoOverlay = false;
 
@@ -57,14 +58,46 @@ export class SearchedOutputComponent {
       starttime = parseFloat(starttime.toFixed(2));
       this.startTime = starttime;
     }
-    alert(this.source_video + " " + this.startTime);
+
+    this.startTime = this.extractIntegerPart(this.startTime);
+
+    this.source_video = 'http://' + window.location.hostname + ':8008/download?qfile=' + this.source_video;
+    // alert(this.source_video + " " + this.startTime);
     if (this.source_video.trim().length !== 0) {
+      // this.source_video = this.videoDownloadService.downloadVideo(this.source_video, this.startTime);
+      this.videoDownloadService.downloadVideo(this.source_video, this.startTime).subscribe((url) => {
+        this.source_video = url;
+        // this.showVideoOverlay = true;
+        // You can also set the video source here if needed
+        // const videoPlayer = document.getElementById('videoPlayer') as HTMLVideoElement;
+        // videoPlayer.src = url;
+      });
+      // alert(this.source_video);
       this.openVideoWindow();
     }
     else {
       alert("No video fetched!!");
     }
   }
+
+  extractIntegerPart(input: number | string): number | string {
+    if (typeof input === 'string') {
+      // If input is a string, parse it as a float, extract the integer part, and return as a string
+      const floatValue = parseFloat(input);
+      if (!isNaN(floatValue)) {
+        return Math.floor(floatValue).toString();
+      } else {
+        return 'Invalid Input';
+      }
+    } else if (typeof input === 'number') {
+      // If input is already a number, extract the integer part
+      return Math.floor(input);
+    } else {
+      // Handle other types or invalid inputs
+      return 'Invalid Input';
+    }
+  }
+  
 
   openVideoWindow() {
     const dynamicHtml = `
@@ -83,12 +116,13 @@ export class SearchedOutputComponent {
       </body>
     </html>
   `;
-    const newWindow = window.open('', '_blank', 'width=800,height=600');
+    const newWindow = window.open('', '_blank', 'width=500,height=500');
     if (newWindow) {
       newWindow.document.open();
       newWindow.document.write(dynamicHtml);
     } else {
       // Handle the case where the new window couldn't be opened
+      alert("Video error!");
       console.error('Failed to open new window');
     }
   }
@@ -98,7 +132,7 @@ export class SearchedOutputComponent {
     // // Optionally, you can also pause the video when closing the overlay
     // const videoElement: HTMLVideoElement = document.getElementById('videoPlayer') as HTMLVideoElement;
     // videoElement.pause();
-    this.source_video = " ";
+    this.source_video = '';
   }
 
   toggleImageSelection(src: string): void {

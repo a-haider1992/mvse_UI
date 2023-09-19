@@ -27,7 +27,13 @@ export class ImageBasedSearchService {
     }
     console.log(formData);
 
-    return this.http.post(`${currentHost}/multi_modals_search_video_new`, formData).toPromise();
+    return this.http.post(`http://${currentHost}/multi_modals_search_video_new`, formData)
+      .toPromise()
+      .catch((error) => {
+        console.error('HTTP Error:', error);
+        throw error; // Rethrow the error to propagate it to the caller
+      });
+
   }
 
 }
