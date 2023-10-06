@@ -82,12 +82,13 @@
                             <strong>Name:</strong> {{ image.name }} <br>
                             <strong>Type:</strong> {{ image.type }} <br>
                             <label>
-                                <input type="checkbox" src="selectedStatuses[i]"
-                                    (change)="updateSelectedStatus(i, $event)"> Scene?
+                                <input type="checkbox" [(ngModel)]="selectedStatuses[i]"
+                                    (change)="updateSelectedStatus(i, $event)"> Object?
                             </label> <br>
                             <img [src]="objectURLs[i]" class="uploaded-image" class="img-fluid img-thumbnail" alt=""
                                 width="150" height="150" />
                         </div>
+
                         <div class="col span text-center">
 
                         </div>

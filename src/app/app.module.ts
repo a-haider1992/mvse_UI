@@ -10,6 +10,8 @@ import { DataSharingServiceService } from './data-sharing-service.service';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    FormsModule,
   ],
   providers: [ImageBasedSearchService, DataSharingServiceService],
   bootstrap: [AppComponent]

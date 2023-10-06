@@ -17,7 +17,7 @@ export class UploadComponent implements OnDestroy {
   showProgressBar: boolean = false;
   applyBlurEffect: boolean = false;
 
-  ngOnInit(){
+  ngOnInit() {
     // this.showProgressBarWithBlur();
   }
 
@@ -77,11 +77,52 @@ export class UploadComponent implements OnDestroy {
     }
   }
 
-  // Function to update the selected status when the checkbox state changes
   updateSelectedStatus(index: number, event: any): void {
+    // Toggle the checkbox status in selectedStatuses array
     this.selectedStatuses[index] = event.target.checked;
-    // alert(this.selectedStatuses[index]);
+  
+    // // Get the current file and its name
+    // const file = this.selectedImages[index];
+    // const fileName = file.name;
+    // console.log(fileName);
+  
+    // // Split the file name into parts
+    // const parts = fileName.split(".");
+    
+    // if (parts.length === 2) {
+    //   const nameWithoutExtension = parts[0];
+    //   const extension = parts[1];
+
+    //   console.log(parts);
+  
+    //   // Check if the file name already contains "_object" or "_face"
+    //   const isObject = nameWithoutExtension.endsWith("_obj");
+    //   const isFace = nameWithoutExtension.endsWith("_fac");
+  
+    //   // Determine the modifier based on the checkbox status
+    //   const modifier = this.selectedStatuses[index] ? "_obj" : "_fac";
+  
+    //   // Create the modified name if it doesn't already contain the modifier
+    //   let modifiedName = nameWithoutExtension;
+    //   if (isObject || isFace) {
+    //     modifiedName = nameWithoutExtension.slice(0, -4); // Remove the existing modifier
+    //   }
+    //   modifiedName += modifier + "." + extension;
+
+    //   console.log(modifiedName);
+  
+    //   // Create a new File object with the modified name
+    //   const modifiedFile = new File([file], modifiedName);
+  
+    //   // Update the selectedImages array with the modified file
+    //   this.selectedImages[index] = modifiedFile;
+    //   this.selectedStatuses[index] = true;
+    // } else {
+    //   console.error("Invalid image name format");
+    // }
   }
+  
+  
 
   isImageFile(fileName: string): boolean {
     return fileName.toLowerCase().endsWith('.jpg')
@@ -133,13 +174,13 @@ export class UploadComponent implements OnDestroy {
   // }
   goToSecondComponent(): void {
     this.showProgressBarWithBlur();
-  
+
     if (this.selectedFiles.length == 0) {
       alert("Please upload file(s)!");
       this.hideProgressBar();
       return;
     }
-  
+
     // Use setTimeout to create a delay and allow the progress bar to be displayed
     setTimeout(() => {
       this.imageBasedSearch.performAction(this.selectedImages)
@@ -156,5 +197,5 @@ export class UploadComponent implements OnDestroy {
         });
     }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
   }
-  
+
 }
