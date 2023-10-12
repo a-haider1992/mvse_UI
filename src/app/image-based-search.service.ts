@@ -36,4 +36,17 @@ export class ImageBasedSearchService {
 
   }
 
+  analyse_video(videoFile: File[]):Promise<any>{
+    const currentHost = window.location.host; // Add the base URL of your API server here
+    const formData = new FormData();
+    formData.append('file', videoFile[0]);
+    console.log(formData);
+    return this.http.post(`http://${currentHost}/analyse_video`, formData)
+      .toPromise()
+      .catch((error) => {
+        console.error('HTTP Error:', error);
+        throw error; // Rethrow the error to propagate it to the caller
+      });
+  }
+
 }

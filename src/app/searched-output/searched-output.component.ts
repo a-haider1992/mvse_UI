@@ -27,9 +27,16 @@ export class SearchedOutputComponent {
 
   ngOnInit(): void {
     this.data = this.dataSharingService.sharedData;
-    console.log(this.data);
-    this.videoList = this.data;
-    this.frames = this.audios = [];
+    if (Array.isArray(this.data)){
+      console.log(this.data);
+      this.videoList = this.data;
+      this.frames = this.audios = [];
+    }
+    else{
+      this.frames = this.data["scene_image"];
+      this.audios = this.data["wavfile"];
+      this.videoList = [];
+    }
   }
 
   onPosterClick(image: any): void {

@@ -180,8 +180,9 @@ export class UploadComponent implements OnDestroy {
       this.hideProgressBar();
       return;
     }
-
-    // Use setTimeout to create a delay and allow the progress bar to be displayed
+    if (this.selectedImages.length >= 1){
+      console.log("Image service.");
+          // Use setTimeout to create a delay and allow the progress bar to be displayed
     setTimeout(() => {
       this.imageBasedSearch.performAction(this.selectedImages)
         .then(response => {
@@ -196,6 +197,26 @@ export class UploadComponent implements OnDestroy {
           this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
         });
     }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
+    }
+    else if(this.selectedVideos.length >= 1){
+      console.log("Video service.");
+          // Use setTimeout to create a delay and allow the progress bar to be displayed
+    setTimeout(() => {
+      this.imageBasedSearch.analyse_video(this.selectedVideos)
+        .then(response => {
+          console.log(response);
+          const data = response;
+          this.dataSharingService.sharedData = data;
+          this.hideProgressBar();
+          this.router.navigateByUrl('/searchResults');
+        })
+        .catch(error => {
+          console.error(error);
+          this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
+        });
+    }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
+    }
+
   }
 
 }
