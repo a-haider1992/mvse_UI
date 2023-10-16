@@ -17,6 +17,8 @@ export class SearchedOutputComponent {
   videoList: string[] = [
     '../assets/videos/test2.mp4', '../assets/videos/test3.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4'
   ];
+  frames_stamp: any[] = ["10", "10", "10", "10", "10"];
+  audios_stamp: any[] = ["10", "10", "10", "10", "10", "10"];
   // To store posters returned by API call
   posterList: string[] = [];
 
@@ -35,6 +37,8 @@ export class SearchedOutputComponent {
     else{
       this.frames = this.data["scene_image"];
       this.audios = this.data["wavfile"];
+      this.frames_stamp = this.data[""];
+      this.audios_stamp = this.data[""];
       this.videoList = [];
     }
   }

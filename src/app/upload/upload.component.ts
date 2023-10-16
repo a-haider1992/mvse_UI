@@ -173,6 +173,8 @@ export class UploadComponent implements OnDestroy {
   //   }
   // }
   goToSecondComponent(): void {
+    // this.router.navigateByUrl('/searchResults');
+
     this.showProgressBarWithBlur();
 
     if (this.selectedFiles.length == 0) {
