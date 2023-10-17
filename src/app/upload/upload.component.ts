@@ -80,28 +80,28 @@ export class UploadComponent implements OnDestroy {
   updateSelectedStatus(index: number, event: any): void {
     // Toggle the checkbox status in selectedStatuses array
     this.selectedStatuses[index] = event.target.checked;
-  
+
     // // Get the current file and its name
     // const file = this.selectedImages[index];
     // const fileName = file.name;
     // console.log(fileName);
-  
+
     // // Split the file name into parts
     // const parts = fileName.split(".");
-    
+
     // if (parts.length === 2) {
     //   const nameWithoutExtension = parts[0];
     //   const extension = parts[1];
 
     //   console.log(parts);
-  
+
     //   // Check if the file name already contains "_object" or "_face"
     //   const isObject = nameWithoutExtension.endsWith("_obj");
     //   const isFace = nameWithoutExtension.endsWith("_fac");
-  
+
     //   // Determine the modifier based on the checkbox status
     //   const modifier = this.selectedStatuses[index] ? "_obj" : "_fac";
-  
+
     //   // Create the modified name if it doesn't already contain the modifier
     //   let modifiedName = nameWithoutExtension;
     //   if (isObject || isFace) {
@@ -110,10 +110,10 @@ export class UploadComponent implements OnDestroy {
     //   modifiedName += modifier + "." + extension;
 
     //   console.log(modifiedName);
-  
+
     //   // Create a new File object with the modified name
     //   const modifiedFile = new File([file], modifiedName);
-  
+
     //   // Update the selectedImages array with the modified file
     //   this.selectedImages[index] = modifiedFile;
     //   this.selectedStatuses[index] = true;
@@ -121,8 +121,8 @@ export class UploadComponent implements OnDestroy {
     //   console.error("Invalid image name format");
     // }
   }
-  
-  
+
+
 
   isImageFile(fileName: string): boolean {
     return fileName.toLowerCase().endsWith('.jpg')
@@ -182,41 +182,58 @@ export class UploadComponent implements OnDestroy {
       this.hideProgressBar();
       return;
     }
-    if (this.selectedImages.length >= 1){
+    if (this.selectedImages.length >= 1) {
       console.log("Image service.");
-          // Use setTimeout to create a delay and allow the progress bar to be displayed
-    setTimeout(() => {
-      this.imageBasedSearch.performAction(this.selectedImages)
-        .then(response => {
-          console.log(response);
-          const data = response.location;
-          this.dataSharingService.sharedData = data;
-          this.hideProgressBar();
-          this.router.navigateByUrl('/searchResults');
-        })
-        .catch(error => {
-          console.error(error);
-          this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
-        });
-    }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
+      // Use setTimeout to create a delay and allow the progress bar to be displayed
+      setTimeout(() => {
+        this.imageBasedSearch.performAction(this.selectedImages)
+          .then(response => {
+            console.log(response);
+            const data = response.location;
+            this.dataSharingService.sharedData = data;
+            this.hideProgressBar();
+            this.router.navigateByUrl('/searchResults');
+          })
+          .catch(error => {
+            console.error(error);
+            this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
+          });
+      }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
     }
-    else if(this.selectedVideos.length >= 1){
+    else if (this.selectedAudios.length >= 1){
+      console.log("Audio service");
+      setTimeout(() => {
+        this.imageBasedSearch.performAction(this.selectedAudios)
+          .then(response => {
+            console.log(response);
+            const data = response.location;
+            this.dataSharingService.sharedData = data;
+            this.hideProgressBar();
+            this.router.navigateByUrl('/searchResults');
+          })
+          .catch(error => {
+            console.error(error);
+            this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
+          });
+      }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
+    }
+    else if (this.selectedVideos.length >= 1) {
       console.log("Video service.");
-          // Use setTimeout to create a delay and allow the progress bar to be displayed
-    setTimeout(() => {
-      this.imageBasedSearch.analyse_video(this.selectedVideos)
-        .then(response => {
-          console.log(response);
-          const data = response;
-          this.dataSharingService.sharedData = data;
-          this.hideProgressBar();
-          this.router.navigateByUrl('/searchResults');
-        })
-        .catch(error => {
-          console.error(error);
-          this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
-        });
-    }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
+      // Use setTimeout to create a delay and allow the progress bar to be displayed
+      setTimeout(() => {
+        this.imageBasedSearch.analyse_video(this.selectedVideos)
+          .then(response => {
+            console.log(response);
+            const data = response;
+            this.dataSharingService.sharedData = data;
+            this.hideProgressBar();
+            this.router.navigateByUrl('/searchResults');
+          })
+          .catch(error => {
+            console.error(error);
+            this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
+          });
+      }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
     }
 
   }

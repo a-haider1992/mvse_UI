@@ -29,48 +29,90 @@ export class SearchedOutputComponent {
 
   ngOnInit(): void {
     this.data = this.dataSharingService.sharedData;
-    if (Array.isArray(this.data)){
+    if (Array.isArray(this.data)) {
       console.log(this.data);
       this.videoList = this.data;
       this.frames = this.audios = [];
     }
-    else{
+    else {
       this.frames = this.data["scene_image"];
       this.audios = this.data["wavfile"];
-      this.frames_stamp = this.data[""];
-      this.audios_stamp = this.data[""];
+      this.audios_stamp = this.frames_stamp = this.extractFrameStamp(this.frames);
+      // this.frames_stamp = this.data[""];
+      // this.audios_stamp = this.data[""];
+      console.log(this.frames_stamp);
       this.videoList = [];
     }
   }
 
+  extractFrameStamp(frames: string[]): number[] {
+    const frameStamps: number[] = [];
+
+    for (const frame of frames) {
+        const parts = frame.split('_');
+        if (parts.length >= 4) {
+            const frameStamp = parseInt(parts[3]);
+            if (!isNaN(frameStamp)) {
+                frameStamps.push(frameStamp);
+            }
+        }
+    }
+    return frameStamps;
+}
+
   onPosterClick(image: any): void {
     // Extract video source from frame "image"
+    let starttimestr = "0";
     let str2 = image;
     let tmpArray = str2.split("/");
-    let folder = str2.substring(0, str2.lastIndexOf("/"));
-    let video_name = tmpArray[tmpArray.length - 1]; //archivesearch_5e9592bca0fe6201df2985c9_340_415.mp4
-    video_name = video_name.substring(0, video_name.lastIndexOf('_')); //archivesearch_5e9592bca0fe6201df2985c9_340  or archivesearch_5e9592bca0fe6201df2985c9-340
-    let starttimestr = "0";
-    if (video_name.indexOf("-") > 0) {
-      // archivesearch_5e9592bca0fe6201df2985c9-340
-      this.source_video = video_name.substring(0, video_name.lastIndexOf("-")) + ".mp4";
-      starttimestr = video_name.split("-")[1];
-    } else {
-      // archivesearch_5e9592bca0fe6201df2985c9_340
-      this.source_video = video_name.substring(0, video_name.lastIndexOf("_")) + ".mp4"; // archivesearch_5e9592bca0fe6201df2985c9.mp4
-      starttimestr = video_name.substring(video_name.lastIndexOf("_") + 1);
+    let video_name = tmpArray[tmpArray.length - 1];
+    console.log(video_name);
+    if (video_name.includes("scene") || video_name.includes("face") || video_name.includes("audio") || video_name.includes("object")) {
+      const parts = video_name.split("_");
+      if (parts.length >= 3) {
+        this.source_video = parts[0] + ".mp4";
+        starttimestr = parts[parts.length - 2];
+      }
+      console.log("Inside scene --" + this.source_video);
+      console.log(starttimestr);
+    }
+    else {
+      // Handle other cases or provide a default value
+      video_name = video_name.split("_");
+      this.source_video = video_name[0] + ".mp4";
+      starttimestr = video_name[1];
+      console.log(this.source_video);
+      console.log(starttimestr);
     }
 
-    let starttime = 0;
-    if (starttimestr.indexOf(".") > 0) {
-      starttime = parseFloat(starttimestr);
-    } else {
-      starttime = parseFloat(starttimestr) / 25.0;
-      starttime = parseFloat(starttime.toFixed(2));
-      this.startTime = starttime;
-    }
+    // let str2 = image;
+    // let tmpArray = str2.split("/");
+    // let folder = str2.substring(0, str2.lastIndexOf("/"));
+    // let video_name = tmpArray[tmpArray.length - 1]; //archivesearch_5e9592bca0fe6201df2985c9_340_415.mp4
+    // video_name = video_name.substring(0, video_name.lastIndexOf('_')); //archivesearch_5e9592bca0fe6201df2985c9_340  or archivesearch_5e9592bca0fe6201df2985c9-340
+    // let starttimestr = "0";
+    // if (video_name.indexOf("-") > 0) {
+    //   // archivesearch_5e9592bca0fe6201df2985c9-340
+    //   this.source_video = video_name.substring(0, video_name.lastIndexOf("-")) + ".mp4";
+    //   starttimestr = video_name.split("-")[1];
+    // } else {
+    //   // archivesearch_5e9592bca0fe6201df2985c9_340
+    //   // this.source_video = video_name.substring(0, video_name.lastIndexOf("_")) + ".mp4"; // archivesearch_5e9592bca0fe6201df2985c9.mp4
+    //   // starttimestr = video_name.substring(video_name.lastIndexOf("_") + 1);
+    // }
 
-    this.startTime = this.extractIntegerPart(this.startTime);
+    // let starttime = 0;
+    // if (starttimestr.indexOf(".") > 0) {
+    //   starttime = parseFloat(starttimestr);
+    // } else {
+    //   starttime = parseFloat(starttimestr) / 25.0;
+    //   starttime = parseFloat(starttime.toFixed(2));
+    //   this.startTime = starttime;
+    // }
+
+    // this.startTime = this.extractIntegerPart(this.startTime);
+
+    this.startTime = parseInt(starttimestr);
 
     this.source_video = 'http://' + window.location.hostname + ':8008/download?qfile=' + this.source_video;
     // alert(this.source_video + " " + this.startTime);
@@ -108,7 +150,7 @@ export class SearchedOutputComponent {
       return 'Invalid Input';
     }
   }
-  
+
 
   openVideoWindow() {
     const dynamicHtml = `
