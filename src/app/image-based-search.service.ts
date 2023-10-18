@@ -24,10 +24,11 @@ export class ImageBasedSearchService {
     const formData = new FormData();
     for (let i = 0; i < uploadedImages.length; i++) {
       formData.append('file', uploadedImages[i]);
+      formData.append('facenames', uploadedImages[i]);
     }
     console.log(formData);
 
-    return this.http.post(`http://${currentHost}/multi_modals_search_video_new`, formData)
+    return this.http.post(`http://${currentHost}/multi_modals_search_video_V2`, formData)
       .toPromise()
       .catch((error) => {
         console.error('HTTP Error:', error);

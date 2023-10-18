@@ -3,4 +3,15 @@
     filter: blur(5px); /* Adjust the blur radius as needed */
     pointer-events: none; /* Prevent interactions with blurred elements */
   }
+  a {
+    text-decoration: underline; /* Add underline to simulate a link */
+    color: blue; /* Set link color to blue */
+    cursor: pointer; /* Change cursor to pointer on hover to indicate interactivity */
+    margin-right: 5px;
+    font-size: smaller;
+  }
+  
+  a:hover {
+    text-decoration: none; /* Remove underline on hover (optional) */
+  }
   

@@ -16,6 +16,97 @@ export class UploadComponent implements OnDestroy {
   selectedStatuses: boolean[] = [];
   showProgressBar: boolean = false;
   applyBlurEffect: boolean = false;
+  applyBlurEffect_go_btn: boolean = false;
+
+  textboxOpen = false;
+  textBoxValue = ''; // To store the textbox value
+
+  dropdownOpen = false;
+  dropdownOptions = [
+    "person",
+    "bicycle",
+    "car",
+    "motorbike",
+    "aeroplane",
+    "bus",
+    "train",
+    "truck",
+    "boat",
+    "traffic light",
+    "fire hydrant",
+    "stop sign",
+    "parking meter",
+    "bench",
+    "bird",
+    "cat",
+    "dog",
+    "horse",
+    "sheep",
+    "cow",
+    "elephant",
+    "bear",
+    "zebra",
+    "giraffe",
+    "backpack",
+    "umbrella",
+    "handbag",
+    "tie",
+    "suitcase",
+    "frisbee",
+    "skis",
+    "snowboard",
+    "sports ball",
+    "kite",
+    "baseball bat",
+    "baseball glove",
+    "skateboard",
+    "surfboard",
+    "tennis racket",
+    "bottle",
+    "wine glass",
+    "cup",
+    "fork",
+    "knife",
+    "spoon",
+    "bowl",
+    "banana",
+    "apple",
+    "sandwich",
+    "orange",
+    "broccoli",
+    "carrot",
+    "hot dog",
+    "pizza",
+    "donut",
+    "cake",
+    "chair",
+    "sofa",
+    "pottedplant",
+    "bed",
+    "diningtable",
+    "toilet",
+    "tvmonitor",
+    "laptop",
+    "mouse",
+    "remote",
+    "keyboard",
+    "cell phone",
+    "microwave",
+    "oven",
+    "toaster",
+    "sink",
+    "refrigerator",
+    "book",
+    "clock",
+    "vase",
+    "scissors",
+    "teddy bear",
+    "hair drier",
+    "toothbrush"
+  ];
+  keywords: string[] = [];
+  objects_categories: any[] = [];
+
 
   ngOnInit() {
     // this.showProgressBarWithBlur();
@@ -26,6 +117,51 @@ export class UploadComponent implements OnDestroy {
     console.log("Progress bar show called!!");
     this.showProgressBar = true;
     this.applyBlurEffect = true;
+  }
+
+  openTextbox() {
+    this.applyBlurEffect_go_btn = true;
+    this.textboxOpen = true;
+    this.dropdownOpen = false;
+  }
+
+  closeTextbox() {
+    this.applyBlurEffect_go_btn = false;
+    this.textboxOpen = false;
+  }
+
+  openDropdown() {
+    this.applyBlurEffect_go_btn = true;
+    this.dropdownOpen = true;
+    this.textboxOpen = false;
+  }
+
+  closeDropdown() {
+    this.applyBlurEffect_go_btn = false;
+    this.dropdownOpen = false;
+  }
+
+  selectOption(option: string) {
+    // Handle option selection here
+    console.log('Selected option:', option);
+    if (this.objects_categories.indexOf(option) == -1) {
+      this.objects_categories.push(option);
+    }
+    else {
+      alert("Object name is already present!");
+    }
+    this.dropdownOpen = false; // Close the dropdown after selection
+  }
+
+  addKeyword(keyword: string) {
+    console.log(this.textBoxValue);
+    if (this.keywords.indexOf(keyword) == -1) {
+      this.keywords.push(this.textBoxValue);
+    }
+    else {
+      alert("Object name is already present!");
+    }
+    this.closeTextbox();
   }
 
   // Function to hide the progress bar and remove blur effect
@@ -153,6 +289,9 @@ export class UploadComponent implements OnDestroy {
     this.selectedImages = this.selectedVideos = this.selectedAudios = [];
     // Reset the file input to clear the selected files
     this.fileInput.nativeElement.value = '';
+    this.closeTextbox();
+    this.closeDropdown();
+    this.keywords = this.objects_categories = [];
   }
 
   // goToSecondComponent(): void {
@@ -200,7 +339,7 @@ export class UploadComponent implements OnDestroy {
           });
       }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
     }
-    else if (this.selectedAudios.length >= 1){
+    else if (this.selectedAudios.length >= 1) {
       console.log("Audio service");
       setTimeout(() => {
         this.imageBasedSearch.performAction(this.selectedAudios)
