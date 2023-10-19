@@ -9,6 +9,16 @@ export class ImageBasedSearchService {
 
   constructor(private http: HttpClient, private location: Location) { }
 
+  search(_uploadedImages:File[], _uploadedAudios: File[], _uploadedVideos: File[], _keywords: string[], _objects: string[]): Promise<any>{
+    // Main Endpoint
+    const formData = new FormData();
+    const api_endpoint = "";
+    return this.http.post(api_endpoint, formData).toPromise().catch((error) => {
+      console.error('HTTP Error:', error);
+        throw error; // Rethrow the error to propagate it to the caller
+    });
+  }
+
   performAction(uploadedImages: File[]): Promise<any> {
     // Your service logic here
     // Process the list of uploaded images

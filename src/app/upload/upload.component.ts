@@ -103,7 +103,7 @@ export class UploadComponent implements OnDestroy {
     "teddy bear",
     "hair drier",
     "toothbrush"
-  ];
+  ].sort();
   keywords: string[] = [];
   objects_categories: string[] = [];
 
@@ -123,8 +123,8 @@ export class UploadComponent implements OnDestroy {
   }
 
   openTextbox() {
-    this.applyBlurEffect_go_btn = true;
-    this.textboxOpen = true;
+    this.textboxOpen = !this.textboxOpen;
+    this.applyBlurEffect_go_btn = this.textboxOpen;
     this.dropdownOpen = false;
   }
 
@@ -134,8 +134,8 @@ export class UploadComponent implements OnDestroy {
   }
 
   openDropdown() {
-    this.applyBlurEffect_go_btn = true;
-    this.dropdownOpen = true;
+    this.dropdownOpen = !this.dropdownOpen;
+    this.applyBlurEffect_go_btn = this.dropdownOpen;
     this.textboxOpen = false;
   }
 
