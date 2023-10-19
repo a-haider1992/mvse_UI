@@ -105,12 +105,15 @@ export class UploadComponent implements OnDestroy {
     "toothbrush"
   ];
   keywords: string[] = [];
-  objects_categories: any[] = [];
+  objects_categories: string[] = [];
 
 
   ngOnInit() {
     // this.showProgressBarWithBlur();
+    // this.selectedFiles = this.keywords = this.objects_categories = [];
   }
+
+  constructor(private router: Router, private imageBasedSearch: ImageBasedSearchService, private dataSharingService: DataSharingServiceService) { }
 
   // Function to show the progress bar and apply blur effect
   showProgressBarWithBlur() {
@@ -144,33 +147,71 @@ export class UploadComponent implements OnDestroy {
   selectOption(option: string) {
     // Handle option selection here
     console.log('Selected option:', option);
-    if (this.objects_categories.indexOf(option) == -1) {
-      this.objects_categories.push(option);
-    }
-    else {
-      alert("Object name is already present!");
+    if (this.dropdownOptions.indexOf(option) !== -1) {
+      if (this.objects_categories.indexOf(option) === -1) {
+        this.objects_categories.push(option);
+      } else {
+        alert(option + " is already selected!");
+      }
+    } else {
+      alert(option + " is an invalid option!");
     }
     this.dropdownOpen = false; // Close the dropdown after selection
+    this.applyBlurEffect_go_btn = false;
   }
 
   addKeyword(keyword: string) {
-    console.log(this.textBoxValue);
-    if (this.keywords.indexOf(keyword) == -1) {
-      this.keywords.push(this.textBoxValue);
-    }
-    else {
-      alert("Object name is already present!");
+    // console.log(this.textBoxValue);
+    keyword = keyword.trim().toLowerCase();
+    if (this.keywords.map(kw => kw.toLowerCase()).indexOf(keyword) === -1) {
+      // Keyword doesn't exist, add it to the list
+      this.keywords.push(keyword);
+    } else {
+      alert(keyword + " is already added!");
     }
     this.closeTextbox();
+    this.applyBlurEffect_go_btn = false;
   }
 
+  addKeywordsV2(keywordsInput: string) {
+    // console.log(this.textBoxValue);
+  
+    // Split the input string into an array of keywords
+    const inputKeywords = keywordsInput.split(';').map(keyword => keyword.trim().toLowerCase());
+  
+    // Filter out empty strings
+    const validKeywords = inputKeywords.filter(keyword => keyword.length > 0);
+  
+    if (validKeywords.length === 1) {
+      // If only one keyword is provided without a semicolon, add it directly
+      const singleKeyword = validKeywords[0];
+      if (this.keywords.map(kw => kw.toLowerCase()).indexOf(singleKeyword) === -1) {
+        // Keyword doesn't exist, add it to the list
+        this.keywords.push(singleKeyword);
+      } else {
+        alert(singleKeyword + " is already added!");
+      }
+    } else if (validKeywords.length > 1) {
+      // Loop through the valid keywords and add them to the list
+      validKeywords.forEach(keyword => {
+        if (this.keywords.map(kw => kw.toLowerCase()).indexOf(keyword) === -1) {
+          // Keyword doesn't exist, add it to the list
+          this.keywords.push(keyword);
+        } else {
+          alert(keyword + " is already added!");
+        }
+      });
+    }
+  
+    this.closeTextbox();
+    this.applyBlurEffect_go_btn = false;
+  }
+  
   // Function to hide the progress bar and remove blur effect
   hideProgressBar() {
     this.showProgressBar = false;
     this.applyBlurEffect = false;
   }
-
-  constructor(private router: Router, private imageBasedSearch: ImageBasedSearchService, private dataSharingService: DataSharingServiceService) { }
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
@@ -291,7 +332,9 @@ export class UploadComponent implements OnDestroy {
     this.fileInput.nativeElement.value = '';
     this.closeTextbox();
     this.closeDropdown();
-    this.keywords = this.objects_categories = [];
+    this.keywords = [];
+    this.objects_categories = [];
+    // window.location.reload();
   }
 
   // goToSecondComponent(): void {
@@ -316,8 +359,8 @@ export class UploadComponent implements OnDestroy {
 
     this.showProgressBarWithBlur();
 
-    if (this.selectedFiles.length == 0) {
-      alert("Please upload file(s)!");
+    if (this.selectedFiles.length == 0 && this.keywords.length == 0 && this.objects_categories.length == 0) {
+      alert("No search criteria specified!");
       this.hideProgressBar();
       return;
     }

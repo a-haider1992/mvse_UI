@@ -52,7 +52,8 @@
                                     <a href="#" (click)="openTextbox()" class="link-success">From Keyword</a>|
                                     <a href="#" (click)="openDropdown()" class="link-success">From object</a>
                                     <input type="button" class="btn" value="Go" (click)="goToSecondComponent()"
-                                        style="width: 70px;height: 70px;background-color: deepskyblue;" onclick="" [ngClass]="{'blur-effect': applyBlurEffect_go_btn}"/>
+                                        style="width: 70px;height: 70px;background-color: deepskyblue;" onclick=""
+                                        [ngClass]="{'blur-effect': applyBlurEffect_go_btn}" />
                                     &nbsp;
                                     <button (click)="clearImages()" class="btn"
                                         style="width: 70px;height: 70px;background-color: deepskyblue;">Clear</button>
@@ -63,10 +64,10 @@
                                                 style="color: deepskyblue;">Keyword:</span>
                                         </div>
                                         <input type="text" class="form-control" [(ngModel)]="textBoxValue"
-                                            placeholder="Type a Keyword..." aria-label="Username"
+                                            placeholder="A keyword or keywords separated by semicolon only" aria-label="Username"
                                             aria-describedby="basic-addon1">
-                                            <button (click)="addKeyword(textBoxValue)" class="btn"
-                                        style="background-color: deepskyblue;">Add</button>
+                                        <button (click)="addKeywordsV2(textBoxValue)" class="btn"
+                                            style="background-color: deepskyblue;">Add</button>
                                     </div>
                                     <div *ngIf="dropdownOpen && !textboxOpen">
                                         <button class="btn btn-secondary dropdown-toggle" id="dropdownMenuButton"
@@ -74,9 +75,10 @@
                                             aria-expanded="false">
                                             Select an object
                                         </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="max-height: 150px; overflow-y: auto;">
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+                                            style="max-height: 150px; overflow-y: auto;">
                                             <a *ngFor="let option of dropdownOptions" class="dropdown-item"
-                                                    (click)="selectOption(option)" href="#">{{option}}</a>
+                                                (click)="selectOption(option)" href="#">{{option}}</a>
                                         </div>
                                     </div>
 
@@ -85,44 +87,57 @@
                         </div>
                     </div>
                     <div class="container" style="display: flex;">
-                        <div *ngFor="let keyword of keywords">
-                            <strong>Name:</strong> {{ keyword }}
+                        <div class="row p-1" *ngIf="keywords.length > 0">
+                            <strong>Keywords:</strong>
+                            <div style="max-width: 100px; max-height: 150px; overflow: auto;">
+                                <div *ngFor="let keyword of keywords">
+                                    {{ keyword }}
+                                </div>
+                            </div>
                         </div>
-                        <div *ngFor="let object of objects_categories">
-                            <strong>Name:</strong>{{ object }}
+                        <div class="row p-1" *ngIf="objects_categories.length > 0">
+                            <strong>Objects:</strong>
+                            <div style="max-width: 100px; max-height: 150px; overflow: auto;">
+                                <div *ngFor="let object of objects_categories">
+                                    {{ object }}
+                                </div>
+                            </div>
                         </div>
-                        <div *ngFor="let video of selectedVideos; let i = index">
-                            <strong>Name:</strong> {{ video.name }} <br>
-                            <strong>Type:</strong> {{ video.type }} <br>
-                            <video [src]="objectURLs[i]" controls class="img-fluid img-thumbnail" width="150"
-                                height="150">
-                                <source type="video/mp4">
-                                <!-- You may add additional source tags for different video formats -->
-                                Your browser does not support the video tag.
-                            </video>
-                            <!-- <img [src]="imageSrc" class="uploaded-image" class="img-fluid img-thumbnail" alt="" width="70" height="70"/> -->
-                        </div>
-                        <div *ngFor="let audio of selectedAudios; let i = index">
-                            <strong>Name:</strong> {{ audio.name }} <br>
-                            <strong>Type:</strong> {{ audio.type }} <br>
-                            <audio [src]="objectURLs[i]" controls>
-                                <source type="audio/wav">
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                        <div *ngFor="let image of selectedImages; let i = index">
-                            <strong>Name:</strong> {{ image.name }} <br>
-                            <strong>Type:</strong> {{ image.type }} <br>
-                            <label>
-                                <input type="checkbox" [(ngModel)]="selectedStatuses[i]"
-                                    (change)="updateSelectedStatus(i, $event)"> Object?
-                            </label> <br>
-                            <img [src]="objectURLs[i]" class="uploaded-image" class="img-fluid img-thumbnail" alt=""
-                                width="150" height="150" />
-                        </div>
-
-                        <div class="col span text-center">
-
+                        <div class="row p-1" style="max-height: 250px; overflow: auto;" *ngIf="selectedVideos.length >0 || selectedImages.length > 0 || selectedAudios.length > 0">
+                            <strong>Image(s)/Audio(s)/Video(s):</strong>
+                            <div *ngFor="let video of selectedVideos; let i = index">
+                                <strong>Name:</strong> {{ video.name }} <br>
+                                <strong>Type:</strong> {{ video.type }} <br>
+                                <video [src]="objectURLs[i]" controls class="img-fluid img-thumbnail" width="150"
+                                    height="150">
+                                    <source type="video/mp4">
+                                    <!-- You may add additional source tags for different video formats -->
+                                    Your browser does not support the video tag.
+                                </video>
+                                <!-- <img [src]="imageSrc" class="uploaded-image" class="img-fluid img-thumbnail" alt="" width="70" height="70"/> -->
+                            </div>
+                            <div *ngFor="let audio of selectedAudios; let i = index">
+                                <strong>Name:</strong> {{ audio.name }} <br>
+                                <strong>Type:</strong> {{ audio.type }} <br>
+                                <audio [src]="objectURLs[i]" controls>
+                                    <source type="audio/wav">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                            <div *ngFor="let image of selectedImages; let i = index">
+                                <strong>Name:</strong> {{ image.name }} <br>
+                                <strong>Type:</strong> {{ image.type }} <br>
+                                <label>
+                                    <input type="checkbox" [(ngModel)]="selectedStatuses[i]"
+                                        (change)="updateSelectedStatus(i, $event)"> Scene?
+                                </label> <br>
+                                <img [src]="objectURLs[i]" class="uploaded-image" class="img-fluid img-thumbnail" alt=""
+                                    width="150" height="150" />
+                            </div>
+    
+                            <div class="col span text-center">
+    
+                            </div>
                         </div>
                     </div>
                 </tr>
