@@ -64,15 +64,15 @@
                                                 style="color: deepskyblue;">Keyword:</span>
                                         </div>
                                         <input type="text" class="form-control" [(ngModel)]="textBoxValue"
-                                            placeholder="A keyword or keywords separated by semicolon only" aria-label="Username"
-                                            aria-describedby="basic-addon1">
+                                            placeholder="A keyword or keywords separated by semicolon only"
+                                            aria-label="Username" aria-describedby="basic-addon1">
                                         <button (click)="addKeywordsV2(textBoxValue)" class="btn"
                                             style="background-color: deepskyblue;">Add</button>
                                     </div>
                                     <div *ngIf="dropdownOpen && !textboxOpen">
-                                        <button class="btn btn-secondary dropdown-toggle" id="dropdownMenuButton"
-                                            type="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
+                                        <button class="btn btn-primary dropdown-toggle"
+                                            style="background-color: deepskyblue;" id="dropdownMenuButton" type="button"
+                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Select an object
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
@@ -103,7 +103,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row p-1" style="max-height: 250px; overflow: auto;" *ngIf="selectedVideos.length >0 || selectedImages.length > 0 || selectedAudios.length > 0">
+                        <div class="row p-1" style="max-height: 250px; overflow: auto;"
+                            *ngIf="selectedVideos.length >0 || selectedImages.length > 0 || selectedAudios.length > 0">
                             <strong>Image(s)/Audio(s)/Video(s):</strong>
                             <div *ngFor="let video of selectedVideos; let i = index">
                                 <strong>Name:</strong> {{ video.name }} <br>
@@ -134,9 +135,9 @@
                                 <img [src]="objectURLs[i]" class="uploaded-image" class="img-fluid img-thumbnail" alt=""
                                     width="150" height="150" />
                             </div>
-    
+
                             <div class="col span text-center">
-    
+
                             </div>
                         </div>
                     </div>
