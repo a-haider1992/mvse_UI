@@ -175,13 +175,13 @@ export class UploadComponent implements OnDestroy {
 
   addKeywordsV2(keywordsInput: string) {
     // console.log(this.textBoxValue);
-  
+
     // Split the input string into an array of keywords
     const inputKeywords = keywordsInput.split(';').map(keyword => keyword.trim().toLowerCase());
-  
+
     // Filter out empty strings
     const validKeywords = inputKeywords.filter(keyword => keyword.length > 0);
-  
+
     if (validKeywords.length === 1) {
       // If only one keyword is provided without a semicolon, add it directly
       const singleKeyword = validKeywords[0];
@@ -202,11 +202,11 @@ export class UploadComponent implements OnDestroy {
         }
       });
     }
-  
+
     this.closeTextbox();
     this.applyBlurEffect_go_btn = false;
   }
-  
+
   // Function to hide the progress bar and remove blur effect
   hideProgressBar() {
     this.showProgressBar = false;
@@ -364,43 +364,14 @@ export class UploadComponent implements OnDestroy {
       this.hideProgressBar();
       return;
     }
-    if (this.selectedImages.length >= 1) {
-      console.log("Image service.");
-      // Use setTimeout to create a delay and allow the progress bar to be displayed
-      setTimeout(() => {
-        this.imageBasedSearch.performAction(this.selectedImages)
-          .then(response => {
-            console.log(response);
-            const data = response.location;
-            this.dataSharingService.sharedData = data;
-            this.hideProgressBar();
-            this.router.navigateByUrl('/searchResults');
-          })
-          .catch(error => {
-            console.error(error);
-            this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
-          });
-      }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
+    if (this.selectedVideos.length >= 1 && ((this.selectedImages.length >= 1) || (this.selectedAudios.length >= 1))) {
+      alert("Searching and video analysis is not supported, simultaneously!");
+      this.hideProgressBar();
+      return;
     }
-    else if (this.selectedAudios.length >= 1) {
-      console.log("Audio service");
-      setTimeout(() => {
-        this.imageBasedSearch.performAction(this.selectedAudios)
-          .then(response => {
-            console.log(response);
-            const data = response.location;
-            this.dataSharingService.sharedData = data;
-            this.hideProgressBar();
-            this.router.navigateByUrl('/searchResults');
-          })
-          .catch(error => {
-            console.error(error);
-            this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
-          });
-      }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
-    }
-    else if (this.selectedVideos.length >= 1) {
-      console.log("Video service.");
+
+    if (this.selectedVideos.length >= 1) {
+      console.log("Video analysis service.");
       // Use setTimeout to create a delay and allow the progress bar to be displayed
       setTimeout(() => {
         this.imageBasedSearch.analyse_video(this.selectedVideos)
@@ -417,6 +388,78 @@ export class UploadComponent implements OnDestroy {
           });
       }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
     }
+    else {
+      console.log("Search service.");
+      // Use setTimeout to create a delay and allow the progress bar to be displayed
+      setTimeout(() => {
+        this.imageBasedSearch.search(this.selectedImages, this.selectedAudios, this.keywords, this.objects_categories, this.selectedStatuses)
+          .then(response => {
+            console.log(response);
+            const data = response.location;
+            this.dataSharingService.sharedData = data;
+            this.hideProgressBar();
+            this.router.navigateByUrl('/searchResults');
+          })
+          .catch(error => {
+            console.error(error);
+            this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
+          });
+      }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
+    }
+
+    // if (this.selectedImages.length >= 1) {
+    //   console.log("Image service.");
+    //   // Use setTimeout to create a delay and allow the progress bar to be displayed
+    //   setTimeout(() => {
+    //     this.imageBasedSearch.performAction(this.selectedImages)
+    //       .then(response => {
+    //         console.log(response);
+    //         const data = response.location;
+    //         this.dataSharingService.sharedData = data;
+    //         this.hideProgressBar();
+    //         this.router.navigateByUrl('/searchResults');
+    //       })
+    //       .catch(error => {
+    //         console.error(error);
+    //         this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
+    //       });
+    //   }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
+    // }
+    // else if (this.selectedAudios.length >= 1) {
+    //   console.log("Audio service");
+    //   setTimeout(() => {
+    //     this.imageBasedSearch.performAction(this.selectedAudios)
+    //       .then(response => {
+    //         console.log(response);
+    //         const data = response.location;
+    //         this.dataSharingService.sharedData = data;
+    //         this.hideProgressBar();
+    //         this.router.navigateByUrl('/searchResults');
+    //       })
+    //       .catch(error => {
+    //         console.error(error);
+    //         this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
+    //       });
+    //   }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
+    // }
+    // else if (this.selectedVideos.length >= 1) {
+    //   console.log("Video service.");
+    //   // Use setTimeout to create a delay and allow the progress bar to be displayed
+    //   setTimeout(() => {
+    //     this.imageBasedSearch.analyse_video(this.selectedVideos)
+    //       .then(response => {
+    //         console.log(response);
+    //         const data = response;
+    //         this.dataSharingService.sharedData = data;
+    //         this.hideProgressBar();
+    //         this.router.navigateByUrl('/searchResults');
+    //       })
+    //       .catch(error => {
+    //         console.error(error);
+    //         this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
+    //       });
+    //   }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
+    // }
 
   }
 

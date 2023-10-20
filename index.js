@@ -138,6 +138,32 @@ const forwardFilenames2 = function (command, filenames, keywords,server_result)
 
 }
 
+const forwardFilenamesV2 = function (command, facenames,audionames,scenenames,objectnames,keywords,server_result)
+{
+	
+
+  var options = {
+    hostname: backEndHost,
+    port: backEndPort,
+    path: command,
+    method: "POST",
+  };
+
+  var proxy = http.request(options, function (res) {
+   console.log ("sent");
+   res.pipe(server_result, { end: true});
+		});
+
+	var to_send = { "facenames": facenames,"scenenames":scenenames, "audionames":audionames, "objectnames":objectnames, "keywords":keywords };
+	
+	console.log ("send query to backend V2");
+	console.log(JSON.stringify(to_send));
+	
+	proxy.end(JSON.stringify(to_send));
+	
+
+}
+
 const saveFile = function (uploadDir, uploadCommand, req, res)
 {
     console.log("save file");
@@ -208,6 +234,127 @@ const saveFiles = function (uploadDir, uploadCommand, req, res)
 
 }
 
+const saveFilesV2 = function (uploadDir, uploadCommand, req, res)
+{
+    console.log("save files");
+	console.log (uploadDir);
+	var form = new formidable.IncomingForm();
+	
+	var files=[];
+	var facenames = [];
+	
+	var audionames = [];
+	
+	var scenenames = [];
+	
+	var objectnames = []; 
+	
+	var keywords=[];
+	
+	var endReceived = false;
+
+	form.uploadDir = uploadDir;
+	console.log (form);
+	form.on('field', function(field, value) {
+		console.log ("field ====?  " + field);
+		if (field == "objectnames")
+		{
+			console.log ("objectnames value is  " + path.basename(value));
+			objectnames.push(value);
+		}
+		else if (field == "facenames")
+		{
+			console.log ("facenames value is  " + path.basename(value));
+			facenames.push(value);
+		}
+		else if (field == "audionames")
+		{
+			console.log ("audionames value is  " + path.basename(value));
+			audionames.push(value);
+		}
+		else if (field == "scenenames")
+		{
+			console.log ("scenenames value is  " + path.basename(value));
+			scenenames.push(value);
+		}
+		else if (field == "keywords")
+		{
+			console.log ("keywords value is  " + path.basename(value));
+			keywords.push(value);
+		}
+    });
+    
+    form.on('file', function(field, file) {
+		
+		console.log ("event comming " );
+		
+		console.log(file)
+
+		console.log ("oldname " + file.originalFilename);
+		console.log ("newname " + file.newFilename);
+ 		files.push(file);
+    });
+    form.on('end', function() {
+		if (!endReceived) // bug in node.js, sometimes end is sent twice
+		{
+			endReceived = true;
+			console.log('all send done');
+			var n_facenames=[];//new face file name 
+			var n_audionames=[];//new audo file name 
+			var n_scenenames=[];// new scene file name 
+			var n_objectnames=[];// new object file name
+			
+			for (let i=0; i < files.length; i++)// check witch modal this file belong to, and record the new file name 
+			{
+				console.log (files[i].newFilename);
+				var oldname=files[i].originalFilename;
+				console.log ("old name====== "+ oldname);
+				if(objectnames.includes(oldname))
+				{
+					objectnames = objectnames.filter(item => item !== oldname);
+					n_objectnames.push(files[i].newFilename);
+				}
+				else if (audionames.includes(oldname))
+				{
+					audionames = audionames.filter(item => item !== oldname);
+					n_audionames.push(files[i].newFilename);
+				}
+				else if(scenenames.includes(oldname))
+				{
+					scenenames = scenenames.filter(item => item !== oldname);
+					n_scenenames.push(files[i].newFilename);
+				}
+				else if(facenames.includes(oldname))
+				{
+					facenames = facenames.filter(item => item !== oldname);
+					n_facenames.push(files[i].newFilename);
+				} 
+			}
+			// if there are some filename do not in files, it means that this name is just a name from the server, not the file upload by browser
+			if(facenames.length>0)
+			{
+				n_facenames=n_facenames.concat(facenames);
+			}
+			if(objectnames.length>0)
+			{
+				n_objectnames=n_objectnames.concat(objectnames);
+			}
+			if(audionames.length>0)
+			{
+				n_audionames=n_audionames.concat(audionames);
+			}
+			if(scenenames.length>0)
+			{
+				n_scenenames=n_scenenames.concat(scenenames);
+			}
+			//function (command, facenames,audionames,scenenames,objectnames,keywords,server_result)
+			forwardFilenamesV2 (uploadCommand,n_facenames,n_audionames,n_scenenames,n_objectnames,keywords,res);
+		}
+   });
+ 	form.parse(req);
+
+}
+
 const requestListener = function (req, res)
 	{
 		console.log("Inside request listener");
@@ -252,6 +399,11 @@ const requestListener = function (req, res)
 		else if (req.method == "POST" && req.url.startsWith ("/upload_image_search_video"))
 		{
 			saveFile (mvseTempImageFiles, "/upload_image_search_video", req,res);
+			return true;
+		}
+		else if (req.method == "POST" && req.url.endsWith ("/multi_modals_search_video_V2"))
+		{
+			saveFilesV2 (mvseTempImageFiles, "/multi_modals_search_video_V2", req,res);
 			return true;
 		}
 		else if (req.method == "POST" && req.url.endsWith("/multi_modals_search_video_new"))
