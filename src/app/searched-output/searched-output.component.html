@@ -49,10 +49,11 @@
                                     found)</span></span>
                         </div>
                     </div>
+                    <mat-progress-bar *ngIf="showProgressBar" mode="indeterminate"></mat-progress-bar>
                 </tr>
                 <tr>
                     <div class="row container m-2">
-                        <div class="col-sm-2 overflow-auto" style="max-height: 600px;" *ngIf="frames.length > 0">
+                        <div class="col-sm-2 overflow-auto" style="max-height: 500px;" *ngIf="frames.length > 0">
                             <div class="m-2" *ngFor="let frame of frames; let i = index"
                                 [ngClass]="{'selected': isImageSelected(frame)}" (click)="toggleImageSelection(frame)">
                                 <div class="video-wrapper border p-3">
@@ -66,10 +67,12 @@
                         </div>
 
                         <div class="col-sm-4" *ngIf="audios.length > 0">
-                            <div class="overflow-auto" style="max-height: 600px;">
-                                <div class="col-md-4 mb-2" *ngFor="let frame of audios; let i = index">
+                            <div class="overflow-auto" style="max-height: 500px;">
+                                <div class="col-md-4 mb-2" *ngFor="let audio of audios; let i = index"
+                                    [ngClass]="{'selected': isAudioSelected(audio)}"
+                                    (click)="toggleAudioSelection(audio)">
                                     <div class="audio-wrapper border rounded p-3">
-                                        <audio [src]="frame" controls>
+                                        <audio [src]="audio" controls>
                                             <source type="audio/wav">
                                             Your browser does not support the audio element.
                                         </audio><br>
@@ -89,9 +92,26 @@
                                     <button (click)="closeVideoOverlay()">Close</button>
                                 </div>
                             </div> -->
-                            <div class="row overflow-auto" style="max-height: 600px; width:950px;">
+                            <div class="row m-1">
+                                <table class="table">
+                                  <tr>
+                                    <span style="color: deepskyblue; font-family: Arial, Helvetica, sans-serif; font-size: medium;">Topics:</span>
+                                    <ng-container *ngFor="let topic of topics; let i = index">
+                                      <input type="checkbox" [(ngModel)]="topic.selected" (change)="toggleTopicSelection(topic)">
+                                      <span
+                                        style="background-color: deepskyblue; border-radius: 5px; font-family: Arial, Helvetica, sans-serif; font-size: smaller;margin-left: 2px;"
+                                      >
+                                        {{topic.topic}}
+                                      </span>
+                                    </ng-container>
+                                  </tr>
+                                </table>
+                              </div>
+                              
+
+                            <div class="row overflow-auto" style="max-height: 500px;">
                                 <div class="col-md-4" *ngFor="let videoUrl of videoList">
-                                    <div class="video-wrapper border p-3">
+                                    <div class="video-wrapper border m-1">
                                         <img [src]="videoUrl" controls class="w-100" style="width: 100px;height: 120px;"
                                             (click)="onPosterClick(videoUrl)" />
                                     </div>
@@ -102,13 +122,12 @@
                     </div>
                 </tr>
                 <tr>
-                    <div class="container">
-                        <div class="col-sm-4">
-                            <button (click)="search()" class="btn"
-                                *ngIf="(frames.length > 0 || audios.length > 0) ? true : false"
-                                style="width: 300px;height: 100px;background-color: deepskyblue;">Select frame(s) and/or
-                                audio(s) and search</button>
-                        </div>
+                    <div class="container fixed-bottom mb-5">
+                        <button (click)="search()" class="btn"
+                            *ngIf="(frames.length > 0 || audios.length > 0) ? true : false"
+                            style="width: 500px;height: 50px;background-color: deepskyblue;" (click)="search()">Select
+                            frame(s) and/or
+                            audio(s) and search</button>
                     </div>
                 </tr>
             </table>

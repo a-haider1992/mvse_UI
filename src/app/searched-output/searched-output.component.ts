@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DataSharingServiceService } from '../data-sharing-service.service';
 import { VideoDownloadService } from '../video-download.service';
+import { ImageBasedSearchService } from '../image-based-search.service';
 
 @Component({
   selector: 'app-searched-output',
@@ -9,8 +10,9 @@ import { VideoDownloadService } from '../video-download.service';
 })
 export class SearchedOutputComponent {
 
-  constructor(private dataSharingService: DataSharingServiceService, private videoDownloadService: VideoDownloadService) { }
+  constructor(private dataSharingService: DataSharingServiceService, private videoDownloadService: VideoDownloadService, private imageBasedSearch: ImageBasedSearchService, ) { }
   selectedImages: any[] = [];
+  selectedAudios: any[] = [];
 
   frames: any[] = ["../assets/images/image.png", "../assets/images/logo.png", "../assets/images/image.png", "../assets/images/logo.png", "../assets/images/logo.png"];
   audios: any[] = ["../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav"];
@@ -19,6 +21,13 @@ export class SearchedOutputComponent {
   ];
   frames_stamp: any[] = ["10", "10", "10", "10", "10"];
   audios_stamp: any[] = ["10", "10", "10", "10", "10", "10"];
+  topics: { topic: string; selected: boolean }[] = [
+    { topic: 'Topic 1', selected: false },
+    { topic: 'Topic 2', selected: false },
+    { topic: 'Topic 3', selected: false },
+  ];
+
+  selectedTopics: string[] = [];
   // To store posters returned by API call
   posterList: string[] = [];
 
@@ -26,6 +35,7 @@ export class SearchedOutputComponent {
   source_video: string = '';
   startTime: any = 0;
   showVideoOverlay = false;
+  showProgressBar: boolean = false;
 
   ngOnInit(): void {
     this.data = this.dataSharingService.sharedData;
@@ -201,7 +211,45 @@ export class SearchedOutputComponent {
     return this.selectedImages.includes(src);
   }
 
-  search(): void {
+  isAudioSelected(audio: string): boolean {
+    return this.selectedAudios.includes(audio);
+  }
 
+  toggleTopicSelection(topic: { topic: string; selected: boolean }): void {
+    this.selectedTopics = this.topics
+      .filter((t) => t.selected)
+      .map((t) => t.topic);
+      console.log(this.selectedTopics);
+  }
+
+  toggleAudioSelection(audio: string): void {
+    if (this.selectedAudios.includes(audio)) {
+      // Deselect audio
+      this.selectedAudios = this.selectedAudios.filter(a => a !== audio);
+    } else {
+      // Select audio
+      this.selectedAudios.push(audio);
+    }
+  }
+
+  search(): void {
+    this.showProgressBar = true;
+    console.log("Search after analysis");
+    console.log("Frames selected :" + this.selectedImages);
+    console.log("Audios selecetd :" + this.selectedAudios);
+    setTimeout(() => {
+      this.imageBasedSearch.search(this.selectedImages, this.selectedAudios, [], [], [])
+        .then(response => {
+          console.log(response);
+          const data = response.location;
+          this.videoList = data;
+          this.showProgressBar = false;
+          // this.router.navigateByUrl('/searchResults');
+        })
+        .catch(error => {
+          console.error(error);
+          this.showProgressBar = false; // Ensure the progress bar is hidden in case of an error
+        });
+    }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
   }
 }
