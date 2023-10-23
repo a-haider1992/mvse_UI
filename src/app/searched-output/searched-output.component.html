@@ -101,7 +101,7 @@
                                             <input type="checkbox" [(ngModel)]="topic.selected"
                                                 (change)="toggleTopicSelection(topic)">
                                             <span
-                                                style="background-color: deepskyblue; border-radius: 5px; font-family: Arial, Helvetica, sans-serif; font-size: smaller;margin-left: 2px;">
+                                                style="background-color: silver; border-radius: 5px; font-family: Arial, Helvetica, sans-serif; font-size: smaller;margin-left: 2px;margin-right: 2px;">
                                                 {{topic.topic}}
                                             </span>
                                         </ng-container>
@@ -111,15 +111,17 @@
                                             style="color: deepskyblue; font-family: Arial, Helvetica, sans-serif; font-size: medium;">Scenes:</span>
                                         <ng-container *ngFor="let frame of Scenes; let i = index">
                                             <input type="checkbox">
-                                                <img [src]="frame" [class.selected]="isImageSelected(frame)" class="uploaded-image"
-                                                class="img-fluid img-thumbnail" alt="" width="70" height="70" />
+                                            <img [src]="frame" [class.selected]="isImageSelected(frame)"
+                                                class="uploaded-image" class="img-fluid img-thumbnail" alt="" width="70"
+                                                height="70" />
                                         </ng-container>
                                     </tr>
                                     <tr>
-                                        <div class="row overflow-auto" style="max-height: 500px;">
+                                        <div class="row overflow-auto mt-1" style="max-height: 500px;">
                                             <div class="col-md-4" *ngFor="let videoUrl of videoList">
                                                 <div class="video-wrapper border m-1">
-                                                    <img [src]="videoUrl" controls class="w-100" style="width: 100px;height: 120px;"
+                                                    <img [src]="videoUrl" controls class="w-100"
+                                                        style="width: 100px;height: 120px;"
                                                         (click)="onPosterClick(videoUrl)" />
                                                 </div>
                                             </div>
