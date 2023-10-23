@@ -14,6 +14,7 @@ export class ImageBasedSearchService {
     const formData = new FormData();
     const currentHost = window.location.host;
     const api_endpoint = `http://${currentHost}/multi_modals_search_video_V2`;
+    console.log("Inside service--"+_uploadedImages);
     if(_uploadedImages.length >= 1){
       for (let i = 0; i < _uploadedImages.length; i++) {
         formData.append('file', _uploadedImages[i]);
