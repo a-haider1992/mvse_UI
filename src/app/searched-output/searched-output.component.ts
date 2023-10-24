@@ -10,7 +10,7 @@ import { ImageBasedSearchService } from '../image-based-search.service';
 })
 export class SearchedOutputComponent {
 
-  constructor(private dataSharingService: DataSharingServiceService, private videoDownloadService: VideoDownloadService, private imageBasedSearch: ImageBasedSearchService, ) { }
+  constructor(private dataSharingService: DataSharingServiceService, private videoDownloadService: VideoDownloadService, private imageBasedSearch: ImageBasedSearchService,) { }
   selectedImages: File[] = [];
   selectedAudios: File[] = [];
 
@@ -46,30 +46,47 @@ export class SearchedOutputComponent {
       this.frames = this.audios = [];
     }
     else {
-      this.frames = this.data["scene_image"];
+      this.frames = this.data["location"];
       this.audios = this.data["wavfile"];
-      this.audios_stamp = this.frames_stamp = this.extractFrameStamp(this.frames);
-      // this.frames_stamp = this.data[""];
-      // this.audios_stamp = this.data[""];
+      console.log(this.audios);
+      this.frames_stamp = this.extractFrameStamp(this.frames);
+      this.audios_stamp = this.extractFrameStamp(this.audios);
+      this.topics = this.extractTopics(this.data["words_box"]);
       console.log(this.frames_stamp);
+      console.log(this.audios_stamp);
       this.videoList = [];
     }
+  }
+
+  extractTopics(words: string[]): { topic: string; selected: boolean }[] {
+    const topicsExtracted: { topic: string; selected: boolean }[] = [];
+
+    for (const word of words) {
+      topicsExtracted.push({ topic: word, selected: false });
+    }
+
+    return topicsExtracted;
+  }
+
+  home() {
+    alert("Feature is not implemented!");
   }
 
   extractFrameStamp(frames: string[]): number[] {
     const frameStamps: number[] = [];
 
     for (const frame of frames) {
-        const parts = frame.split('_');
-        if (parts.length >= 4) {
-            const frameStamp = parseInt(parts[3]);
-            if (!isNaN(frameStamp)) {
-                frameStamps.push(frameStamp);
-            }
+      const parts = frame.split('_');
+      if (parts.length >= 4) {
+        const frameStamp = parseFloat(parts[4]);
+        console.log(frameStamp);
+        if (!isNaN(frameStamp)) {
+          frameStamps.push(frameStamp);
         }
+      }
     }
     return frameStamps;
-}
+  }
 
   onPosterClick(image: any): void {
     // Extract video source from frame "image"
@@ -80,12 +97,12 @@ export class SearchedOutputComponent {
     console.log(video_name);
     if (video_name.includes("scene") || video_name.includes("face") || video_name.includes("audio") || video_name.includes("object")) {
       const parts = video_name.split("_");
-      if (parts.length >= 3) {
+      if (parts.length >= 4) {
         this.source_video = parts[0] + ".mp4";
         starttimestr = parts[parts.length - 2];
       }
       console.log("Inside scene --" + this.source_video);
-      console.log(starttimestr);
+      // console.log(starttimestr);
     }
     else {
       // Handle other cases or provide a default value
@@ -123,7 +140,10 @@ export class SearchedOutputComponent {
 
     // this.startTime = this.extractIntegerPart(this.startTime);
 
-    this.startTime = parseInt(starttimestr);
+    var starttime = parseFloat(starttimestr) / 25.0;
+    starttime = parseFloat(starttime.toFixed(2));
+    this.startTime = starttime;
+    console.log(this.startTime);
 
     this.source_video = 'http://' + window.location.hostname + ':8008/download?qfile=' + this.source_video;
     // alert(this.source_video + " " + this.startTime);
@@ -205,6 +225,7 @@ export class SearchedOutputComponent {
       this.selectedImages.push(src);
     } else {
       this.selectedImages.splice(index, 1);
+      console.log(this.selectedImages);
     }
   }
 
@@ -220,7 +241,7 @@ export class SearchedOutputComponent {
     this.selectedTopics = this.topics
       .filter((t) => t.selected)
       .map((t) => t.topic);
-      console.log(this.selectedTopics);
+    console.log(this.selectedTopics);
   }
 
   toggleAudioSelection(audio: File): void {
@@ -231,6 +252,8 @@ export class SearchedOutputComponent {
       // Select audio
       this.selectedAudios.push(audio);
     }
+    console.log(this.selectedAudios);
+    ;
   }
 
   search(): void {
@@ -239,7 +262,7 @@ export class SearchedOutputComponent {
     console.log("Frames selected :" + this.selectedImages);
     console.log("Audios selecetd :" + this.selectedAudios);
     setTimeout(() => {
-      this.imageBasedSearch.search(this.selectedImages, this.selectedAudios, [], [], [])
+      this.imageBasedSearch.search(this.selectedImages, this.selectedAudios, this.selectedTopics, [], [])
         .then(response => {
           console.log(response);
           const data = response.location;

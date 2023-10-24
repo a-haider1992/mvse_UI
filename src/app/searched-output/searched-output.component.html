@@ -18,31 +18,25 @@
                     </td>
                     <td style="float: right;">
                         <div class="container m-2 p-3">
-                            <span style="font-size: large;color: deepskyblue;">
-                                Home |
-                            </span>
-                            <span style="font-size: large; color: deepskyblue;">
-                                Search History |
-                            </span>
-                            <span style="font-size: large; color: deepskyblue;">
-                                Library
-                            </span>
+                            <a style="font-size: large; color: deepskyblue;">Home</a> |
+                            <a style="font-size: large; color: deepskyblue;">Search History</a> |
+                            <a style="font-size: large; color: deepskyblue;">Library</a>
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <div class="row container m-2">
+                    <div class="row m-2">
                         <div class="col-sm-2" *ngIf="frames.length > 0">
                             <span
                                 style="color: deepskyblue;font-family: Arial, Helvetica, sans-serif;font-size: large;">Select
                                 video frame</span>
                         </div>
-                        <div class="col-sm-4" *ngIf="audios.length > 0">
+                        <div class="col-sm-3" *ngIf="audios.length > 0">
                             <span
                                 style="color: deepskyblue;font-family: Arial, Helvetica, sans-serif;font-size: large;">Select
                                 audio clip</span>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-7">
                             <span
                                 style="color: deepskyblue;font-family: Arial, Helvetica, sans-serif;font-size: large;">Search
                                 results <span style="font-size: large;">({{videoList.length}} videos
@@ -52,7 +46,7 @@
                     <mat-progress-bar *ngIf="showProgressBar" mode="indeterminate"></mat-progress-bar>
                 </tr>
                 <tr>
-                    <div class="row container m-2">
+                    <div class="row m-2">
                         <div class="col-sm-2 overflow-auto" style="max-height: 500px;" *ngIf="frames.length > 0">
                             <div class="m-2" *ngFor="let frame of frames; let i = index"
                                 [ngClass]="{'selected': isImageSelected(frame)}" (click)="toggleImageSelection(frame)">
@@ -66,7 +60,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-4" *ngIf="audios.length > 0">
+                        <div class="col-sm-3" *ngIf="audios.length > 0">
                             <div class="overflow-auto" style="max-height: 500px;">
                                 <div class="col-md-4 mb-2" *ngFor="let audio of audios; let i = index"
                                     [ngClass]="{'selected': isAudioSelected(audio)}"
@@ -83,7 +77,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-7">
                             <!-- <div *ngIf="showVideoOverlay" class="video-overlay">
                                 <div class="modal-content">
                                     <video width="640" height="360" controls [src]="source_video">

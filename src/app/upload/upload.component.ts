@@ -337,6 +337,10 @@ export class UploadComponent implements OnDestroy {
     // window.location.reload();
   }
 
+  home(){
+    alert("Feature is not implemented!");
+  }
+
   // goToSecondComponent(): void {
   //   this.showProgressBarWithBlur();
   //   if (this.selectedFiles.length == 0) {
