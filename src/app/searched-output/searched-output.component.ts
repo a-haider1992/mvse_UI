@@ -21,11 +21,12 @@ export class SearchedOutputComponent {
   ];
   frames_stamp: any[] = ["10", "10", "10", "10", "10"];
   audios_stamp: any[] = ["10", "10", "10", "10", "10", "10"];
-  topics: { topic: string; selected: boolean }[] = [
-    { topic: 'Topic 1', selected: false },
-    { topic: 'Topic 2', selected: false },
-    { topic: 'Topic 3', selected: false },
-  ];
+  // topics: { topic: string; selected: boolean }[] = [
+  //   { topic: 'Topic 1', selected: false },
+  //   { topic: 'Topic 2', selected: false },
+  //   { topic: 'Topic 3', selected: false },
+  // ];
+  topics: { topic: string; selected: boolean }[] = [];
   Scenes: File[] = [];
 
   selectedTopics: string[] = [];
@@ -37,6 +38,7 @@ export class SearchedOutputComponent {
   startTime: any = 0;
   showVideoOverlay = false;
   showProgressBar: boolean = false;
+  applyBlurEffect: boolean = false;
 
   ngOnInit(): void {
     this.data = this.dataSharingService.sharedData;
@@ -220,13 +222,14 @@ export class SearchedOutputComponent {
   }
 
   toggleImageSelection(src: File): void {
-    const index = this.selectedImages.indexOf(src);
-    if (index === -1) {
-      this.selectedImages.push(src);
+    if (this.selectedImages.includes(src)) {
+      // Deselect audio
+      this.selectedImages = this.selectedImages.filter(a => a !== src);
     } else {
-      this.selectedImages.splice(index, 1);
-      console.log(this.selectedImages);
+      // Select audio
+      this.selectedImages.push(src);
     }
+    console.log(this.selectedImages);
   }
 
   isImageSelected(src: File): boolean {
@@ -258,6 +261,7 @@ export class SearchedOutputComponent {
 
   search(): void {
     this.showProgressBar = true;
+    this.applyBlurEffect = true;
     console.log("Search after analysis");
     console.log("Frames selected :" + this.selectedImages);
     console.log("Audios selecetd :" + this.selectedAudios);
@@ -268,11 +272,13 @@ export class SearchedOutputComponent {
           const data = response.location;
           this.videoList = data;
           this.showProgressBar = false;
+          this.applyBlurEffect = false;
           // this.router.navigateByUrl('/searchResults');
         })
         .catch(error => {
           console.error(error);
           this.showProgressBar = false; // Ensure the progress bar is hidden in case of an error
+          this.applyBlurEffect = false;
         });
     }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
   }

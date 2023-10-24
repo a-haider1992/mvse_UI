@@ -26,6 +26,10 @@
                 </tr>
                 <tr>
                     <div class="row m-2">
+                        <div class="container">
+                            <mat-progress-bar *ngIf="showProgressBar" mode="indeterminate"></mat-progress-bar>
+                        </div>
+
                         <div class="col-sm-2" *ngIf="frames.length > 0">
                             <span
                                 style="color: deepskyblue;font-family: Arial, Helvetica, sans-serif;font-size: large;">Select
@@ -43,11 +47,10 @@
                                     found)</span></span>
                         </div>
                     </div>
-                    <mat-progress-bar *ngIf="showProgressBar" mode="indeterminate"></mat-progress-bar>
                 </tr>
                 <tr>
                     <div class="row m-2">
-                        <div class="col-sm-2 overflow-auto" style="max-height: 500px;" *ngIf="frames.length > 0">
+                        <div class="col-sm-2 overflow-auto" style="max-height: 500px;" *ngIf="frames.length > 0" [ngClass]="{'blur-effect': applyBlurEffect}">
                             <div class="m-2" *ngFor="let frame of frames; let i = index"
                                 [ngClass]="{'selected': isImageSelected(frame)}" (click)="toggleImageSelection(frame)">
                                 <div class="video-wrapper border p-3">
@@ -60,7 +63,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-3" *ngIf="audios.length > 0">
+                        <div class="col-sm-3" *ngIf="audios.length > 0" [ngClass]="{'blur-effect': applyBlurEffect}">
                             <div class="overflow-auto" style="max-height: 500px;">
                                 <div class="col-md-4 mb-2" *ngFor="let audio of audios; let i = index"
                                     [ngClass]="{'selected': isAudioSelected(audio)}"
@@ -86,7 +89,7 @@
                                     <button (click)="closeVideoOverlay()">Close</button>
                                 </div>
                             </div> -->
-                            <div class="container m-1" *ngIf="topics. length > 0">
+                            <div class="container m-1" *ngIf="topics. length > 0" [ngClass]="{'blur-effect': applyBlurEffect}">
                                 <table class="table">
                                     <tr>
                                         <span
@@ -141,7 +144,8 @@
                     <div class="container fixed-bottom mb-5">
                         <button (click)="search()" class="btn"
                             *ngIf="(frames.length > 0 || audios.length > 0) ? true : false"
-                            style="width: 500px;height: 50px;background-color: deepskyblue;" (click)="search()">Select
+                            style="width: 500px;height: 50px;background-color: deepskyblue;" (click)="search()"
+                            [ngClass]="{'blur-effect': applyBlurEffect}">Select
                             frame(s) and/or
                             audio(s) and search</button>
                     </div>

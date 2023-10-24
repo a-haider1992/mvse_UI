@@ -3,6 +3,11 @@
   background-color: #f2f2f2;
 }
 
+.blur-effect {
+  filter: blur(5px); /* Adjust the blur radius as needed */
+  pointer-events: none; /* Prevent interactions with blurred elements */
+}
+
 .audio-wrapper {
   width: 120px;
   /* Set the width to desired size */

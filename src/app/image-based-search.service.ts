@@ -17,6 +17,7 @@ export class ImageBasedSearchService {
     console.log("Inside service--"+_uploadedImages);
     if(_uploadedImages.length >= 1){
       for (let i = 0; i < _uploadedImages.length; i++) {
+        console.log(_uploadedImages[i]);
         formData.append('file', _uploadedImages[i]);
         var file_name = _uploadedImages[i].name.toString()
         formData.append('facenames', file_name);
