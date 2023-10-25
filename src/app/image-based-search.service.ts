@@ -47,6 +47,69 @@ export class ImageBasedSearchService {
     });
   }
 
+  searchV2(
+    _uploadedImages: (File[] | string[]), // Accept either File[] or string[]
+    _uploadedAudios: (File[] | string[]), // Accept either File[] or string[]
+    _keywords: string[],
+    _objects: string[],
+    _sceneSelectedStatus: boolean[]
+  ): Promise<any> {
+    // Main Endpoint
+    const formData = new FormData();
+    const currentHost = window.location.host;
+    const api_endpoint = `http://${currentHost}/multi_modals_search_video_V2`;
+
+    console.log(_uploadedImages);
+    
+    // Handle _uploadedImages (Images or Strings)
+    if (_uploadedImages && _uploadedImages.length >= 1) {
+      for (let i = 0; i < _uploadedImages.length; i++) {
+        if (_uploadedImages[i] instanceof File) {
+          formData.append('file', _uploadedImages[i]);
+          const file_name = (_uploadedImages[i] as File).name.toString();
+          formData.append('facenames', file_name);
+        } else if (typeof _uploadedImages[i] === 'string') {
+          formData.append('facenames', _uploadedImages[i] as string);
+        }
+      }
+    }
+  
+    // Handle _uploadedAudios (Audios or Strings)
+    if (_uploadedAudios && _uploadedAudios.length >= 1) {
+      for (let i = 0; i < _uploadedAudios.length; i++) {
+        if (_uploadedAudios[i] instanceof File) {
+          formData.append('file', _uploadedAudios[i]);
+          const file_name = (_uploadedAudios[i] as File).name.toString();
+          formData.append('audionames', file_name);
+        } else if (typeof _uploadedAudios[i] === 'string') {
+          formData.append('audionames', _uploadedAudios[i] as string);
+        }
+      }
+    }
+  
+    // Handle other parameters (keywords, objects, sceneSelectedStatus)
+    if (_keywords.length >= 1) {
+      for (let i = 0; i < _keywords.length; i++) {
+        formData.append('keywords', _keywords[i]);
+      }
+    }
+    if (_objects.length >= 1) {
+      for (let i = 0; i < _objects.length; i++) {
+        formData.append('objectnames', _objects[i]);
+      }
+    }
+
+    console.log(formData);
+  
+    // Rest of the code remains the same
+    console.log(formData);
+    return this.http.post(api_endpoint, formData).toPromise().catch((error) => {
+      console.error('HTTP Error:', error);
+      throw error; // Rethrow the error to propagate it to the caller
+    });
+  }
+  
+
   performAction(uploadedImages: File[]): Promise<any> {
     // Your service logic here
     // Process the list of uploaded images

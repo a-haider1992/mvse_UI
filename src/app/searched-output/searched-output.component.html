@@ -89,9 +89,9 @@
                                     <button (click)="closeVideoOverlay()">Close</button>
                                 </div>
                             </div> -->
-                            <div class="container m-1" *ngIf="topics. length > 0" [ngClass]="{'blur-effect': applyBlurEffect}">
+                            <div class="container m-1" [ngClass]="{'blur-effect': applyBlurEffect}">
                                 <table class="table">
-                                    <tr>
+                                    <tr *ngIf="topics.length > 0">
                                         <span
                                             style="color: deepskyblue; font-family: Arial, Helvetica, sans-serif; font-size: medium;">Topics:</span>
                                         <ng-container *ngFor="let topic of topics; let i = index">
@@ -115,10 +115,10 @@
                                     </tr>
                                     <tr>
                                         <div class="row overflow-auto mt-1" style="max-height: 500px;">
-                                            <div class="col-md-4" *ngFor="let videoUrl of videoList">
-                                                <div class="video-wrapper border m-1">
+                                            <div class="col-md-2" *ngFor="let videoUrl of videoList">
+                                                <div class="rounded border-dark border m-1">
                                                     <img [src]="videoUrl" controls class="w-100"
-                                                        style="width: 100px;height: 120px;"
+                                                        style="width: 100px;height: 100px;"
                                                         (click)="onPosterClick(videoUrl)" />
                                                 </div>
                                             </div>

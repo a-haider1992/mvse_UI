@@ -11,8 +11,8 @@ import { ImageBasedSearchService } from '../image-based-search.service';
 export class SearchedOutputComponent {
 
   constructor(private dataSharingService: DataSharingServiceService, private videoDownloadService: VideoDownloadService, private imageBasedSearch: ImageBasedSearchService,) { }
-  selectedImages: File[] = [];
-  selectedAudios: File[] = [];
+  selectedImages: any[] = [];
+  selectedAudios: any[] = [];
 
   frames: any[] = ["../assets/images/image.png", "../assets/images/logo.png", "../assets/images/image.png", "../assets/images/logo.png", "../assets/images/logo.png"];
   audios: any[] = ["../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav"];
@@ -27,7 +27,7 @@ export class SearchedOutputComponent {
   //   { topic: 'Topic 3', selected: false },
   // ];
   topics: { topic: string; selected: boolean }[] = [];
-  Scenes: File[] = [];
+  Scenes: any[] = [];
 
   selectedTopics: string[] = [];
   // To store posters returned by API call
@@ -221,23 +221,30 @@ export class SearchedOutputComponent {
     this.source_video = '';
   }
 
-  toggleImageSelection(src: File): void {
-    if (this.selectedImages.includes(src)) {
+  toggleImageSelection(src: string): void {
+    const parts = src.split("/");
+    const file_name = parts[parts.length - 1];
+    // console.log(file_name);
+    if (this.selectedImages.includes(file_name)) {
       // Deselect audio
-      this.selectedImages = this.selectedImages.filter(a => a !== src);
+      this.selectedImages = this.selectedImages.filter(a => a !== file_name);
     } else {
       // Select audio
-      this.selectedImages.push(src);
+      this.selectedImages.push(file_name);
     }
     console.log(this.selectedImages);
   }
 
-  isImageSelected(src: File): boolean {
-    return this.selectedImages.includes(src);
+  isImageSelected(src: string): boolean {
+    const parts = src.split("/");
+    const file_name = parts[parts.length - 1];
+    return this.selectedImages.includes(file_name);
   }
 
-  isAudioSelected(audio: File): boolean {
-    return this.selectedAudios.includes(audio);
+  isAudioSelected(audio: string): boolean {
+    const parts = audio.split("/");
+    const file_name = parts[parts.length - 1];
+    return this.selectedAudios.includes(file_name);
   }
 
   toggleTopicSelection(topic: { topic: string; selected: boolean }): void {
@@ -247,13 +254,15 @@ export class SearchedOutputComponent {
     console.log(this.selectedTopics);
   }
 
-  toggleAudioSelection(audio: File): void {
-    if (this.selectedAudios.includes(audio)) {
+  toggleAudioSelection(audio: string): void {
+    const parts = audio.split("/");
+    const file_name = parts[parts.length - 1];
+    if (this.selectedAudios.includes(file_name)) {
       // Deselect audio
-      this.selectedAudios = this.selectedAudios.filter(a => a !== audio);
+      this.selectedAudios = this.selectedAudios.filter(a => a !== file_name);
     } else {
       // Select audio
-      this.selectedAudios.push(audio);
+      this.selectedAudios.push(file_name);
     }
     console.log(this.selectedAudios);
     ;
@@ -266,7 +275,7 @@ export class SearchedOutputComponent {
     console.log("Frames selected :" + this.selectedImages);
     console.log("Audios selecetd :" + this.selectedAudios);
     setTimeout(() => {
-      this.imageBasedSearch.search(this.selectedImages, this.selectedAudios, this.selectedTopics, [], [])
+      this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.selectedTopics, [], [])
         .then(response => {
           console.log(response);
           const data = response.location;
