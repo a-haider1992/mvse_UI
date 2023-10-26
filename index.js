@@ -323,6 +323,7 @@ const saveFilesV2 = function (uploadDir, uploadCommand, req, res) {
 			if (scenenames.length > 0) {
 				n_scenenames = n_scenenames.concat(scenenames);
 			}
+			console.log("Object Names: " + n_objectnames);
 			//function (command, facenames,audionames,scenenames,objectnames,keywords,server_result)
 			forwardFilenamesV2(uploadCommand, n_facenames, n_audionames, n_scenenames, n_objectnames, keywords, res);
 		}
@@ -347,10 +348,40 @@ const requestListener = function (req, res) {
 				res.writeHead(200);
 				res.end(contents);
 			}).catch(err => {
-				res.writeHead(500);
-				res.end(err);
-				return;
+				// res.writeHead(500);
+				// res.end("Failed to read");
+				// res.end(err) is causing UI container crash
+				// res.end(err);
+				return "/image-failed.png";
 			});
+
+		// fs.readFile(mvseFrontEndRootPrefix + req.url)
+		// 	.then(contents => {
+		// 		res.setHeader("Content-Type", contentType);
+		// 		res.writeHead(200);
+		// 		res.end(contents);
+		// 	})
+		// 	.catch(err => {
+		// 		// Handle the error
+		// 		console.error(err);
+
+		// 		// Return a static image in case of an error
+		// 		const staticImagePath = '/image-load-failed.png';
+
+		// 		// Read the static image and send it as a response
+		// 		fs.readFile(staticImagePath, (staticImageErr, staticImageContents) => {
+		// 			if (staticImageErr) {
+		// 				// res.writeHead(500);
+		// 				// console.log("Failed to read static image");
+		// 				// res.end("Failed to read static image");
+		// 				return;
+		// 			} else {
+		// 				res.setHeader("Content-Type", "image/png"); // Set the content type for the image
+		// 				res.writeHead(200);
+		// 				res.end(staticImageContents);
+		// 			}
+		// 		});
+		// 	});
 		return;
 	}
 	else if (req.method == "POST" && req.url.startsWith("/upload_search_image")) {

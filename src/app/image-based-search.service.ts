@@ -59,15 +59,23 @@ export class ImageBasedSearchService {
     const currentHost = window.location.host;
     const api_endpoint = `http://${currentHost}/multi_modals_search_video_V2`;
 
-    console.log(_uploadedImages);
+    console.log("Inside apiV2"+_objects);
     
     // Handle _uploadedImages (Images or Strings)
     if (_uploadedImages && _uploadedImages.length >= 1) {
       for (let i = 0; i < _uploadedImages.length; i++) {
         if (_uploadedImages[i] instanceof File) {
-          formData.append('file', _uploadedImages[i]);
-          const file_name = (_uploadedImages[i] as File).name.toString();
-          formData.append('facenames', file_name);
+          if(_sceneSelectedStatus[i] === true){
+            formData.append('file', _uploadedImages[i]);
+            const file_name = (_uploadedImages[i] as File).name.toString();
+            formData.append('scenenames', file_name);
+          }
+          else{
+            formData.append('file', _uploadedImages[i]);
+            const file_name = (_uploadedImages[i] as File).name.toString();
+            formData.append('facenames', file_name);
+          }
+         
         } else if (typeof _uploadedImages[i] === 'string') {
           formData.append('facenames', _uploadedImages[i] as string);
         }

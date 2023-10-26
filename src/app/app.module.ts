@@ -11,6 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FormsModule } from '@angular/forms';
+import { ErrorHandler } from '@angular/core';
+import { GlobalErrorHandler } from './error-handler.service';
 
 
 @NgModule({
@@ -27,7 +29,7 @@ import { FormsModule } from '@angular/forms';
     MatProgressBarModule,
     FormsModule,
   ],
-  providers: [ImageBasedSearchService, DataSharingServiceService],
+  providers: [ImageBasedSearchService, DataSharingServiceService, { provide: ErrorHandler, useClass: GlobalErrorHandler }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

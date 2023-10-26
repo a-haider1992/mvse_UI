@@ -14,11 +14,11 @@ export class SearchedOutputComponent {
   selectedImages: any[] = [];
   selectedAudios: any[] = [];
 
-  frames: any[] = ["../assets/images/image.png", "../assets/images/logo.png", "../assets/images/image.png", "../assets/images/logo.png", "../assets/images/logo.png"];
-  audios: any[] = ["../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav"];
-  videoList: string[] = [
-    '../assets/videos/test2.mp4', '../assets/videos/test3.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4'
-  ];
+  // frames: any[] = ["../assets/images/image.png", "../assets/images/logo.png", "../assets/images/image.png", "../assets/images/logo.png", "../assets/images/logo.png"];
+  // audios: any[] = ["../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav"];
+  // videoList: string[] = [
+  //   '../assets/videos/test2.mp4', '../assets/videos/test3.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4'
+  // ];
   frames_stamp: any[] = ["10", "10", "10", "10", "10"];
   audios_stamp: any[] = ["10", "10", "10", "10", "10", "10"];
   // topics: { topic: string; selected: boolean }[] = [
@@ -27,6 +27,9 @@ export class SearchedOutputComponent {
   //   { topic: 'Topic 3', selected: false },
   // ];
   topics: { topic: string; selected: boolean }[] = [];
+  videoList: any[] = [];
+  frames: any[] = [];
+  audios: any[] = [];
   Scenes: any[] = [];
 
   selectedTopics: string[] = [];
@@ -43,8 +46,9 @@ export class SearchedOutputComponent {
   ngOnInit(): void {
     this.data = this.dataSharingService.sharedData;
     if (Array.isArray(this.data)) {
-      console.log(this.data);
+      // console.log("Inside ngOnInit of search page!");
       this.videoList = this.data;
+      // console.log("Video list -- " + this.videoList);
       this.frames = this.audios = [];
     }
     else {
@@ -142,22 +146,22 @@ export class SearchedOutputComponent {
 
     // this.startTime = this.extractIntegerPart(this.startTime);
 
-    var starttime = parseFloat(starttimestr) / 25.0;
-    starttime = parseFloat(starttime.toFixed(2));
-    this.startTime = starttime;
+    // var starttime = parseFloat(starttimestr) / 25.0;
+    // starttime = parseFloat(starttime.toFixed(2));
+    this.startTime = parseFloat(starttimestr);
     console.log(this.startTime);
 
     this.source_video = 'http://' + window.location.hostname + ':8008/download?qfile=' + this.source_video;
     // alert(this.source_video + " " + this.startTime);
     if (this.source_video.trim().length !== 0) {
       // this.source_video = this.videoDownloadService.downloadVideo(this.source_video, this.startTime);
-      this.videoDownloadService.downloadVideo(this.source_video, this.startTime).subscribe((url) => {
-        this.source_video = url;
-        // this.showVideoOverlay = true;
-        // You can also set the video source here if needed
-        // const videoPlayer = document.getElementById('videoPlayer') as HTMLVideoElement;
-        // videoPlayer.src = url;
-      });
+      // this.videoDownloadService.downloadVideo(this.source_video, this.startTime).subscribe((url) => {
+      //   this.source_video = url;
+      //   // this.showVideoOverlay = true;
+      //   // You can also set the video source here if needed
+      //   // const videoPlayer = document.getElementById('videoPlayer') as HTMLVideoElement;
+      //   // videoPlayer.src = url;
+      // });
       // alert(this.source_video);
       this.openVideoWindow();
     }
