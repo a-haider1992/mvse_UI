@@ -67,7 +67,7 @@ export class SearchedOutputComponent {
   }
 
   dynamicMaxHeight(): string {
-    const fixedDistanceFromBottom = 50; // Adjust this value as needed
+    const fixedDistanceFromBottom = 200; // Adjust this value as needed
     const screenHeight = window.innerHeight;
     const maxHeight = screenHeight - fixedDistanceFromBottom;
     return `${maxHeight}px`;
