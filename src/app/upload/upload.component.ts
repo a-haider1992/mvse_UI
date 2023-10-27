@@ -384,6 +384,7 @@ export class UploadComponent implements OnDestroy {
             console.log(response);
             const data = response;
             this.dataSharingService.sharedData = data;
+            this.dataSharingService.isAnalysis = true;
             this.hideProgressBar();
             this.router.navigateByUrl('/searchResults');
           })

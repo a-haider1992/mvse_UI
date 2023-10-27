@@ -6,6 +6,6 @@ import { Injectable } from '@angular/core';
 export class DataSharingServiceService {
 
   sharedData: any;
-
+  isAnalysis: boolean = false;
   constructor() { }
 }

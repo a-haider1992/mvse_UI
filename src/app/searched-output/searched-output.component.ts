@@ -14,11 +14,11 @@ export class SearchedOutputComponent {
   selectedImages: any[] = [];
   selectedAudios: any[] = [];
 
-  // frames: any[] = ["../assets/images/image.png", "../assets/images/logo.png", "../assets/images/image.png", "../assets/images/logo.png", "../assets/images/logo.png"];
-  // audios: any[] = ["../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav"];
-  // videoList: string[] = [
-  //   '../assets/videos/test2.mp4', '../assets/videos/test3.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4'
-  // ];
+  frames: any[] = ["../assets/images/image.png", "../assets/images/logo.png", "../assets/images/image.png", "../assets/images/logo.png", "../assets/images/logo.png"];
+  audios: any[] = ["../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav"];
+  videoList: string[] = [
+    '../assets/videos/test2.mp4', '../assets/videos/test3.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4'
+  ];
   frames_stamp: any[] = ["10", "10", "10", "10", "10"];
   audios_stamp: any[] = ["10", "10", "10", "10", "10", "10"];
   // topics: { topic: string; selected: boolean }[] = [
@@ -27,9 +27,9 @@ export class SearchedOutputComponent {
   //   { topic: 'Topic 3', selected: false },
   // ];
   topics: { topic: string; selected: boolean }[] = [];
-  videoList: any[] = [];
-  frames: any[] = [];
-  audios: any[] = [];
+  // videoList: any[] = [];
+  // frames: any[] = [];
+  // audios: any[] = [];
   Scenes: any[] = [];
 
   selectedTopics: string[] = [];
@@ -42,9 +42,11 @@ export class SearchedOutputComponent {
   showVideoOverlay = false;
   showProgressBar: boolean = false;
   applyBlurEffect: boolean = false;
+  isAnalysis: boolean = false;
 
   ngOnInit(): void {
     this.data = this.dataSharingService.sharedData;
+    this.isAnalysis = this.dataSharingService.isAnalysis;
     if (Array.isArray(this.data)) {
       // console.log("Inside ngOnInit of search page!");
       this.videoList = this.data;
@@ -63,6 +65,14 @@ export class SearchedOutputComponent {
       this.videoList = [];
     }
   }
+
+  dynamicMaxHeight(): string {
+    const fixedDistanceFromBottom = 50; // Adjust this value as needed
+    const screenHeight = window.innerHeight;
+    const maxHeight = screenHeight - fixedDistanceFromBottom;
+    return `${maxHeight}px`;
+}
+
 
   extractTopics(words: string[]): { topic: string; selected: boolean }[] {
     const topicsExtracted: { topic: string; selected: boolean }[] = [];
@@ -170,6 +180,13 @@ export class SearchedOutputComponent {
     }
   }
 
+  handleImageError(event: any): void {
+    const imgElement = event.target;
+    imgElement.src = "../assets/images/image-failed.png"; // Display a fallback image.
+    // You can also show an error message or log the error.
+  }
+
+
   extractIntegerPart(input: number | string): number | string {
     if (typeof input === 'string') {
       // If input is a string, parse it as a float, extract the integer part, and return as a string
@@ -193,6 +210,7 @@ export class SearchedOutputComponent {
     const dynamicHtml = `
     <html>
       <body>
+      <title>MVSE video player</title>
         <div>
           <video id="videoPlayer" controls>
             <source src="${this.source_video}" type="video/mp4">
@@ -206,9 +224,14 @@ export class SearchedOutputComponent {
       </body>
     </html>
   `;
-    const newWindow = window.open('', '_blank', 'width=500,height=500');
+    const windowFeatures = "left=100,top=100,width=500,height=500";
+    const newWindow = window.open(
+      "Selected video",
+      "_blank",
+      windowFeatures,
+    );
     if (newWindow) {
-      newWindow.document.open();
+      // newWindow.document.open();
       newWindow.document.write(dynamicHtml);
     } else {
       // Handle the case where the new window couldn't be opened

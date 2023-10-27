@@ -43,12 +43,12 @@
                         <div class="col-sm-7">
                             <span
                                 style="color: deepskyblue;font-family: Arial, Helvetica, sans-serif;font-size: large;">Search
-                                results <span style="font-size: large;">({{videoList.length}} videos
+                                results <span style="font-size: large;">(top {{videoList.length}} segments
                                     found)</span></span>
                         </div>
                     </div>
                 </tr>
-                <tr>
+                <tr *ngIf="isAnalysis">
                     <div class="row m-2">
                         <div class="col-sm-2 overflow-auto" style="max-height: 500px;" *ngIf="frames.length > 0"
                             [ngClass]="{'blur-effect': applyBlurEffect}">
@@ -120,7 +120,7 @@
                                                 <div class="rounded border-dark border m-1">
                                                     <img [src]="videoUrl" controls class="w-100"
                                                         style="width: 100px;height: 100px;"
-                                                        (click)="onPosterClick(videoUrl)" />
+                                                        (click)="onPosterClick(videoUrl)" (error)="handleImageError($event)" />
                                                 </div>
                                             </div>
                                         </div>
@@ -141,7 +141,15 @@
                         </div>
                     </div>
                 </tr>
-                <tr>
+                <tr *ngIf="!isAnalysis">
+                    <div class="row m-3 overflow-auto" [ngStyle]="{'max-height': dynamicMaxHeight()}">
+                        <div class="video-wrapper border m-1 col-md-1" *ngFor="let video of videoList" >
+                            <img [src]="video" controls class="w-100" style="width: 100px;height: 120px;"
+                                (click)="onPosterClick(video)" />
+                        </div>
+                    </div>
+                </tr>
+                <tr *ngIf="isAnalysis">
                     <div class="container fixed-bottom mb-5">
                         <button (click)="search()" class="btn"
                             *ngIf="(frames.length > 0 || audios.length > 0) ? true : false"
