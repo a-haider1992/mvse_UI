@@ -8,6 +8,13 @@
   pointer-events: none; /* Prevent interactions with blurred elements */
 }
 
+.scrollable-frames {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
 .audio-wrapper {
   width: 120px;
   /* Set the width to desired size */

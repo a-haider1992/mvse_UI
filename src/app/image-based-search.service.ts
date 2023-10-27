@@ -52,7 +52,8 @@ export class ImageBasedSearchService {
     _uploadedAudios: (File[] | string[]), // Accept either File[] or string[]
     _keywords: string[],
     _objects: string[],
-    _sceneSelectedStatus: boolean[]
+    _sceneSelectedStatus: boolean[],
+    _selectedScenes: string[]
   ): Promise<any> {
     // Main Endpoint
     const formData = new FormData();

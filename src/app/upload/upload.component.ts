@@ -399,7 +399,7 @@ export class UploadComponent implements OnDestroy {
       // this.router.navigateByUrl('/searchResults');
       // Use setTimeout to create a delay and allow the progress bar to be displayed
       setTimeout(() => {
-        this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.keywords, this.objects_categories, this.selectedStatuses)
+        this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.keywords, this.objects_categories, this.selectedStatuses, [])
           .then(response => {
             console.log(response.location);
             const data = response.location;

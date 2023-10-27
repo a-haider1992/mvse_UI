@@ -13,12 +13,13 @@ export class SearchedOutputComponent {
   constructor(private dataSharingService: DataSharingServiceService, private videoDownloadService: VideoDownloadService, private imageBasedSearch: ImageBasedSearchService,) { }
   selectedImages: any[] = [];
   selectedAudios: any[] = [];
+  selectedScenes: any[] = [];
 
-  frames: any[] = ["../assets/images/image.png", "../assets/images/logo.png", "../assets/images/image.png", "../assets/images/logo.png", "../assets/images/logo.png"];
-  audios: any[] = ["../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav"];
-  videoList: string[] = [
-    '../assets/videos/test2.mp4', '../assets/videos/test3.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4'
-  ];
+  // frames: any[] = ["../assets/images/image.png", "../assets/images/logo.png", "../assets/images/image.png", "../assets/images/logo.png", "../assets/images/logo.png"];
+  // audios: any[] = ["../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav"];
+  // videoList: string[] = [
+  //   '../assets/videos/test2.mp4', '../assets/videos/test3.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4'
+  // ];
   frames_stamp: any[] = ["10", "10", "10", "10", "10"];
   audios_stamp: any[] = ["10", "10", "10", "10", "10", "10"];
   // topics: { topic: string; selected: boolean }[] = [
@@ -27,9 +28,9 @@ export class SearchedOutputComponent {
   //   { topic: 'Topic 3', selected: false },
   // ];
   topics: { topic: string; selected: boolean }[] = [];
-  // videoList: any[] = [];
-  // frames: any[] = [];
-  // audios: any[] = [];
+  videoList: any[] = [];
+  frames: any[] = [];
+  audios: any[] = [];
   Scenes: any[] = [];
 
   selectedTopics: string[] = [];
@@ -60,6 +61,7 @@ export class SearchedOutputComponent {
       this.frames_stamp = this.extractFrameStamp(this.frames);
       this.audios_stamp = this.extractFrameStamp(this.audios);
       this.topics = this.extractTopics(this.data["words_box"]);
+      this.Scenes = this.data["scene_image"];
       console.log(this.frames_stamp);
       console.log(this.audios_stamp);
       this.videoList = [];
@@ -268,6 +270,26 @@ export class SearchedOutputComponent {
     return this.selectedImages.includes(file_name);
   }
 
+  toggleSceneSelection(src: string): void {
+    const parts = src.split("/");
+    const file_name = parts[parts.length - 1];
+    // console.log(file_name);
+    if (this.selectedScenes.includes(file_name)) {
+      // Deselect audio
+      this.selectedScenes = this.selectedScenes.filter(a => a !== file_name);
+    } else {
+      // Select audio
+      this.selectedScenes.push(file_name);
+    }
+    console.log(this.selectedScenes);
+  }
+
+  isSceneSelected(src: string): boolean {
+    const parts = src.split("/");
+    const file_name = parts[parts.length - 1];
+    return this.selectedScenes.includes(file_name);
+  }
+
   isAudioSelected(audio: string): boolean {
     const parts = audio.split("/");
     const file_name = parts[parts.length - 1];
@@ -302,7 +324,7 @@ export class SearchedOutputComponent {
     console.log("Frames selected :" + this.selectedImages);
     console.log("Audios selecetd :" + this.selectedAudios);
     setTimeout(() => {
-      this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.selectedTopics, [], [])
+      this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.selectedTopics, [], [], this.selectedScenes)
         .then(response => {
           console.log(response);
           const data = response.location;
