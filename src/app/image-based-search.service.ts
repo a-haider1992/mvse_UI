@@ -107,6 +107,11 @@ export class ImageBasedSearchService {
         formData.append('objectnames', _objects[i]);
       }
     }
+    if (_selectedScenes.length >= 1){
+      for(let i = 0; i < _selectedScenes.length; i++){
+        formData.append('scenenames', _selectedScenes[i]);
+      }
+    }
 
     console.log(formData);
   
