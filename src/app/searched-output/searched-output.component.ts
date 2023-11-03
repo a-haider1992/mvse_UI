@@ -113,7 +113,7 @@ export class SearchedOutputComponent {
     let tmpArray = str2.split("/");
     let video_name = tmpArray[tmpArray.length - 1];
     console.log(video_name);
-    if (video_name.includes("scene") || video_name.includes("face") || video_name.includes("audio") || video_name.includes("object")) {
+    if (video_name.includes("scene") || video_name.includes("face") || video_name.includes("audio") || video_name.includes("object") || video_name.includes("keyword")) {
       const parts = video_name.split("_");
       if (parts.length >= 4) {
         this.source_video = parts[0] + ".mp4";
