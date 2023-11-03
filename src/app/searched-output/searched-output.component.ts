@@ -44,14 +44,19 @@ export class SearchedOutputComponent {
   showProgressBar: boolean = false;
   applyBlurEffect: boolean = false;
   isAnalysis: boolean = false;
+  videoDictionary: Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[] }> = {};
 
   ngOnInit(): void {
     this.data = this.dataSharingService.sharedData;
+    console.log(this.data);
     this.isAnalysis = this.dataSharingService.isAnalysis;
     if (Array.isArray(this.data)) {
+      // console.log(this.prepareDictionary(this.data));
+      this.videoDictionary = this.prepareDictionary(this.data);
+      // console.log(this.getVideoList(this.videoDictionary));
       // console.log("Inside ngOnInit of search page!");
-      this.videoList = this.data;
-      // console.log("Video list -- " + this.videoList);
+      this.videoList = this.getVideoList(this.videoDictionary);
+      console.log(this.videoList);
       this.frames = this.audios = [];
     }
     else {
@@ -68,12 +73,62 @@ export class SearchedOutputComponent {
     }
   }
 
+  getVideoList(dict: Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[] }>): string[] {
+    const videoList: string[] = [];
+
+    for (const key in dict) {
+      if (Object.prototype.hasOwnProperty.call(dict, key)) {
+        const item = dict[key];
+        // Assuming that the videos have a specific naming pattern based on the provided properties.
+        const videoName = `${key}_${item.modality[0]}_${item.seg_id[0]}_${item.startTime[0]}_${item.endTime_with_extension[0]}`;
+        videoList.push(videoName);
+      }
+    }
+    return videoList;
+  }
+
+  prepareDictionary(segments: string[]): Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[] }> {
+    const dictionary: Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[] }> = {};
+
+    if (segments.length >= 1){
+      for (const segment of segments) {
+        const parts = segment.split('_');
+        if (parts.length >= 4) {
+          console.log("Preparing dictionary!");
+          const key = parts[0] + "_" + parts[1];
+          const modality = parts[2];
+          const seg_id = parts[3];
+          const startTime = parts[4];
+          const endTime_with_extension = parts[parts.length - 1];
+  
+          // If the key doesn't exist in the dictionary, initialize the arrays.
+          if (!dictionary[key]) {
+            dictionary[key] = {
+              modality: [],
+              seg_id: [],
+              startTime: [],
+              endTime_with_extension: [],
+            };
+          }
+  
+          // Push the values into the respective arrays.
+          dictionary[key].modality.push(modality);
+          dictionary[key].seg_id.push(seg_id);
+          dictionary[key].startTime.push(startTime);
+          dictionary[key].endTime_with_extension.push(endTime_with_extension);
+        }
+      }
+    }
+    console.log("Dictionary prepared -- " + dictionary);
+    return dictionary;
+  }
+
   dynamicMaxHeight(): string {
     const fixedDistanceFromBottom = 200; // Adjust this value as needed
     const screenHeight = window.innerHeight;
     const maxHeight = screenHeight - fixedDistanceFromBottom;
     return `${maxHeight}px`;
-}
+  }
 
 
   extractTopics(words: string[]): { topic: string; selected: boolean }[] {
@@ -328,7 +383,8 @@ export class SearchedOutputComponent {
         .then(response => {
           console.log(response);
           const data = response.location;
-          this.videoList = data;
+          this.videoDictionary = this.prepareDictionary(data);
+          this.videoList = this.getVideoList(this.videoDictionary);
           this.showProgressBar = false;
           this.applyBlurEffect = false;
           // this.router.navigateByUrl('/searchResults');
