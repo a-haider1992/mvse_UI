@@ -401,8 +401,8 @@ export class UploadComponent implements OnDestroy {
       setTimeout(() => {
         this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.keywords, this.objects_categories, this.selectedStatuses, [])
           .then(response => {
-            console.log(response.location);
-            const data = response.location;
+            console.log(response);
+            const data = response;
             this.dataSharingService.sharedData = data;
             this.hideProgressBar();
             this.router.navigateByUrl('/searchResults');

@@ -37,7 +37,7 @@ export class SearchedOutputComponent {
   // To store posters returned by API call
   posterList: string[] = [];
 
-  data: any[] = []
+  data: any =  {};
   source_video: string = '';
   startTime: any = 0;
   showVideoOverlay = false;
@@ -48,17 +48,26 @@ export class SearchedOutputComponent {
 
   ngOnInit(): void {
     this.data = this.dataSharingService.sharedData;
-    console.log(this.data);
+    // console.log(this.data);
     this.isAnalysis = this.dataSharingService.isAnalysis;
-    if (Array.isArray(this.data)) {
-      // console.log(this.prepareDictionary(this.data));
-      this.videoDictionary = this.prepareDictionary(this.data);
+
+    if(this.data.hasOwnProperty("synopsis")){
+      this.videoDictionary = this.prepareDictionary(this.data["location"]);
       // console.log(this.getVideoList(this.videoDictionary));
       // console.log("Inside ngOnInit of search page!");
       this.videoList = this.getVideoList(this.videoDictionary);
       console.log(this.videoList);
       this.frames = this.audios = [];
     }
+    // if (Array.isArray(this.data)) {
+    //   // console.log(this.prepareDictionary(this.data));
+    //   this.videoDictionary = this.prepareDictionary(this.data);
+    //   // console.log(this.getVideoList(this.videoDictionary));
+    //   // console.log("Inside ngOnInit of search page!");
+    //   this.videoList = this.getVideoList(this.videoDictionary);
+    //   console.log(this.videoList);
+    //   this.frames = this.audios = [];
+    // }
     else {
       this.frames = this.data["location"];
       this.audios = this.data["wavfile"];

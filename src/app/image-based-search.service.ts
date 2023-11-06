@@ -116,7 +116,7 @@ export class ImageBasedSearchService {
     console.log(formData);
   
     // Rest of the code remains the same
-    console.log(formData);
+    console.log(formData);    
     return this.http.post(api_endpoint, formData).toPromise().catch((error) => {
       console.error('HTTP Error:', error);
       throw error; // Rethrow the error to propagate it to the caller
