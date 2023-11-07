@@ -8,7 +8,7 @@
 
 <body>
     <div class="container overflow-auto">
-        <div class="row fixed-top" style="height: 70px;">
+        <div class="row fixed-top lower-z-index" style="height: 70px;">
             <table class="table">
                 <tr class="border-bottom border-1">
                     <td style="float: left;">
@@ -41,9 +41,10 @@
                                 audio clip</span>
                         </div>
                         <div class="col-sm-7">
+                            <!-- <button (click)="openVideoDialog()">Open dialog</button> -->
                             <span
                                 style="color: deepskyblue;font-family: Arial, Helvetica, sans-serif;font-size: large;">Search
-                                results <span style="font-size: large;">(top {{videoList.length}} segments
+                                results <span style="font-size: large;">({{videoList.length}} videos
                                     found)</span></span>
                         </div>
                     </div>

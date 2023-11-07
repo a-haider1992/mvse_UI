@@ -1,5 +1,27 @@
-<div>
-    <h2>Video Dialog</h2>
-    <video [src]="data.videoSrc" controls #videoPlayer></video>
-  </div>
-  
+<div class="modal-overlay">
+  <h2 mat-dialog-title>Video Player</h2>
+  <table>
+    <tr>
+      <td>
+        <mat-dialog-content>
+          <video controls #videoPlayer>
+            <source [src]="videoSrc" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </mat-dialog-content>
+      </td>
+      <td>
+        <span style="font-family: Arial, Helvetica, sans-serif;font-size: small;"><strong>Synopis:</strong> {{synopis}}</span>
+      </td>
+    </tr>
+    <tr>
+      <mat-dialog-actions>
+        <button (click)="seekToStartTime()" class="btn" style="background-color: deepskyblue;">Play from Start
+          Time</button>
+      </mat-dialog-actions>
+    </tr>
+  </table>
+  <mat-dialog-actions>
+    <button class="btn" (click)="closeDialog()" style="background-color: deepskyblue;">Close</button>
+  </mat-dialog-actions>
+</div>

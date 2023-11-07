@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { DataSharingServiceService } from '../data-sharing-service.service';
 import { VideoDownloadService } from '../video-download.service';
 import { ImageBasedSearchService } from '../image-based-search.service';
+import { MatDialog } from '@angular/material/dialog';
+import { VideoDialogComponent } from '../video-dialog/video-dialog.component';
+import { takeWhile } from 'rxjs';
 
 @Component({
   selector: 'app-searched-output',
@@ -10,16 +13,17 @@ import { ImageBasedSearchService } from '../image-based-search.service';
 })
 export class SearchedOutputComponent {
 
-  constructor(private dataSharingService: DataSharingServiceService, private videoDownloadService: VideoDownloadService, private imageBasedSearch: ImageBasedSearchService,) { }
+  constructor(private dataSharingService: DataSharingServiceService,
+    private videoDownloadService: VideoDownloadService, private imageBasedSearch: ImageBasedSearchService, private dialog: MatDialog) { }
   selectedImages: any[] = [];
   selectedAudios: any[] = [];
   selectedScenes: any[] = [];
 
   // frames: any[] = ["../assets/images/image.png", "../assets/images/logo.png", "../assets/images/image.png", "../assets/images/logo.png", "../assets/images/logo.png"];
   // audios: any[] = ["../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav"];
-  // videoList: string[] = [
-  //   '../assets/videos/test2.mp4', '../assets/videos/test3.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4'
-  // ];
+  videoList: string[] = [
+    '../assets/videos/test2.mp4', '../assets/videos/test3.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4'
+  ];
   frames_stamp: any[] = ["10", "10", "10", "10", "10"];
   audios_stamp: any[] = ["10", "10", "10", "10", "10", "10"];
   // topics: { topic: string; selected: boolean }[] = [
@@ -28,7 +32,7 @@ export class SearchedOutputComponent {
   //   { topic: 'Topic 3', selected: false },
   // ];
   topics: { topic: string; selected: boolean }[] = [];
-  videoList: any[] = [];
+  // videoList: any[] = [];
   frames: any[] = [];
   audios: any[] = [];
   Scenes: any[] = [];
@@ -37,22 +41,25 @@ export class SearchedOutputComponent {
   // To store posters returned by API call
   posterList: string[] = [];
 
-  data: any =  {};
+  data: any = {};
   source_video: string = '';
   startTime: any = 0;
+  synopsis: string = 'No synopis found';
   showVideoOverlay = false;
   showProgressBar: boolean = false;
   applyBlurEffect: boolean = false;
   isAnalysis: boolean = false;
-  videoDictionary: Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[] }> = {};
+  videoDictionary: Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[], synopsis: string }> = {};
 
   ngOnInit(): void {
     this.data = this.dataSharingService.sharedData;
-    // console.log(this.data);
+    console.log(this.data);
     this.isAnalysis = this.dataSharingService.isAnalysis;
 
-    if(this.data.hasOwnProperty("synopsis")){
-      this.videoDictionary = this.prepareDictionary(this.data["location"]);
+    if (this.data.hasOwnProperty("synopsis")) {
+      this.videoDictionary = this.prepareDictionary(this.data["location"], this.data["synopsis"]);
+      console.log("Prepared Dictionary!!");
+      console.log(this.videoDictionary);
       // console.log(this.getVideoList(this.videoDictionary));
       // console.log("Inside ngOnInit of search page!");
       this.videoList = this.getVideoList(this.videoDictionary);
@@ -82,7 +89,25 @@ export class SearchedOutputComponent {
     }
   }
 
-  getVideoList(dict: Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[] }>): string[] {
+  openVideoDialog(): void {
+    const data = {
+      videoSrc: this.source_video,
+      startTime: this.startTime,
+      synopsis: this.synopsis,
+      otherInfo: this.videoDictionary
+    };
+
+    const dialogRef = this.dialog.open(VideoDialogComponent, {
+      data: data,
+      width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      // Handle dialog close event if needed
+    });
+  }
+
+  getVideoList(dict: Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[], synopsis: string }>): string[] {
     const videoList: string[] = [];
 
     for (const key in dict) {
@@ -96,10 +121,53 @@ export class SearchedOutputComponent {
     return videoList;
   }
 
-  prepareDictionary(segments: string[]): Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[] }> {
-    const dictionary: Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[] }> = {};
+  // prepareDictionary(segments: string[], synopis: any): Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[], synopis: string }> {
+  //   const dictionary: Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[], synopsis: string }> = {};
 
-    if (segments.length >= 1){
+  //   if (segments.length >= 1) {
+  //     for (const segment of segments) {
+  //       const parts = segment.split('_');
+  //       if (parts.length >= 4) {
+  //         console.log("Preparing dictionary!");
+  //         const key = parts[0] + "_" + parts[1];
+  //         const modality = parts[2];
+  //         const seg_id = parts[3];
+  //         const startTime = parts[4];
+  //         const endTime_with_extension = parts[parts.length - 1];
+
+  //         // If the key doesn't exist in the dictionary, initialize the arrays.
+  //         if (!dictionary[key]) {
+  //           dictionary[key] = {
+  //             modality: [],
+  //             seg_id: [],
+  //             startTime: [],
+  //             endTime_with_extension: [],
+  //             synopsis: ""
+  //           };
+  //         }
+
+  //         // Push the values into the respective arrays.
+  //         dictionary[key].modality.push(modality);
+  //         dictionary[key].seg_id.push(seg_id);
+  //         dictionary[key].startTime.push(startTime);
+  //         dictionary[key].endTime_with_extension.push(endTime_with_extension);
+  //         const synopsis_key = parts[1].split("/");
+  //         dictionary[key].synopsis = synopis[synopsis_key[3]];
+  //       }
+  //     }
+  //   }
+  //   // console.log("Dictionary prepared -- " + dictionary);
+  //   return dictionary;
+  // }
+
+
+  prepareDictionary(
+    segments: string[],
+    synopis: Record<string, string>
+  ): Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[], synopsis: string }> {
+    const dictionary: Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[], synopsis: string }> = {};
+
+    if (segments.length >= 1) {
       for (const segment of segments) {
         const parts = segment.split('_');
         if (parts.length >= 4) {
@@ -109,7 +177,7 @@ export class SearchedOutputComponent {
           const seg_id = parts[3];
           const startTime = parts[4];
           const endTime_with_extension = parts[parts.length - 1];
-  
+
           // If the key doesn't exist in the dictionary, initialize the arrays.
           if (!dictionary[key]) {
             dictionary[key] = {
@@ -117,20 +185,29 @@ export class SearchedOutputComponent {
               seg_id: [],
               startTime: [],
               endTime_with_extension: [],
+              synopsis: ""
             };
           }
-  
+
+          // console.log(synopis);
+
           // Push the values into the respective arrays.
           dictionary[key].modality.push(modality);
           dictionary[key].seg_id.push(seg_id);
           dictionary[key].startTime.push(startTime);
           dictionary[key].endTime_with_extension.push(endTime_with_extension);
+          // Parse the hexadecimal key to an integer
+          const parts_sub = parts[1].split('/');
+          const synopsis_key = parts_sub[parts_sub.length - 1];
+          console.log(synopsis_key);
+          dictionary[key].synopsis = synopis[synopsis_key];
         }
       }
     }
-    console.log("Dictionary prepared -- " + dictionary);
+    // console.log("Dictionary prepared -- " + dictionary);
     return dictionary;
   }
+
 
   dynamicMaxHeight(): string {
     const fixedDistanceFromBottom = 200; // Adjust this value as needed
@@ -176,6 +253,8 @@ export class SearchedOutputComponent {
     let str2 = image;
     let tmpArray = str2.split("/");
     let video_name = tmpArray[tmpArray.length - 1];
+    let key_parts = str2.split("_");
+    let key = key_parts[0] + "_" + key_parts[1];
     console.log(video_name);
     if (video_name.includes("scene") || video_name.includes("face") || video_name.includes("audio") || video_name.includes("object") || video_name.includes("keyword")) {
       const parts = video_name.split("_");
@@ -191,8 +270,8 @@ export class SearchedOutputComponent {
       video_name = video_name.split("_");
       this.source_video = video_name[0] + ".mp4";
       starttimestr = video_name[1];
-      console.log(this.source_video);
-      console.log(starttimestr);
+      // console.log(this.source_video);
+      // console.log(starttimestr);
     }
 
     // let str2 = image;
@@ -228,6 +307,9 @@ export class SearchedOutputComponent {
     console.log(this.startTime);
 
     this.source_video = 'http://' + window.location.hostname + ':8008/download?qfile=' + this.source_video;
+    // console.log(key);
+    this.synopsis = this.videoDictionary[key].synopsis;
+    // console.log(this.synopsis);
     // alert(this.source_video + " " + this.startTime);
     if (this.source_video.trim().length !== 0) {
       // this.source_video = this.videoDownloadService.downloadVideo(this.source_video, this.startTime);
@@ -239,7 +321,8 @@ export class SearchedOutputComponent {
       //   // videoPlayer.src = url;
       // });
       // alert(this.source_video);
-      this.openVideoWindow();
+      // this.openVideoWindow();
+      this.openVideoDialog();
     }
     else {
       alert("No video fetched!!");
@@ -391,8 +474,7 @@ export class SearchedOutputComponent {
       this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.selectedTopics, [], [], this.selectedScenes)
         .then(response => {
           console.log(response);
-          const data = response.location;
-          this.videoDictionary = this.prepareDictionary(data);
+          this.videoDictionary = this.prepareDictionary(response["location"], response["synopis"]);
           this.videoList = this.getVideoList(this.videoDictionary);
           this.showProgressBar = false;
           this.applyBlurEffect = false;

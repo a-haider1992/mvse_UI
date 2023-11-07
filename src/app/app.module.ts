@@ -13,13 +13,16 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FormsModule } from '@angular/forms';
 import { ErrorHandler } from '@angular/core';
 import { GlobalErrorHandler } from './error-handler.service';
+import { MatDialogModule } from '@angular/material/dialog';
+import { VideoDialogComponent } from './video-dialog/video-dialog.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     UploadComponent,
-    SearchedOutputComponent
+    SearchedOutputComponent,
+    VideoDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -28,6 +31,7 @@ import { GlobalErrorHandler } from './error-handler.service';
     BrowserAnimationsModule,
     MatProgressBarModule,
     FormsModule,
+    MatDialogModule,
   ],
   providers: [ImageBasedSearchService, DataSharingServiceService, { provide: ErrorHandler, useClass: GlobalErrorHandler }],
   bootstrap: [AppComponent]
