@@ -163,7 +163,7 @@ export class SearchedOutputComponent {
 
   prepareDictionary(
     segments: string[],
-    synopis: Record<string, string>
+    synopsis: Record<string, string>
   ): Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[], synopsis: string }> {
     const dictionary: Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[], synopsis: string }> = {};
 
@@ -199,8 +199,11 @@ export class SearchedOutputComponent {
           // Parse the hexadecimal key to an integer
           const parts_sub = parts[1].split('/');
           const synopsis_key = parts_sub[parts_sub.length - 1];
-          console.log(synopsis_key);
-          dictionary[key].synopsis = synopis[synopsis_key];
+          console.log("Key found -- " + synopsis_key);
+          if (synopsis && Object.prototype.hasOwnProperty.call(synopsis, synopsis_key)) {
+            dictionary[key].synopsis = synopsis[synopsis_key];
+          }
+          
         }
       }
     }
