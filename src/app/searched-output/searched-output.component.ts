@@ -21,9 +21,9 @@ export class SearchedOutputComponent {
 
   // frames: any[] = ["../assets/images/image.png", "../assets/images/logo.png", "../assets/images/image.png", "../assets/images/logo.png", "../assets/images/logo.png"];
   // audios: any[] = ["../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav", "../assets/audios/0.wav"];
-  videoList: string[] = [
-    '../assets/videos/test2.mp4', '../assets/videos/test3.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4'
-  ];
+  // videoList: string[] = [
+  //   '../assets/videos/test2.mp4', '../assets/videos/test3.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4'
+  // ];
   frames_stamp: any[] = ["10", "10", "10", "10", "10"];
   audios_stamp: any[] = ["10", "10", "10", "10", "10", "10"];
   // topics: { topic: string; selected: boolean }[] = [
@@ -32,7 +32,7 @@ export class SearchedOutputComponent {
   //   { topic: 'Topic 3', selected: false },
   // ];
   topics: { topic: string; selected: boolean }[] = [];
-  // videoList: any[] = [];
+  videoList: any[] = [];
   frames: any[] = [];
   audios: any[] = [];
   Scenes: any[] = [];
@@ -86,6 +86,7 @@ export class SearchedOutputComponent {
       console.log(this.frames_stamp);
       console.log(this.audios_stamp);
       this.videoList = [];
+      this.videoDictionary = {};
     }
   }
 
@@ -200,10 +201,18 @@ export class SearchedOutputComponent {
           const parts_sub = parts[1].split('/');
           const synopsis_key = parts_sub[parts_sub.length - 1];
           console.log("Key found -- " + synopsis_key);
-          if (synopsis && Object.prototype.hasOwnProperty.call(synopsis, synopsis_key)) {
-            dictionary[key].synopsis = synopsis[synopsis_key];
+          if (synopsis && synopsis_key in synopsis) {
+            const synopsisValue = synopsis[synopsis_key];
+
+            if (synopsisValue !== "") {
+              dictionary[key].synopsis = synopsisValue;
+            } else {
+              dictionary[key].synopsis = "No synopsis found.";
+            }
+          } else {
+            dictionary[key].synopsis = "No synopsis found.";
           }
-          
+
         }
       }
     }
@@ -265,7 +274,7 @@ export class SearchedOutputComponent {
         this.source_video = parts[0] + ".mp4";
         starttimestr = parts[parts.length - 2];
       }
-      console.log("Inside scene --" + this.source_video);
+      // console.log("Inside scene --" + this.source_video);
       // console.log(starttimestr);
     }
     else {
@@ -307,12 +316,12 @@ export class SearchedOutputComponent {
     // var starttime = parseFloat(starttimestr) / 25.0;
     // starttime = parseFloat(starttime.toFixed(2));
     this.startTime = parseFloat(starttimestr);
-    console.log(this.startTime);
+    // console.log(this.startTime);
 
     this.source_video = 'http://' + window.location.hostname + ':8008/download?qfile=' + this.source_video;
     // console.log(key);
     this.synopsis = this.videoDictionary[key].synopsis;
-    // console.log(this.synopsis);
+    console.log(this.synopsis);
     // alert(this.source_video + " " + this.startTime);
     if (this.source_video.trim().length !== 0) {
       // this.source_video = this.videoDownloadService.downloadVideo(this.source_video, this.startTime);
@@ -477,7 +486,7 @@ export class SearchedOutputComponent {
       this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.selectedTopics, [], [], this.selectedScenes)
         .then(response => {
           console.log(response);
-          this.videoDictionary = this.prepareDictionary(response["location"], response["synopis"]);
+          this.videoDictionary = this.prepareDictionary(response.location, response.synopis);
           this.videoList = this.getVideoList(this.videoDictionary);
           this.showProgressBar = false;
           this.applyBlurEffect = false;
