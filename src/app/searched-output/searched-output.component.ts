@@ -43,6 +43,7 @@ export class SearchedOutputComponent {
 
   data: any = {};
   source_video: string = '';
+  currentVideoId: string = '';
   startTime: any = 0;
   synopsis: string = 'No synopis found';
   showVideoOverlay = false;
@@ -95,7 +96,8 @@ export class SearchedOutputComponent {
       videoSrc: this.source_video,
       startTime: this.startTime,
       synopsis: this.synopsis,
-      otherInfo: this.videoDictionary
+      otherInfo: this.videoDictionary,
+      currentId: this.currentVideoId
     };
 
     const dialogRef = this.dialog.open(VideoDialogComponent, {
@@ -200,7 +202,7 @@ export class SearchedOutputComponent {
           // Parse the hexadecimal key to an integer
           const parts_sub = parts[1].split('/');
           const synopsis_key = parts_sub[parts_sub.length - 1];
-          console.log("Key found -- " + synopsis_key);
+          console.log(synopsis);
           if (synopsis && synopsis_key in synopsis) {
             const synopsisValue = synopsis[synopsis_key];
 
@@ -267,11 +269,12 @@ export class SearchedOutputComponent {
     let video_name = tmpArray[tmpArray.length - 1];
     let key_parts = str2.split("_");
     let key = key_parts[0] + "_" + key_parts[1];
-    console.log(video_name);
+    // console.log(video_name);
     if (video_name.includes("scene") || video_name.includes("face") || video_name.includes("audio") || video_name.includes("object") || video_name.includes("keyword")) {
       const parts = video_name.split("_");
       if (parts.length >= 4) {
         this.source_video = parts[0] + ".mp4";
+        this.currentVideoId = key;
         starttimestr = parts[parts.length - 2];
       }
       // console.log("Inside scene --" + this.source_video);
@@ -321,7 +324,7 @@ export class SearchedOutputComponent {
     this.source_video = 'http://' + window.location.hostname + ':8008/download?qfile=' + this.source_video;
     // console.log(key);
     this.synopsis = this.videoDictionary[key].synopsis;
-    console.log(this.synopsis);
+    console.log("Inside poster click "+this.synopsis);
     // alert(this.source_video + " " + this.startTime);
     if (this.source_video.trim().length !== 0) {
       // this.source_video = this.videoDownloadService.downloadVideo(this.source_video, this.startTime);
