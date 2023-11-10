@@ -25,7 +25,7 @@ export class VideoDialogComponent implements OnInit, AfterViewInit {
   videoSrc: any = "";
   synopis: any = "";
   startTime: any = 0;
-  startTimes: any[] = ["0.5", "0.5"];
+  startTimes: string[] = [];
 
   ngOnInit(): void {
     this.videoData = this.data["otherInfo"];
@@ -35,7 +35,7 @@ export class VideoDialogComponent implements OnInit, AfterViewInit {
     this.currentVideoId = this.data["currentId"];
     if (this.videoData && (this.currentVideoId in this.videoData) && ("startTime" in this.videoData[this.currentVideoId])) {
       this.startTimes = this.videoData[this.currentVideoId]["startTime"];
-      this.startTimes = this.startTimes.slice(1);
+      this.startTimes = this.secondsListToHMSList(this.startTimes.slice(1));
     }
     // this.setInitialTime();
     // console.log(this.data["otherInfo"]);
@@ -56,11 +56,12 @@ export class VideoDialogComponent implements OnInit, AfterViewInit {
   closeDialog(): void {
     this.dialogRef.close();
   }
-  seekToStartTime(time: any) {
+  seekToStartTime(time: string) {
     const videoElement = this.videoPlayer.nativeElement as HTMLVideoElement;
 
     if (videoElement) {
-      const parsedTime = parseFloat(time);
+      // const parsedTime = parseFloat(time);
+      const parsedTime = this.HMSToSeconds(time);
       console.log(parsedTime); // Log the parsed time to check its value
       videoElement.currentTime = parsedTime;
       videoElement.play();
@@ -75,6 +76,26 @@ export class VideoDialogComponent implements OnInit, AfterViewInit {
       videoElement.currentTime = parseFloat(this.startTime);
       videoElement.play();
     }
+  }
+
+  secondsListToHMSList(secondsList: string[]): string[] {
+    return secondsList.map((secondsString) => {
+      const seconds = parseFloat(secondsString);
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const remainingSeconds = Math.floor(seconds % 60);
+  
+      const formattedHours = hours.toString().padStart(2, '0');
+      const formattedMinutes = minutes.toString().padStart(2, '0');
+      const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
+  
+      return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    });
+  }
+  
+  HMSToSeconds(hms: string): number {
+    const [hours, minutes, seconds] = hms.split(':').map(Number);
+    return hours * 3600 + minutes * 60 + seconds;
   }
 
 }
