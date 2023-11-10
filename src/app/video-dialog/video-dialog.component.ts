@@ -26,6 +26,7 @@ export class VideoDialogComponent implements OnInit, AfterViewInit {
   synopis: any = "";
   startTime: any = 0;
   startTimes: string[] = [];
+  videoIdForDisplay: any = "";
 
   ngOnInit(): void {
     this.videoData = this.data["otherInfo"];
@@ -36,6 +37,8 @@ export class VideoDialogComponent implements OnInit, AfterViewInit {
     if (this.videoData && (this.currentVideoId in this.videoData) && ("startTime" in this.videoData[this.currentVideoId])) {
       this.startTimes = this.videoData[this.currentVideoId]["startTime"];
       this.startTimes = this.secondsListToHMSList(this.startTimes.slice(1));
+      this.videoIdForDisplay = this.currentVideoId.split("/");
+      this.videoIdForDisplay = this.videoIdForDisplay[this.videoIdForDisplay.length - 1];
     }
     // this.setInitialTime();
     // console.log(this.data["otherInfo"]);
