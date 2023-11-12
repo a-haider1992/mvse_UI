@@ -104,6 +104,8 @@ export class UploadComponent implements OnDestroy {
     "hair drier",
     "toothbrush"
   ].sort();
+  selectedArchive: string = "Rewind";
+  archiveList: string[] = ["Rewind", "Old"];
   keywords: string[] = [];
   objects_categories: string[] = [];
 

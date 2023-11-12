@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,6 +33,7 @@ import { VideoDialogComponent } from './video-dialog/video-dialog.component';
     MatProgressBarModule,
     FormsModule,
     MatDialogModule,
+    MatSelectModule,
   ],
   providers: [ImageBasedSearchService, DataSharingServiceService, { provide: ErrorHandler, useClass: GlobalErrorHandler }],
   bootstrap: [AppComponent]

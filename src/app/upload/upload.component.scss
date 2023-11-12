@@ -14,4 +14,20 @@
   a:hover {
     text-decoration: none; /* Remove underline on hover (optional) */
   }
+  .lower-z-index{
+    z-index: 1;
+  }
+
+  .bootstrap-dropdown {
+    border-radius: 8px; /* Bootstrap border-radius */
+    width: 150px;
+    z-index: 99;
+    margin-right: 15px;
+    height: 100px;
+  }
+  
+  .bootstrap-dropdown-select {
+    border-radius: 8px; /* Bootstrap border-radius for the dropdown itself */
+  }
+  
   

@@ -174,7 +174,7 @@ export class SearchedOutputComponent {
       for (const segment of segments) {
         const parts = segment.split('_');
         if (parts.length >= 4) {
-          console.log("Preparing dictionary!");
+          // console.log("Preparing dictionary!");
           const key = parts[0] + "_" + parts[1];
           const modality = parts[2];
           const seg_id = parts[3];
@@ -202,7 +202,7 @@ export class SearchedOutputComponent {
           // Parse the hexadecimal key to an integer
           const parts_sub = parts[1].split('/');
           const synopsis_key = parts_sub[parts_sub.length - 1];
-          console.log(synopsis);
+          // console.log(synopsis);
           if (synopsis && synopsis_key in synopsis) {
             const synopsisValue = synopsis[synopsis_key];
 
@@ -489,6 +489,8 @@ export class SearchedOutputComponent {
       this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.selectedTopics, [], [], this.selectedScenes)
         .then(response => {
           console.log(response);
+          console.log(response.location);
+          console.log(response.synopis);
           this.videoDictionary = this.prepareDictionary(response.location, response.synopis);
           this.videoList = this.getVideoList(this.videoDictionary);
           this.showProgressBar = false;
