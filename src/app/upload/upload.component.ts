@@ -303,27 +303,61 @@ export class UploadComponent implements OnDestroy {
   }
 
 
+  // isImageFile(fileName: string): boolean {
+  //   return fileName.toLowerCase().endsWith('.jpg')
+  //     || fileName.toLowerCase().endsWith('.jpeg')
+  //     || fileName.toLowerCase().endsWith('.png')
+  //     || fileName.toLowerCase().endsWith('.gif')
+  //     || fileName.toLowerCase().endsWith('.bmp');
+  // }
 
   isImageFile(fileName: string): boolean {
-    return fileName.toLowerCase().endsWith('.jpg')
-      || fileName.toLowerCase().endsWith('.jpeg')
-      || fileName.toLowerCase().endsWith('.png')
-      || fileName.toLowerCase().endsWith('.gif')
-      || fileName.toLowerCase().endsWith('.bmp');
+    const trimmedFileName = fileName.trim();
+    const withoutSpaces = trimmedFileName.replace(/\s/g, ''); // Replace spaces with an empty string
+    const lowerCaseFileName = withoutSpaces.toLowerCase();
+  
+    return lowerCaseFileName.endsWith('.jpg') ||
+           lowerCaseFileName.endsWith('.jpeg') ||
+           lowerCaseFileName.endsWith('.png') ||
+           lowerCaseFileName.endsWith('.gif') ||
+           lowerCaseFileName.endsWith('.bmp');
   }
 
   isVideoFile(fileName: string): boolean {
-    return fileName.toLowerCase().endsWith('.mp4')
-      || fileName.toLowerCase().endsWith('.avi')
-      || fileName.toLowerCase().endsWith('.mov')
-      || fileName.toLowerCase().endsWith('.wmv')
-      || fileName.toLowerCase().endsWith('.mkv');
+    const trimmedFileName = fileName.trim();
+    const withoutSpaces = trimmedFileName.replace(/\s/g, ''); // Replace spaces with an empty string
+    const lowerCaseFileName = withoutSpaces.toLowerCase();
+  
+    return lowerCaseFileName.endsWith('.mp4') ||
+           lowerCaseFileName.endsWith('.avi') ||
+           lowerCaseFileName.endsWith('.mov') ||
+           lowerCaseFileName.endsWith('.wmv') ||
+           lowerCaseFileName.endsWith('.mkv');
   }
-
+  
   isAudioFile(fileName: string): boolean {
-    return fileName.toLowerCase().endsWith('.wav')
-      || fileName.toLowerCase().endsWith('.wav');
+    const trimmedFileName = fileName.trim();
+    const withoutSpaces = trimmedFileName.replace(/\s/g, ''); // Replace spaces with an empty string
+    const lowerCaseFileName = withoutSpaces.toLowerCase();
+  
+    return lowerCaseFileName.endsWith('.wav') ||
+           lowerCaseFileName.endsWith('.mp3');
   }
+  
+  
+
+  // isVideoFile(fileName: string): boolean {
+  //   return fileName.toLowerCase().endsWith('.mp4')
+  //     || fileName.toLowerCase().endsWith('.avi')
+  //     || fileName.toLowerCase().endsWith('.mov')
+  //     || fileName.toLowerCase().endsWith('.wmv')
+  //     || fileName.toLowerCase().endsWith('.mkv');
+  // }
+
+  // isAudioFile(fileName: string): boolean {
+  //   return fileName.toLowerCase().endsWith('.wav')
+  //     || fileName.toLowerCase().endsWith('.wav');
+  // }
 
   ngOnDestroy(): void {
     // Revoke all object URLs in the objectURLs array

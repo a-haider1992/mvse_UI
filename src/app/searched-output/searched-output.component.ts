@@ -5,6 +5,7 @@ import { ImageBasedSearchService } from '../image-based-search.service';
 import { MatDialog } from '@angular/material/dialog';
 import { VideoDialogComponent } from '../video-dialog/video-dialog.component';
 import { takeWhile } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-searched-output',
@@ -13,7 +14,7 @@ import { takeWhile } from 'rxjs';
 })
 export class SearchedOutputComponent {
 
-  constructor(private dataSharingService: DataSharingServiceService,
+  constructor(private router: Router, private dataSharingService: DataSharingServiceService,
     private videoDownloadService: VideoDownloadService, private imageBasedSearch: ImageBasedSearchService, private dialog: MatDialog) { }
   selectedImages: any[] = [];
   selectedAudios: any[] = [];
@@ -477,6 +478,10 @@ export class SearchedOutputComponent {
     }
     console.log(this.selectedAudios);
     ;
+  }
+
+  redirectToFirstPage() {
+    this.router.navigate(['/']); // Navigate to the first page
   }
 
   search(): void {
