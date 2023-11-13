@@ -3,3 +3,7 @@
     z-index: 9999;
     position: relative;
 }
+.selected {
+    opacity: 0.7; /* Customize the opacity for selected images */
+    border-style: dashed;
+  }

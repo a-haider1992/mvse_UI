@@ -26,7 +26,9 @@ export class VideoDialogComponent implements OnInit, AfterViewInit {
   synopis: any = "";
   startTime: any = 0;
   startTimes: string[] = [];
+  modality: string[] = [];
   videoIdForDisplay: any = "";
+  highlighted: boolean[] = [];
 
   ngOnInit(): void {
     this.videoData = this.data["otherInfo"];
@@ -36,6 +38,16 @@ export class VideoDialogComponent implements OnInit, AfterViewInit {
     this.currentVideoId = this.data["currentId"];
     if (this.videoData && (this.currentVideoId in this.videoData) && ("startTime" in this.videoData[this.currentVideoId])) {
       this.startTimes = this.videoData[this.currentVideoId]["startTime"];
+      this.modality = this.videoData[this.currentVideoId]["modality"];
+      for(let i = 0; i < this.modality.length; i++){
+        if(this.modality[i] === "multiModal"){
+          this.highlighted.push(true);
+        }
+        else{
+          this.highlighted.push(false);
+        }
+      }
+      console.log(this.highlighted);
       this.startTimes = this.secondsListToHMSList(this.startTimes.slice(1));
       this.videoIdForDisplay = this.currentVideoId.split("/");
       this.videoIdForDisplay = this.videoIdForDisplay[this.videoIdForDisplay.length - 1];
@@ -96,9 +108,28 @@ export class VideoDialogComponent implements OnInit, AfterViewInit {
     });
   }
   
+  // HMSToSeconds(hms: string): number {
+  //   const [hours, minutes, seconds] = hms.split(':').map(Number);
+  //   return hours * 3600 + minutes * 60 + seconds;
+  // }
+
   HMSToSeconds(hms: string): number {
     const [hours, minutes, seconds] = hms.split(':').map(Number);
-    return hours * 3600 + minutes * 60 + seconds;
+  
+    if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+      console.error('Invalid HMS format:', hms);
+      return 0; // Return 0 or another default value indicating an error
+    }
+  
+    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+  
+    if (!isFinite(totalSeconds)) {
+      console.error('Invalid total seconds:', totalSeconds);
+      return 0; // Return 0 or another default value indicating an error
+    }
+  
+    return totalSeconds;
   }
+  
 
 }

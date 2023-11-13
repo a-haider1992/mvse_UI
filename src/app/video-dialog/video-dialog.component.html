@@ -17,11 +17,11 @@
       </td>
     </tr>
     <tr>
-      <mat-dialog-actions>
+      <mat-dialog-actions *ngIf="startTimes.length > 0">
+        <span>Matched time-stamps: </span>
         <div *ngFor="let time of startTimes; let i = index" class="overflow-auto" style="max-height: 100px;">
-          <button (click)="seekToStartTime(time)" class="btn m-1" style="background-color: deepskyblue;">Play from :
-            {{time}}</button>
-        </div>
+          <button (click)="seekToStartTime(time)" [ngClass]="{'selected': highlighted[i]}" class="btn m-1" style="background-color: deepskyblue;">{{time}}</button>
+        </div>        
       </mat-dialog-actions>
     </tr>
   </table>

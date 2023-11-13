@@ -490,8 +490,8 @@ export class SearchedOutputComponent {
         .then(response => {
           console.log(response);
           console.log(response.location);
-          console.log(response.synopis);
-          this.videoDictionary = this.prepareDictionary(response.location, response.synopis);
+          console.log(response["synopsis"]);
+          this.videoDictionary = this.prepareDictionary(response.location, response["synopsis"]);
           this.videoList = this.getVideoList(this.videoDictionary);
           this.showProgressBar = false;
           this.applyBlurEffect = false;
