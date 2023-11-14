@@ -39,9 +39,11 @@ export class VideoDialogComponent implements OnInit, AfterViewInit {
     if (this.videoData && (this.currentVideoId in this.videoData) && ("startTime" in this.videoData[this.currentVideoId])) {
       this.startTimes = this.videoData[this.currentVideoId]["startTime"];
       this.modality = this.videoData[this.currentVideoId]["modality"];
+      console.log(this.modality);
       for(let i = 0; i < this.modality.length; i++){
-        if(this.modality[i] === "multiModal"){
+        if(this.modality[i] === "multimodal"){
           this.highlighted.push(true);
+          console.log("modality is "+this.modality[i]);
         }
         else{
           this.highlighted.push(false);
@@ -83,15 +85,38 @@ export class VideoDialogComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // setInitialTime() {
+  //   const videoElement = this.videoPlayer.nativeElement as HTMLVideoElement;
+
+  //   if (videoElement) {
+  //     // Set the initial time (e.g., 30 seconds)
+  //     videoElement.currentTime = parseFloat(this.startTime);
+  //     videoElement.play();
+  //   }
+  // }
+
   setInitialTime() {
     const videoElement = this.videoPlayer.nativeElement as HTMLVideoElement;
-
+  
     if (videoElement) {
-      // Set the initial time (e.g., 30 seconds)
-      videoElement.currentTime = parseFloat(this.startTime);
+      // Parse the start time
+      const startTime = parseFloat(this.startTime);
+  
+      // Check if the parsed time is a finite number
+      if (isNaN(startTime) || !isFinite(startTime)) {
+        console.error("Invalid start time. Setting default start time to 0.");
+        // Set the initial time to 0
+        videoElement.currentTime = 0;
+      } else {
+        // Set the initial time to the parsed value
+        videoElement.currentTime = startTime;
+      }
+  
+      // Start playing the video
       videoElement.play();
     }
   }
+  
 
   secondsListToHMSList(secondsList: string[]): string[] {
     return secondsList.map((secondsString) => {

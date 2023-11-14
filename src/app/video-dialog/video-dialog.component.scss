@@ -4,6 +4,6 @@
     position: relative;
 }
 .selected {
-    opacity: 0.7; /* Customize the opacity for selected images */
-    border-style: dashed;
+    border-color: red;
+    border-width: 3px;
   }

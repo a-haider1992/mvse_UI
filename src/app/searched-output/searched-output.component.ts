@@ -178,6 +178,9 @@ export class SearchedOutputComponent {
           // console.log("Preparing dictionary!");
           const key = parts[0] + "_" + parts[1];
           const modality = parts[2];
+          if (modality === 'multimodal') {
+            console.log(modality);
+          }
           const seg_id = parts[3];
           const startTime = parts[4];
           const endTime_with_extension = parts[parts.length - 1];
@@ -271,7 +274,7 @@ export class SearchedOutputComponent {
     let key_parts = str2.split("_");
     let key = key_parts[0] + "_" + key_parts[1];
     // console.log(video_name);
-    if (video_name.includes("scene") || video_name.includes("face") || video_name.includes("audio") || video_name.includes("object") || video_name.includes("keyword")) {
+    if (video_name.includes("scene") || video_name.includes("face") || video_name.includes("audio") || video_name.includes("object") || video_name.includes("keyword") || video_name.includes("multimodal")) {
       const parts = video_name.split("_");
       if (parts.length >= 4) {
         this.source_video = parts[0] + ".mp4";
@@ -325,7 +328,7 @@ export class SearchedOutputComponent {
     this.source_video = 'http://' + window.location.hostname + ':8008/download?qfile=' + this.source_video;
     // console.log(key);
     this.synopsis = this.videoDictionary[key].synopsis;
-    console.log("Inside poster click "+this.synopsis);
+    console.log("Inside poster click " + this.synopsis);
     // alert(this.source_video + " " + this.startTime);
     if (this.source_video.trim().length !== 0) {
       // this.source_video = this.videoDownloadService.downloadVideo(this.source_video, this.startTime);
