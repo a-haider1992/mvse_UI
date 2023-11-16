@@ -149,7 +149,7 @@ const forwardFilenamesV2 = function (command, facenames, audionames, scenenames,
 		res.pipe(server_result, { end: true });
 	});
 
-	var to_send = { "facenames": facenames, "scenenames": scenenames, "audionames": audionames, "objectnames": objectnames, "keywords": keywords };
+	var to_send = { "facenames": facenames, "scenenames": scenenames, "audionames": audionames, "objectnames": objectnames, "soundeventfiles": [] , "eventnames": [], "keywords": keywords };
 
 	console.log("send query to backend V2");
 	console.log(JSON.stringify(to_send));
@@ -257,6 +257,13 @@ const saveFilesV2 = function (uploadDir, uploadCommand, req, res) {
 		else if (field == "audionames") {
 			console.log("audionames value is  " + path.basename(value));
 			audionames.push(value);
+		}
+		else if(field == "soundeventfiles"){
+			//
+		}
+
+		else if(field == "eventnames"){
+			//
 		}
 		else if (field == "scenenames") {
 			console.log("scenenames value is  " + path.basename(value));

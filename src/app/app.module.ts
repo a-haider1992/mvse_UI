@@ -16,6 +16,7 @@ import { ErrorHandler } from '@angular/core';
 import { GlobalErrorHandler } from './error-handler.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { VideoDialogComponent } from './video-dialog/video-dialog.component';
+import { SoundEventDialogComponent } from './sound-event-dialog/sound-event-dialog.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { VideoDialogComponent } from './video-dialog/video-dialog.component';
     AppComponent,
     UploadComponent,
     SearchedOutputComponent,
-    VideoDialogComponent
+    VideoDialogComponent,
+    SoundEventDialogComponent
   ],
   imports: [
     BrowserModule,

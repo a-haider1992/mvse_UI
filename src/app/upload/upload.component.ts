@@ -2,6 +2,9 @@ import { Component, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ImageBasedSearchService } from '../image-based-search.service';
 import { DataSharingServiceService } from '../data-sharing-service.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SoundEventDialogComponent } from '../sound-event-dialog/sound-event-dialog.component';
+
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
@@ -14,6 +17,7 @@ export class UploadComponent implements OnDestroy {
   selectedAudios: File[] = [];
   objectURLs: string[] = []; // Array to store the object URLs
   selectedStatuses: boolean[] = [];
+  selectedSoundEvent: boolean[] = [];
   showProgressBar: boolean = false;
   applyBlurEffect: boolean = false;
   applyBlurEffect_go_btn: boolean = false;
@@ -115,7 +119,7 @@ export class UploadComponent implements OnDestroy {
     // this.selectedFiles = this.keywords = this.objects_categories = [];
   }
 
-  constructor(private router: Router, private imageBasedSearch: ImageBasedSearchService, private dataSharingService: DataSharingServiceService) { }
+  constructor(private router: Router, private imageBasedSearch: ImageBasedSearchService, private dataSharingService: DataSharingServiceService, private dialog: MatDialog) { }
 
   // Function to show the progress bar and apply blur effect
   showProgressBarWithBlur() {
@@ -237,6 +241,7 @@ export class UploadComponent implements OnDestroy {
 
       for (let i = 0; i < inputElement.files.length; i++) {
         this.selectedStatuses.push(false);
+        this.selectedSoundEvent.push(false);
       };
 
       // Filter files based on their extensions
@@ -253,8 +258,16 @@ export class UploadComponent implements OnDestroy {
         alert("Invalid file type!!")
       }
 
+      if(this.selectedAudios.length > 0){
+        // this.openSoundEventDialog();
+      }
+
       this.objectURLs = this.selectedFiles.map(file => URL.createObjectURL(file));
     }
+  }
+
+  updateSoundEventStatus(index: number, event: any): void{
+    this.selectedSoundEvent[index] = event.target.checked;
   }
 
   updateSelectedStatus(index: number, event: any): void {
@@ -315,36 +328,36 @@ export class UploadComponent implements OnDestroy {
     const trimmedFileName = fileName.trim();
     const withoutSpaces = trimmedFileName.replace(/\s/g, ''); // Replace spaces with an empty string
     const lowerCaseFileName = withoutSpaces.toLowerCase();
-  
+
     return lowerCaseFileName.endsWith('.jpg') ||
-           lowerCaseFileName.endsWith('.jpeg') ||
-           lowerCaseFileName.endsWith('.png') ||
-           lowerCaseFileName.endsWith('.gif') ||
-           lowerCaseFileName.endsWith('.bmp');
+      lowerCaseFileName.endsWith('.jpeg') ||
+      lowerCaseFileName.endsWith('.png') ||
+      lowerCaseFileName.endsWith('.gif') ||
+      lowerCaseFileName.endsWith('.bmp');
   }
 
   isVideoFile(fileName: string): boolean {
     const trimmedFileName = fileName.trim();
     const withoutSpaces = trimmedFileName.replace(/\s/g, ''); // Replace spaces with an empty string
     const lowerCaseFileName = withoutSpaces.toLowerCase();
-  
+
     return lowerCaseFileName.endsWith('.mp4') ||
-           lowerCaseFileName.endsWith('.avi') ||
-           lowerCaseFileName.endsWith('.mov') ||
-           lowerCaseFileName.endsWith('.wmv') ||
-           lowerCaseFileName.endsWith('.mkv');
+      lowerCaseFileName.endsWith('.avi') ||
+      lowerCaseFileName.endsWith('.mov') ||
+      lowerCaseFileName.endsWith('.wmv') ||
+      lowerCaseFileName.endsWith('.mkv');
   }
-  
+
   isAudioFile(fileName: string): boolean {
     const trimmedFileName = fileName.trim();
     const withoutSpaces = trimmedFileName.replace(/\s/g, ''); // Replace spaces with an empty string
     const lowerCaseFileName = withoutSpaces.toLowerCase();
-  
+
     return lowerCaseFileName.endsWith('.wav') ||
-           lowerCaseFileName.endsWith('.mp3');
+      lowerCaseFileName.endsWith('.mp3');
   }
-  
-  
+
+
 
   // isVideoFile(fileName: string): boolean {
   //   return fileName.toLowerCase().endsWith('.mp4')
@@ -363,6 +376,21 @@ export class UploadComponent implements OnDestroy {
     // Revoke all object URLs in the objectURLs array
     this.objectURLs.forEach(url => URL.revokeObjectURL(url));
   }
+
+  openSoundEventDialog(): void {
+    const data = {
+    };
+
+    const dialogRef = this.dialog.open(SoundEventDialogComponent, {
+      data: data,
+      width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      // Handle dialog close event if needed
+    });
+  }
+
   clearImages() {
     this.selectedImages = this.selectedVideos = this.selectedAudios = [];
     // Reset the file input to clear the selected files
@@ -374,7 +402,7 @@ export class UploadComponent implements OnDestroy {
     // window.location.reload();
   }
 
-  home(){
+  home() {
     alert("Feature is not implemented!");
   }
 
@@ -435,7 +463,7 @@ export class UploadComponent implements OnDestroy {
       // this.router.navigateByUrl('/searchResults');
       // Use setTimeout to create a delay and allow the progress bar to be displayed
       setTimeout(() => {
-        this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.keywords, this.objects_categories, this.selectedStatuses, [])
+        this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.keywords, this.objects_categories, this.selectedStatuses, [], this.selectedSoundEvent)
           .then(response => {
             console.log(response);
             const data = response;

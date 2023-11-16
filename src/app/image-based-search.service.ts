@@ -53,7 +53,8 @@ export class ImageBasedSearchService {
     _keywords: string[],
     _objects: string[],
     _sceneSelectedStatus: boolean[],
-    _selectedScenes: string[]
+    _selectedScenes: string[],
+    _selectedSoundStatus: boolean[],
   ): Promise<any> {
     // Main Endpoint
     const formData = new FormData();
@@ -89,7 +90,12 @@ export class ImageBasedSearchService {
         if (_uploadedAudios[i] instanceof File) {
           formData.append('file', _uploadedAudios[i]);
           const file_name = (_uploadedAudios[i] as File).name.toString();
-          formData.append('audionames', file_name);
+          if(_selectedSoundStatus[i] === true){
+            formData.append("soundeventfiles", file_name);
+          }
+          else{
+            formData.append('audionames', file_name);
+          }
         } else if (typeof _uploadedAudios[i] === 'string') {
           formData.append('audionames', _uploadedAudios[i] as string);
         }
