@@ -134,7 +134,7 @@ const forwardFilenames2 = function (command, filenames, keywords, server_result)
 
 }
 
-const forwardFilenamesV2 = function (command, facenames, audionames, scenenames, objectnames, keywords, server_result) {
+const forwardFilenamesV2 = function (command, facenames, audionames, scenenames, objectnames, soundeventnames, keywords, server_result) {
 
 
 	var options = {
@@ -149,7 +149,7 @@ const forwardFilenamesV2 = function (command, facenames, audionames, scenenames,
 		res.pipe(server_result, { end: true });
 	});
 
-	var to_send = { "facenames": facenames, "scenenames": scenenames, "audionames": audionames, "objectnames": objectnames, "soundeventfiles": [] , "eventnames": [], "keywords": keywords };
+	var to_send = { "facenames": facenames, "scenenames": scenenames, "audionames": audionames, "objectnames": objectnames, "soundeventfiles": soundeventnames , "eventnames": [], "keywords": keywords };
 
 	console.log("send query to backend V2");
 	console.log(JSON.stringify(to_send));
@@ -240,6 +240,8 @@ const saveFilesV2 = function (uploadDir, uploadCommand, req, res) {
 
 	var keywords = [];
 
+	var soundeventfiles = [];
+
 	var endReceived = false;
 
 	form.uploadDir = uploadDir;
@@ -259,7 +261,8 @@ const saveFilesV2 = function (uploadDir, uploadCommand, req, res) {
 			audionames.push(value);
 		}
 		else if(field == "soundeventfiles"){
-			//
+			console.log("soundevent filename " + path.basename(value));
+			soundeventfiles.push(value);
 		}
 
 		else if(field == "eventnames"){
@@ -294,6 +297,7 @@ const saveFilesV2 = function (uploadDir, uploadCommand, req, res) {
 			var n_audionames = [];//new audo file name 
 			var n_scenenames = [];// new scene file name 
 			var n_objectnames = [];// new object file name
+			var n_soundeventnames = [];
 
 			for (let i = 0; i < files.length; i++)// check witch modal this file belong to, and record the new file name 
 			{
@@ -316,6 +320,10 @@ const saveFilesV2 = function (uploadDir, uploadCommand, req, res) {
 					facenames = facenames.filter(item => item !== oldname);
 					n_facenames.push(files[i].newFilename);
 				}
+				else if(soundeventfiles.includes(oldname)){
+					soundeventfiles = soundeventfiles.filter(item => item !== oldname);
+					n_soundeventnames.push(files[i].newFilename);
+				}
 			}
 			// if there are some filename do not in files, it means that this name is just a name from the server, not the file upload by browser
 			if (facenames.length > 0) {
@@ -330,9 +338,12 @@ const saveFilesV2 = function (uploadDir, uploadCommand, req, res) {
 			if (scenenames.length > 0) {
 				n_scenenames = n_scenenames.concat(scenenames);
 			}
-			console.log("Object Names: " + n_objectnames);
+			if (n_soundeventnames.length > 0){
+				n_soundeventnames = n_soundeventnames.concat(soundeventfiles);
+			}
+			console.log("Sound event files: " + n_soundeventnames);
 			//function (command, facenames,audionames,scenenames,objectnames,keywords,server_result)
-			forwardFilenamesV2(uploadCommand, n_facenames, n_audionames, n_scenenames, n_objectnames, keywords, res);
+			forwardFilenamesV2(uploadCommand, n_facenames, n_audionames, n_scenenames, n_objectnames, n_soundeventnames, keywords, res);
 		}
 	});
 	form.parse(req);
