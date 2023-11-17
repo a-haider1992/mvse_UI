@@ -8,6 +8,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class SoundEventDialogComponent implements OnInit {
 
+  msg: string = 'Default message!';
+
   constructor(
     public dialogRef: MatDialogRef<SoundEventDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -22,7 +24,7 @@ export class SoundEventDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+    this.msg = this.data["msg"];
   }
 
 }

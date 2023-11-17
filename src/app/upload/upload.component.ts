@@ -250,17 +250,19 @@ export class UploadComponent implements OnDestroy {
       this.selectedAudios = this.selectedFiles.filter(file => this.isAudioFile(file.name));
 
       if (this.selectedImages.length > 0 && this.selectedVideos.length > 0) {
-        alert("Eiher image(s) or video(s) can be choosen!!")
-        this.clearImages()
+        // alert("Eiher image(s) or video(s) can be choosen!!")
+        this.openSoundEventDialog("Eiher image(s) or video(s) can be choosen!");
+        this.clearImages();
       }
 
-      if (this.selectedImages.length == 0 && this.selectedAudios.length == 0 && this.selectedVideos.length == 0) {
-        alert("Invalid file type!!")
+      else if (this.selectedImages.length == 0 && this.selectedAudios.length == 0 && this.selectedVideos.length == 0) {
+        // alert("Invalid file type!!");
+        this.openSoundEventDialog("Invalid file type!");
       }
 
-      if(this.selectedAudios.length > 0){
-        // this.openSoundEventDialog();
-      }
+      // if(this.selectedAudios.length > 0){
+      //   // this.openSoundEventDialog();
+      // }
 
       this.objectURLs = this.selectedFiles.map(file => URL.createObjectURL(file));
     }
@@ -377,8 +379,9 @@ export class UploadComponent implements OnDestroy {
     this.objectURLs.forEach(url => URL.revokeObjectURL(url));
   }
 
-  openSoundEventDialog(): void {
+  openSoundEventDialog(msg: string): void {
     const data = {
+      msg: msg
     };
 
     const dialogRef = this.dialog.open(SoundEventDialogComponent, {
@@ -429,12 +432,14 @@ export class UploadComponent implements OnDestroy {
     this.showProgressBarWithBlur();
 
     if (this.selectedFiles.length == 0 && this.keywords.length == 0 && this.objects_categories.length == 0) {
-      alert("No search criteria specified!");
+      // alert("No search criteria specified!");
+      this.openSoundEventDialog("No search criteria specified!");
       this.hideProgressBar();
       return;
     }
     if (this.selectedVideos.length >= 1 && ((this.selectedImages.length >= 1) || (this.selectedAudios.length >= 1))) {
-      alert("Searching and video analysis is not supported, simultaneously!");
+      // alert("Searching and video analysis is not supported, simultaneously!");
+      this.openSoundEventDialog("Searching and video analysis is not supported, simultaneously!");
       this.hideProgressBar();
       return;
     }
@@ -455,6 +460,7 @@ export class UploadComponent implements OnDestroy {
           .catch(error => {
             console.error(error);
             this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
+            this.openSoundEventDialog("Error from the API server!");
           });
       }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
     }
@@ -474,6 +480,7 @@ export class UploadComponent implements OnDestroy {
           .catch(error => {
             console.error(error);
             this.hideProgressBar(); // Ensure the progress bar is hidden in case of an error
+            this.openSoundEventDialog("Error from the API server!");
           });
       }, 100); // Adjust the delay time (milliseconds) as needed, e.g., 100ms
     }
