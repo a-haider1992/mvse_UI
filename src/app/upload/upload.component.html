@@ -59,7 +59,7 @@
                                     <button (click)="clearImages()" class="btn"
                                         style="width: 70px;height: 70px;background-color: deepskyblue;">Clear</button>
 
-                                    <div class="input-group mt-1" *ngIf="textboxOpen && !dropdownOpen">
+                                    <!-- <div class="input-group mt-1" *ngIf="textboxOpen && !dropdownOpen">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"
                                                 style="color: deepskyblue;">Keyword:</span>
@@ -69,7 +69,28 @@
                                             aria-label="Username" aria-describedby="basic-addon1">
                                         <button (click)="addKeywordsV2(textBoxValue)" class="btn"
                                             style="background-color: deepskyblue;">Add</button>
+                                    </div> -->
+
+                                    <div class="input-group mt-1" *ngIf="textboxOpen && !dropdownOpen">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1"
+                                                style="color: deepskyblue;">Keyword:</span>
+                                        </div>
+                                        <input type="text" class="form-control"
+                                            placeholder="A keyword or keywords separated by semicolon only"
+                                            aria-label="Username" aria-describedby="basic-addon1" matInput
+                                            [(ngModel)]="textBoxValue" [formControl]="textBoxControl"
+                                            [matAutocomplete]="auto" />
+                                        <mat-autocomplete #auto="matAutocomplete">
+                                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                                                {{ option }}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        <button (click)="addKeywordsV2(textBoxValue)" class="btn"
+                                            style="background-color: deepskyblue;">Add</button>
                                     </div>
+
+
                                     <div *ngIf="dropdownOpen && !textboxOpen">
                                         <button class="btn btn-primary dropdown-toggle"
                                             style="background-color: deepskyblue;" id="dropdownMenuButton" type="button"
