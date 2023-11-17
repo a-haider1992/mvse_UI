@@ -109,11 +109,14 @@
                         </div>
                     </div>
                     <div class="container" style="display: flex;">
-                        <div class="row p-1" *ngIf="keywords.length > 0">
-                            <strong>Keywords:</strong>
-                            <div style="max-width: 100px; max-height: 150px; overflow: auto;">
+                        <div class="row p-1" *ngIf="keywords.length > 0 || events.length > 0">
+                            <strong>Keywords/Sound events:</strong>
+                            <div style="max-width: 150px; max-height: 150px; overflow: auto;">
                                 <div *ngFor="let keyword of keywords">
                                     {{ keyword }}
+                                </div>
+                                <div *ngFor="let event of events">
+                                    {{ event }}
                                 </div>
                             </div>
                         </div>
