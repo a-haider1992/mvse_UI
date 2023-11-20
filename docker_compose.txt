@@ -1,0 +1,1 @@
+docker-compose -f /data/BBC/Demo_v15/ai_lab_v15_angular/docker-compose_ai_lab_v15_angular.yml --env-file /data/BBC/Demo_v15/ai_lab_v15_angular/ai_lab_v15_angular.env up -d
