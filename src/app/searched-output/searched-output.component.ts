@@ -494,7 +494,7 @@ export class SearchedOutputComponent {
     console.log("Frames selected :" + this.selectedImages);
     console.log("Audios selecetd :" + this.selectedAudios);
     setTimeout(() => {
-      this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.selectedTopics, [], [], this.selectedScenes, [])
+      this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.selectedTopics, [], [], this.selectedScenes, [], [])
         .then(response => {
           console.log(response);
           console.log(response.location);

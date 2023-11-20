@@ -147,7 +147,7 @@
                                 <strong>Type:</strong> {{ audio.type }} <br>
                                 <label>
                                     <input type="checkbox" [(ngModel)]="selectedSoundEvent[i]"
-                                        (change)="updateSoundEventStatus(i, $event)"> Event?
+                                        (change)="updateSoundEventStatus(i, $event)"> Is this a sound event?
                                 </label> <br>
                                 <audio [src]="objectURLs[i]" controls>
                                     <source type="audio/wav">

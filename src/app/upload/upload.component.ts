@@ -518,7 +518,7 @@ export class UploadComponent implements OnDestroy {
 
     this.showProgressBarWithBlur();
 
-    if (this.selectedFiles.length == 0 && this.keywords.length == 0 && this.objects_categories.length == 0) {
+    if (this.selectedFiles.length == 0 && this.keywords.length == 0 && this.objects_categories.length == 0 && this.events.length == 0) {
       // alert("No search criteria specified!");
       this.openSoundEventDialog("No search criteria specified!");
       this.hideProgressBar();
@@ -556,7 +556,7 @@ export class UploadComponent implements OnDestroy {
       // this.router.navigateByUrl('/searchResults');
       // Use setTimeout to create a delay and allow the progress bar to be displayed
       setTimeout(() => {
-        this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.keywords, this.objects_categories, this.selectedStatuses, [], this.selectedSoundEvent)
+        this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.keywords, this.objects_categories, this.selectedStatuses, [], this.selectedSoundEvent, this.events)
           .then(response => {
             console.log(response);
             const data = response;

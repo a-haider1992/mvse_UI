@@ -55,6 +55,7 @@ export class ImageBasedSearchService {
     _sceneSelectedStatus: boolean[],
     _selectedScenes: string[],
     _selectedSoundStatus: boolean[],
+    _selectedEvents: string[],
   ): Promise<any> {
     // Main Endpoint
     const formData = new FormData();
@@ -116,6 +117,11 @@ export class ImageBasedSearchService {
     if (_selectedScenes.length >= 1){
       for(let i = 0; i < _selectedScenes.length; i++){
         formData.append('scenenames', _selectedScenes[i]);
+      }
+    }
+    if (_selectedEvents.length >= 1){
+      for(let i = 0; i < _selectedEvents.length; i++){
+        formData.append('eventnames', _selectedEvents[i]);
       }
     }
 
