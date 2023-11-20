@@ -194,6 +194,10 @@ export class UploadComponent implements OnDestroy {
     return this.availableWords.filter((option) => option.toLowerCase().includes(filterValue));
   }
 
+  clearInputBox(){
+    this.textBoxValue = ''; // Set the value to an empty string
+  }
+
 
   // Function to show the progress bar and apply blur effect
   showProgressBarWithBlur() {

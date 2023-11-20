@@ -79,7 +79,7 @@
                                         <input type="text" class="form-control"
                                             placeholder="A keyword or keywords separated by semicolon only"
                                             aria-label="Username" aria-describedby="basic-addon1" matInput
-                                            [(ngModel)]="textBoxValue" [formControl]="textBoxControl"
+                                            [(ngModel)]="textBoxValue" [formControl]="textBoxControl" (click)="clearInputBox()"
                                             [matAutocomplete]="auto" />
                                         <mat-autocomplete #auto="matAutocomplete">
                                             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
