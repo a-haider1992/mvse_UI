@@ -134,7 +134,7 @@ const forwardFilenames2 = function (command, filenames, keywords, server_result)
 
 }
 
-const forwardFilenamesV2 = function (command, facenames, audionames, scenenames, objectnames, soundeventnames, keywords, server_result) {
+const forwardFilenamesV2 = function (command, facenames, audionames, scenenames, objectnames, soundeventnames, eventnames, keywords, server_result) {
 
 
 	var options = {
@@ -149,7 +149,7 @@ const forwardFilenamesV2 = function (command, facenames, audionames, scenenames,
 		res.pipe(server_result, { end: true });
 	});
 
-	var to_send = { "facenames": facenames, "scenenames": scenenames, "audionames": audionames, "objectnames": objectnames, "soundeventfiles": soundeventnames , "eventnames": [], "keywords": keywords };
+	var to_send = { "facenames": facenames, "scenenames": scenenames, "audionames": audionames, "objectnames": objectnames, "soundeventfiles": soundeventnames , "eventnames": eventnames, "keywords": keywords };
 
 	console.log("send query to backend V2");
 	console.log(JSON.stringify(to_send));
@@ -242,6 +242,8 @@ const saveFilesV2 = function (uploadDir, uploadCommand, req, res) {
 
 	var soundeventfiles = [];
 
+	var eventnames = [];
+
 	var endReceived = false;
 
 	form.uploadDir = uploadDir;
@@ -263,6 +265,11 @@ const saveFilesV2 = function (uploadDir, uploadCommand, req, res) {
 		else if(field == "soundeventfiles"){
 			console.log("soundevent filename " + path.basename(value));
 			soundeventfiles.push(value);
+		}
+
+		else if(field == "eventnames"){
+			console.log("event name is " + path.basename(value));
+			eventnames.push(value);
 		}
 
 		else if(field == "eventnames"){
@@ -343,7 +350,7 @@ const saveFilesV2 = function (uploadDir, uploadCommand, req, res) {
 			}
 			console.log("Sound event files: " + n_soundeventnames);
 			//function (command, facenames,audionames,scenenames,objectnames,keywords,server_result)
-			forwardFilenamesV2(uploadCommand, n_facenames, n_audionames, n_scenenames, n_objectnames, n_soundeventnames, keywords, res);
+			forwardFilenamesV2(uploadCommand, n_facenames, n_audionames, n_scenenames, n_objectnames, n_soundeventnames, eventnames, keywords, res);
 		}
 	});
 	form.parse(req);
