@@ -33,7 +33,7 @@ export class VideoDialogComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.videoData = this.data["otherInfo"];
     this.videoSrc = this.data.videoSrc;
-    this.startTime = this.data.startTime;
+    this.startTime = this.data["startTime"];
     this.synopis = this.data["synopsis"];
     this.currentVideoId = this.data["currentId"];
     if (this.videoData && (this.currentVideoId in this.videoData) && ("startTime" in this.videoData[this.currentVideoId])) {
@@ -100,11 +100,12 @@ export class VideoDialogComponent implements OnInit, AfterViewInit {
   
     if (videoElement) {
       // Parse the start time
-      const startTime = parseFloat(this.startTime);
+      const startTime = this.startTime;
   
       // Check if the parsed time is a finite number
       if (isNaN(startTime) || !isFinite(startTime)) {
         console.error("Invalid start time. Setting default start time to 0.");
+        console.log(startTime);
         // Set the initial time to 0
         videoElement.currentTime = 0;
       } else {

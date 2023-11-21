@@ -274,7 +274,7 @@ export class SearchedOutputComponent {
     let key_parts = str2.split("_");
     let key = key_parts[0] + "_" + key_parts[1];
     // console.log(video_name);
-    if (video_name.includes("scene") || video_name.includes("face") || video_name.includes("audio") || video_name.includes("object") || video_name.includes("keyword") || video_name.includes("multimodal")) {
+    if (video_name.includes("scene") || video_name.includes("face") || video_name.includes("audio") || video_name.includes("object") || video_name.includes("keyword") || video_name.includes("multimodal") || video_name.includes("event")) {
       const parts = video_name.split("_");
       if (parts.length >= 4) {
         this.source_video = parts[0] + ".mp4";
@@ -288,7 +288,7 @@ export class SearchedOutputComponent {
       // Handle other cases or provide a default value
       video_name = video_name.split("_");
       this.source_video = video_name[0] + ".mp4";
-      starttimestr = video_name[1];
+      // starttimestr = video_name[1];
       // console.log(this.source_video);
       // console.log(starttimestr);
     }
@@ -323,7 +323,7 @@ export class SearchedOutputComponent {
     // var starttime = parseFloat(starttimestr) / 25.0;
     // starttime = parseFloat(starttime.toFixed(2));
     this.startTime = parseFloat(starttimestr);
-    // console.log(this.startTime);
+    console.log(this.startTime);
 
     this.source_video = 'http://' + window.location.hostname + ':8008/download?qfile=' + this.source_video;
     // console.log(key);
