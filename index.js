@@ -366,6 +366,8 @@ const requestListener = function (req, res) {
 		else if (req.url.endsWith("mp4"))
 			contentType = "video/mp4";
 
+		console.log(req.url);
+
 
 		fs.readFile(mvseFrontEndRootPrefix + req.url)
 			.then(contents => {
@@ -377,6 +379,7 @@ const requestListener = function (req, res) {
 				// res.end("Failed to read");
 				// res.end(err) is causing UI container crash
 				// res.end(err);
+				console.log(err);
 				return "/image-failed.png";
 			});
 

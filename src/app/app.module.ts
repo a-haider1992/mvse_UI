@@ -19,7 +19,7 @@ import { VideoDialogComponent } from './video-dialog/video-dialog.component';
 import { SoundEventDialogComponent } from './sound-event-dialog/sound-event-dialog.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -41,6 +41,7 @@ import { MatInputModule } from '@angular/material/input';
     MatAutocompleteModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatTooltipModule
   ],
   providers: [ImageBasedSearchService, DataSharingServiceService, { provide: ErrorHandler, useClass: GlobalErrorHandler }],
   bootstrap: [AppComponent]

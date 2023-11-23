@@ -194,7 +194,7 @@ export class UploadComponent implements OnDestroy {
     return this.availableWords.filter((option) => option.toLowerCase().includes(filterValue));
   }
 
-  clearInputBox(){
+  clearInputBox() {
     this.textBoxValue = ''; // Set the value to an empty string
   }
 
@@ -269,28 +269,42 @@ export class UploadComponent implements OnDestroy {
     }
     else {
       // Split the input string into an array of keywords
-      const inputKeywords = keywordsInput.split(';').map(keyword => keyword.trim().toLowerCase());
+      const inputKeywords = keywordsInput.split(';').map(keyword => keyword.trim());
 
       // Filter out empty strings
       const validKeywords = inputKeywords.filter(keyword => keyword.length > 0);
 
       if (validKeywords.length === 1) {
         // If only one keyword is provided without a semicolon, add it directly
-        const singleKeyword = validKeywords[0];
-        if (this.keywords.map(kw => kw.toLowerCase()).indexOf(singleKeyword) === -1) {
+        const singleKeyword = validKeywords[0].toLowerCase();
+        if (this.availableWords.includes(validKeywords[0]) && this.events.indexOf(validKeywords[0]) === -1) {
+          //If keyword text is pciked from autocomplete
+          // this.openSoundEventDialog("Sound event detected");
+          this.events.push(validKeywords[0]);
+          console.log(this.events);
+        }
+        else if (this.keywords.map(kw => kw.toLowerCase()).indexOf(singleKeyword) === -1) {
           // Keyword doesn't exist, add it to the list
           this.keywords.push(singleKeyword);
         } else {
-          alert(singleKeyword + " is already added!");
+          // alert(singleKeyword + " is already added!");
+          this.openSoundEventDialog("Keyword or Sound event is already added!");
         }
       } else if (validKeywords.length > 1) {
         // Loop through the valid keywords and add them to the list
         validKeywords.forEach(keyword => {
-          if (this.keywords.map(kw => kw.toLowerCase()).indexOf(keyword) === -1) {
+          if (this.availableWords.includes(keyword) && this.events.indexOf(keyword) === -1) {
+            //If keyword text is pciked from autocomplete
+            // this.openSoundEventDialog("Sound event detected");
+            this.events.push(keyword);
+            console.log(this.events);
+          }
+          else if (this.keywords.map(kw => kw.toLowerCase()).indexOf(keyword.toLowerCase()) === -1) {
             // Keyword doesn't exist, add it to the list
             this.keywords.push(keyword);
           } else {
-            alert(keyword + " is already added!");
+            // alert(keyword + " is already added!");
+            this.openSoundEventDialog("Keyword or Sound event is already added!");
           }
         });
       }
