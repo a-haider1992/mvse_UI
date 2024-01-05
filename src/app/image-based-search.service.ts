@@ -1,13 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImageBasedSearchService {
+  private port: any;
 
-  constructor(private http: HttpClient, private location: Location) { }
+  constructor(private http: HttpClient, private location: Location) {  }
+
+  setData(data: any): void {
+    console.log(data);
+    this.port = data;
+  }
+
+  getData(): any {
+    return this.port;
+  }
 
   search(_uploadedImages:File[], _uploadedAudios: File[], _keywords: string[], _objects: string[], _sceneSelectedStatus: boolean[]): Promise<any>{
     // Main Endpoint
@@ -56,11 +67,13 @@ export class ImageBasedSearchService {
     _selectedScenes: string[],
     _selectedSoundStatus: boolean[],
     _selectedEvents: string[],
+    _selectedArchive: string,
   ): Promise<any> {
     // Main Endpoint
     const formData = new FormData();
-    const currentHost = window.location.host;
-    const api_endpoint = `http://${currentHost}/multi_modals_search_video_V2`;
+    const currentHost = window.location.hostname;
+    console.log(this.getData());
+    const api_endpoint = `https://${currentHost}/multi_modals_search_video_V2`;
 
     console.log("Inside apiV2"+_objects);
     
@@ -125,6 +138,9 @@ export class ImageBasedSearchService {
       }
     }
 
+    // set archive
+    formData.append('archive', _selectedArchive);
+
     console.log(formData);
   
     // Rest of the code remains the same
@@ -166,16 +182,21 @@ export class ImageBasedSearchService {
   }
 
   analyse_video(videoFile: File[]):Promise<any>{
-    const currentHost = window.location.host; // Add the base URL of your API server here
+    const currentHost = window.location.hostname; // Add the base URL of your API server here
     const formData = new FormData();
     formData.append('file', videoFile[0]);
     console.log(formData);
-    return this.http.post(`http://${currentHost}/analyse_video`, formData)
+    return this.http.post(`https://${currentHost}/analyse_video`, formData)
       .toPromise()
       .catch((error) => {
         console.error('HTTP Error:', error);
         throw error; // Rethrow the error to propagate it to the caller
       });
+  }
+
+  loadConfigData(): Observable<any> {
+    const currentHost = window.location.hostname;
+    return this.http.get(`https://${currentHost}/archive_dict`);
   }
 
 }

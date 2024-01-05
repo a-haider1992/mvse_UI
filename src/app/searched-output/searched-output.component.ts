@@ -51,12 +51,19 @@ export class SearchedOutputComponent {
   showProgressBar: boolean = false;
   applyBlurEffect: boolean = false;
   isAnalysis: boolean = false;
+  archiveList: any = {};
+  selectedArchive: string = '';
   videoDictionary: Record<string, { modality: string[], seg_id: string[], startTime: string[], endTime_with_extension: string[], synopsis: string }> = {};
 
   ngOnInit(): void {
     this.data = this.dataSharingService.sharedData;
-    console.log(this.data);
+    console.log(this.dataSharingService);
     this.isAnalysis = this.dataSharingService.isAnalysis;
+    this.archiveList = this.dataSharingService.configData;
+    this.selectedArchive = this.dataSharingService.selectedArchive;
+    console.log("Inside search component!");
+    console.log(this.archiveList);
+    console.log(this.selectedArchive);
 
     if (this.data.hasOwnProperty("synopsis")) {
       this.videoDictionary = this.prepareDictionary(this.data["location"], this.data["synopsis"]);
@@ -323,9 +330,17 @@ export class SearchedOutputComponent {
     // var starttime = parseFloat(starttimestr) / 25.0;
     // starttime = parseFloat(starttime.toFixed(2));
     this.startTime = parseFloat(starttimestr);
-    console.log(this.startTime);
-
-    this.source_video = 'http://' + window.location.hostname + ':8008/download?qfile=' + this.source_video;
+    // const port = this.archiveList[this.selectedArchive]["backend"];
+    // console.log(port);
+    const currentPort = window.location.port;
+    // if (currentPort === '8001'){
+    //   this.source_video = 'http://' + window.location.hostname + ':8008/download?qfile=' + this.source_video;
+    // }
+    // else if (currentPort === '8003'){
+    //   this.source_video = 'http://' + window.location.hostname + ':8004/download?qfile=' + this.source_video;
+    // }
+    this.source_video = 'https://' + window.location.hostname + '/download?qfile=' + this.source_video;
+    console.log(this.source_video);
     // console.log(key);
     this.synopsis = this.videoDictionary[key].synopsis;
     console.log("Inside poster click " + this.synopsis);
@@ -494,7 +509,7 @@ export class SearchedOutputComponent {
     console.log("Frames selected :" + this.selectedImages);
     console.log("Audios selecetd :" + this.selectedAudios);
     setTimeout(() => {
-      this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.selectedTopics, [], [], this.selectedScenes, [], [])
+      this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.selectedTopics, [], [], this.selectedScenes, [], [], this.selectedArchive)
         .then(response => {
           console.log(response);
           console.log(response.location);

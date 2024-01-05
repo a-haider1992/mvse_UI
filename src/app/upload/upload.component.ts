@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ImageBasedSearchService } from '../image-based-search.service';
 import { DataSharingServiceService } from '../data-sharing-service.service';
@@ -7,6 +7,8 @@ import { SoundEventDialogComponent } from '../sound-event-dialog/sound-event-dia
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
+import { from } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-upload',
@@ -170,23 +172,93 @@ export class UploadComponent implements OnDestroy {
     "hair drier",
     "toothbrush"
   ].sort();
-  selectedArchive: string = "Rewind";
-  archiveList: string[] = ["Rewind", "Old"];
+  selectedArchive: string = "Archive";
+  // archiveList: string[] = ["Archive", "RemArc"];
+  archive_dict: Record<string, string> = {};
+  // archiveList: Record<string, { backend: string, frontend: string }> = { "RemArcMedia": { "backend": ":8004", "frontend": ":8003" }, "Rewind": { "backend": ":8008", "frontend": ":8001" } };
   keywords: string[] = [];// holds keywords
   events: string[] = [];//holds sound event text labels
   objects_categories: string[] = [];
 
-
   ngOnInit() {
     // this.showProgressBarWithBlur();
     // this.selectedFiles = this.keywords = this.objects_categories = [];
+    // const currentPort = window.location.port;
+    // if (currentPort === '8001'){
+    //   this.selectedArchive = "BBCRewind";
+    // }
+    // else if (currentPort === '8003'){
+    //   this.selectedArchive = "BBCRemArc";
+    // }
+    // else{
+    //   this.selectedArchive = "Not specifed!";
+    // }
+    this.imageBasedSearch.loadConfigData().pipe(
+      catchError((error: any) => {
+        console.error('Error loading config data:', error);
+        return throwError(error);
+      })
+    ).subscribe((data: any) => {
+      console.log(data);
+      this.archive_dict = JSON.parse(data);
+      // assign first key to selectedArchive
+      const keys = this.getObjectKeys(this.archive_dict);
+      this.selectedArchive = keys[0];
+    });
+
+    // console.log(this.archive_dict);
   }
 
+  // changeArchive(){
+  //   const currentPort = window.location.port;
+  //   if (currentPort === '8001'){
+  //     const url = `http://${window.location.hostname}:8003`;
+  //     window.location.href = url;
+  //   }
+  //   else if (currentPort === '8003'){
+  //     const url = `http://${window.location.hostname}:8001`;
+  //     window.location.href = url;
+  //   }
+  //   else{
+  //     console.log("Unrecognized port!!");
+  //   }
+  // }
+
+  onArchiveSelectionChange(): void {
+    console.log('Selected Archive:', this.selectedArchive);
+
+    // if (this.selectedArchive !== "") {
+    //   const selectedArchiveInfo = this.archiveList[this.selectedArchive];
+    //   console.log(selectedArchiveInfo);
+
+    //   if (selectedArchiveInfo) {
+    //     const frontendPath = selectedArchiveInfo.frontend;
+    //     const url = `http://${window.location.hostname}${frontendPath}`;
+
+    //     console.log(url);
+
+    //     window.location.href = url;
+
+    //     // Add your logic here based on the selected value
+    //   } else {
+    //     console.error('Invalid selectedArchive:', this.selectedArchive);
+    //   }
+    // }
+  }
+
+
   constructor(private router: Router, private imageBasedSearch: ImageBasedSearchService, private dataSharingService: DataSharingServiceService, private dialog: MatDialog) {
+    // this.imageBasedSearch.setData(this.archiveList[this.selectedArchive]["frontend"]);
     this.filteredOptions = this.textBoxControl.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value))
     );
+    // this.archiveList = this.imageBasedSearch.loadConfigData();
+    // console.log(this.archiveList);
+  }
+
+  getObjectKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
   }
 
   private _filter(value: string): string[] {
@@ -197,7 +269,6 @@ export class UploadComponent implements OnDestroy {
   clearInputBox() {
     this.textBoxValue = ''; // Set the value to an empty string
   }
-
 
   // Function to show the progress bar and apply blur effect
   showProgressBarWithBlur() {
@@ -555,6 +626,8 @@ export class UploadComponent implements OnDestroy {
             const data = response;
             this.dataSharingService.sharedData = data;
             this.dataSharingService.isAnalysis = true;
+            // this.dataSharingService.configData = this.archiveList;
+            this.dataSharingService.selectedArchive = this.selectedArchive;
             this.hideProgressBar();
             this.router.navigateByUrl('/searchResults');
           })
@@ -570,11 +643,13 @@ export class UploadComponent implements OnDestroy {
       // this.router.navigateByUrl('/searchResults');
       // Use setTimeout to create a delay and allow the progress bar to be displayed
       setTimeout(() => {
-        this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.keywords, this.objects_categories, this.selectedStatuses, [], this.selectedSoundEvent, this.events)
+        this.imageBasedSearch.searchV2(this.selectedImages, this.selectedAudios, this.keywords, this.objects_categories, this.selectedStatuses, [], this.selectedSoundEvent, this.events, this.selectedArchive)
           .then(response => {
             console.log(response);
             const data = response;
             this.dataSharingService.sharedData = data;
+            // this.dataSharingService.configData = this.archiveList;
+            this.dataSharingService.selectedArchive = this.selectedArchive;
             this.hideProgressBar();
             this.router.navigateByUrl('/searchResults');
           })

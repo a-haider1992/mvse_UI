@@ -17,12 +17,15 @@
                         </div>
                     </td>
                     <td style="float: right;">
+                        <br>
+                        <!-- <span>Your search archive is: {{selectedArchive}}</span> | 
+                        <a href="#" (click)="changeArchive()" class="link-success" style="padding-right: 15px;">Change archive</a> -->
                         <mat-form-field class="bootstrap-dropdown">
-                            <mat-label>Select Archive</mat-label>
-                            <mat-select [(value)]="selectedArchive" class="bootstrap-dropdown-select">
-                                <mat-option *ngFor="let option of archiveList" [value]="option">
-                                    {{ option }}
-                                </mat-option>
+                            <mat-label>Select archive</mat-label>
+                            <mat-select [(value)]="selectedArchive" class="bootstrap-dropdown-select" (selectionChange)="onArchiveSelectionChange()">
+                                <mat-option *ngFor="let key of getObjectKeys(archive_dict)" [value]="key">
+                                    {{ key }}
+                                  </mat-option>
                             </mat-select>
                         </mat-form-field>
 

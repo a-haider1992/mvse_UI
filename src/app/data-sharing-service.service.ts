@@ -7,5 +7,7 @@ export class DataSharingServiceService {
 
   sharedData: any;
   isAnalysis: boolean = false;
+  configData: any;
+  selectedArchive: any;
   constructor() { }
 }

@@ -9,6 +9,7 @@ const host = '0.0.0.0';
 const port = '8000';
 
 const backEndString = process.env.MVSE_BACK_END_HOST;
+const archiveDict = process.env.MVSE_ARCHIVE_DICT || "{}";
 console.log(backEndString);
 const backEndHost = backEndString.split(':')[0];
 const backEndPort = parseInt(backEndString.split(':')[1]);
@@ -439,6 +440,13 @@ const requestListener = function (req, res) {
 	}
 	else if (req.method == "POST" && req.url.startsWith("/multi_modals_search_video")) {
 		saveFiles(mvseTempImageFiles, "/multi_modals_search_video", req, res);
+		return true;
+	}
+	else if (req.method == "GET" && req.url.endsWith("/archive_dict")) {
+		console.log("Inside node from angular app!!");
+		console.log(archiveDict);
+		res.writeHead(200);
+		res.end(JSON.stringify(archiveDict));
 		return true;
 	}
 	else {
