@@ -1,0 +1,6 @@
+1. Download the latest front-end image from Docker Hub.
+2. Update the docker-compose YAML file with the latest image tag.
+3. Execute the command in run_compose.bat to run the services defined in your docker-compose file.
+4. Use the command sudo docker ps to retrieve the container ID of the mvse-front-end service.
+5. Enter the front-end container by executing docker exec -it <container_id> /bin/sh. Once inside, change the working directory to the dist folder. Copy the entire mvse-front-1.0 folder to /app/nginx_angular_volume, delete the existing 'mvse' folder in that location, and rename 'mvse-front-1.0' to 'mvse'. Then, exit the mvse-front-end container.
+6. Restart the Nginx service using the restart-nginx-docker.sh script.
