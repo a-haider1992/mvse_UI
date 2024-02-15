@@ -172,14 +172,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row p-1" style="max-height: 250px; overflow: auto;"
+                        <div class="row p-1" style="max-height: 200px; overflow: auto;"
                             *ngIf="selectedVideos.length >0 || selectedImages.length > 0 || selectedAudios.length > 0">
                             <strong>Image(s)/Audio(s)/Video(s):</strong>
                             <div *ngFor="let video of selectedVideos; let i = index">
                                 <strong>Name:</strong> {{ video.name }} <br>
-                                <strong>Type:</strong> {{ video.type }} <br>
-                                <video [src]="objectURLs[i]" controls class="img-fluid img-thumbnail" width="150"
-                                    height="150">
+                                <!-- <strong>Type:</strong> {{ video.type }} <br> -->
+                                <video [src]="objectURLs[i]" controls class="img-fluid img-thumbnail" width="200"
+                                    height="200">
                                     <source type="video/mp4">
                                     <!-- You may add additional source tags for different video formats -->
                                     Your browser does not support the video tag.
@@ -188,8 +188,8 @@
                             </div>
                             <div *ngFor="let audio of selectedAudios; let i = index">
                                 <strong>Name:</strong> {{ audio.name }} <br>
-                                <strong>Type:</strong> {{ audio.type }} <br>
-                                <div style="display: flex;align-items: center; border: 2px;">
+                                <!-- <strong>Type:</strong> {{ audio.type }} <br> -->
+                                <!-- <div style="display: flex;align-items: center; border: 2px;">
                                     <audio [src]="objectURLs[i]" controls>
                                         <source type="audio/wav">
                                         Your browser does not support the audio element.
@@ -197,23 +197,50 @@
                                     <label
                                         matTooltip="Please check if this audio file contains a sound event e.g. laughter, crying, engine sound etc.">
                                         <input type="checkbox" [(ngModel)]="selectedSoundEvent[i]"
-                                            (change)="updateSoundEventStatus(i, $event)" class="form-check-input"> Sound
+                                            (change)="updateSoundEventStatus(i, $event)" class="form-check-label"> Sound
                                         event?
                                     </label>
+                                </div> -->
+
+                                <div class="d-flex align-items-center border p-1">
+                                    <audio [src]="objectURLs[i]" controls class="mr-2">
+                                        <source type="audio/wav">
+                                        Your browser does not support the audio element.
+                                    </audio>&nbsp;&nbsp;
+                                    <label class="form-check-label"
+                                        matTooltip="Please check if this audio file contains a sound event e.g. laughter, crying, engine sound etc.">
+                                        <input type="checkbox" [(ngModel)]="selectedSoundEvent[i]"
+                                            (change)="updateSoundEventStatus(i, $event)" class="form-check-input"
+                                            [ngClass]="{'border-danger': !selectedSoundEvent[i]}">
+                                        Sound event?
+                                    </label>
                                 </div>
+
 
 
                                 <!-- <p>{{selectedSoundEvent[i]}}</p> -->
                             </div>
                             <div *ngFor="let image of selectedImages; let i = index">
                                 <strong>Name:</strong> {{ image.name }} <br>
-                                <strong>Type:</strong> {{ image.type }} <br>
-                                <label>
+                                <!-- <strong>Type:</strong> {{ image.type }} <br> -->
+                                <!-- <label>
                                     <input type="checkbox" [(ngModel)]="selectedStatuses[i]"
                                         (change)="updateSelectedStatus(i, $event)"> Scene?
                                 </label> <br>
                                 <img [src]="objectURLs[i]" class="uploaded-image" class="img-fluid img-thumbnail" alt=""
-                                    width="150" height="150" />
+                                    width="150" height="150" /> -->
+                                <div class="d-flex align-items-center border p-1">
+                                    <img [src]="objectURLs[i]" class="uploaded-image img-fluid img-thumbnail mr-2"
+                                        alt="" width="50" height="50">&nbsp;&nbsp;
+                                    <label class="form-check-label"
+                                        matTooltip="Please check if this image contains a scene e.g. a beach, a forest, a city etc.">
+                                        <input type="checkbox" [(ngModel)]="selectedStatuses[i]"
+                                            (change)="updateSelectedStatus(i, $event)" class="form-check-input"
+                                            [ngClass]="{'border-danger': !selectedStatuses[i]}">
+                                        Scene?
+                                    </label>
+                                </div>
+
                             </div>
 
                             <div class="col span text-center">
