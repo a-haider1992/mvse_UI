@@ -47,32 +47,34 @@
 
                     <div class="row">
                         <div class="custom-file span text-center">
-                            <div class="col border border-dark container p-1" style="width:fit-content;">
+                            <div class="col border border-dark container p-1" style="width:1000px;">
                                 <div (drop)="onDrop($event)" (dragover)="onDragOver($event)" class="drop-area">
                                     <label class="custom-file-label" for="fileInput"
                                         style="text-decoration: underline;">Upload
                                         file(s)</label>
-                                </div>
-                                <div [ngClass]="{'blur-effect': applyBlurEffect}" style="display:inline-block;">
-                                    <!-- <img src="../assets/images/link-file.png" width="30px" height="30px" /> -->
-                                    <!-- <label class="custom-file-label" for="fileInput"
-                                        style="width: 200px;height: auto;margin-right: 100px; text-decoration: underline;">Upload
-                                        file(s)</label> -->
                                     <input id="fileInput" type="file" multiple style="display:none;"
                                         (change)="onFileSelected($event)" #fileInput />
+                                </div>
+                                <div [ngClass]="{'blur-effect': applyBlurEffect}" style="display:inline-block;">
 
-                                    <div class="container">
-                                        <a href="#" (click)="openTextbox('Keyword')" class="link-success">From
-                                            Keyword</a>|
-                                        <a href="#" (click)="openTextbox('Sound')" class="link-success">From Sound
-                                            event</a>|
-                                        <a href="#" (click)="openDropdown()" class="link-success">From Object</a>
-                                        <input type="button" class="btn" value="Go" (click)="goToSecondComponent()"
-                                            style="width: 70px;height: 70px;background-color: deepskyblue;"
-                                            [ngClass]="{'blur-effect': applyBlurEffect_go_btn}" />
-                                        &nbsp;
-                                        <button (click)="clearImages()" class="btn"
-                                            style="width: 70px;height: 70px;background-color: deepskyblue;">Clear</button>
+                                    <div class="row-fluid">
+                                        <div class="col mb-2">
+                                            <a href="#" (click)="openTextbox('Keyword')" class="link-success">From
+                                                Keyword</a>|
+                                            <a href="#" (click)="openTextbox('Sound')" class="link-success">From Sound
+                                                event</a>|
+                                            <a href="#" (click)="openDropdown()" class="link-success">From Object</a>
+                                        </div>
+                                        <div class="col">
+                                            <input type="button" class="btn" value="Go" (click)="goToSecondComponent()"
+                                                style="width: 150px;height: 50px;background-color: deepskyblue;"
+                                                [ngClass]="{'blur-effect': applyBlurEffect_go_btn}" />
+                                            &nbsp;
+                                            <button (click)="clearImages()" class="btn"
+                                                style="width: 150px;height: 50px;background-color: deepskyblue;">Clear</button>
+                                        </div>
+
+
                                     </div>
 
 
@@ -182,12 +184,14 @@
                                         <source type="audio/wav">
                                         Your browser does not support the audio element.
                                     </audio>&nbsp;
-                                    <label matTooltip="Does the audio file contain a sound event e.g. laughter, crying, engine sound etc.">
-                                        <input type="checkbox" [(ngModel)]="selectedSoundEvent[i]" (change)="updateSoundEventStatus(i, $event)"> Sound event?
+                                    <label
+                                        matTooltip="Does the audio file contain a sound event e.g. laughter, crying, engine sound etc.">
+                                        <input type="checkbox" [(ngModel)]="selectedSoundEvent[i]"
+                                            (change)="updateSoundEventStatus(i, $event)"> Sound event?
                                     </label>
                                 </div>
-                               
-                                
+
+
                                 <!-- <p>{{selectedSoundEvent[i]}}</p> -->
                             </div>
                             <div *ngFor="let image of selectedImages; let i = index">

@@ -41,13 +41,12 @@ a:hover {
 }
 
 .drop-area {
-  border: 3px dashed #ccc;
-  padding: 20px;
+  border: 2px dashed deepskyblue;
   margin: 2px;
   text-align: center;
   cursor: pointer;
   height: 200px;
-  width: 1000px;
+  width: 100%;
 }
 
 .drop-area p {
