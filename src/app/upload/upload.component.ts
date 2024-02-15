@@ -242,10 +242,13 @@ export class UploadComponent implements OnDestroy {
         this.openSoundEventDialog("Eiher image(s) or video(s) can be choosen!");
         this.clearImages();
       }
-
       else if (this.selectedImages.length == 0 && this.selectedAudios.length == 0 && this.selectedVideos.length == 0) {
         // alert("Invalid file type!!");
         this.openSoundEventDialog("Invalid file type!");
+      }
+      else if (this.selectedVideos.length > 1) {
+        this.openSoundEventDialog("Only one video can be choosen!!");
+        this.clearImages();
       }
       this.objectURLs = this.selectedFiles.map(file => URL.createObjectURL(file));
     }
@@ -478,7 +481,10 @@ export class UploadComponent implements OnDestroy {
         // alert("Invalid file type!!");
         this.openSoundEventDialog("Invalid file type!");
       }
-
+      else if (this.selectedVideos.length > 1) {
+        this.openSoundEventDialog("Only one video can be choosen!!");
+        this.clearImages();
+      }
       // if(this.selectedAudios.length > 0){
       //   // this.openSoundEventDialog();
       // }

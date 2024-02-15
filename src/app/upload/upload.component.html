@@ -58,20 +58,30 @@
                                 <div [ngClass]="{'blur-effect': applyBlurEffect}" style="display:inline-block;">
 
                                     <div class="row-fluid">
-                                        <div class="col mb-2">
-                                            <a href="#" (click)="openTextbox('Keyword')" class="link-success">From
-                                                Keyword</a>|
-                                            <a href="#" (click)="openTextbox('Sound')" class="link-success">From Sound
+                                        <div class="col m-2">
+                                            <a href="#"
+                                                title="Opens a textbox and you can type a keyword or multiple keywords separated by a semicolon."
+                                                (click)="openTextbox('Keyword')" class="link-success">Search via
+                                                keyword</a>|
+                                            <a href="#"
+                                                title="Opens a textbox and you can select a sound event (e.g. laughter etc.) from the list."
+                                                (click)="openTextbox('Sound')" class="link-success">Search via sound
                                                 event</a>|
-                                            <a href="#" (click)="openDropdown()" class="link-success">From Object</a>
+                                            <a href="#"
+                                                title="Opens a dropdown list of objects and you can select an object."
+                                                (click)="openDropdown()" class="link-success">Search via object</a>
                                         </div>
                                         <div class="col">
-                                            <input type="button" class="btn" value="Go" (click)="goToSecondComponent()"
+                                            <input type="button" class="btn" value="Search"
+                                                (click)="goToSecondComponent()"
                                                 style="width: 150px;height: 50px;background-color: deepskyblue;"
                                                 [ngClass]="{'blur-effect': applyBlurEffect_go_btn}" />
                                             &nbsp;
-                                            <button (click)="clearImages()" class="btn"
-                                                style="width: 150px;height: 50px;background-color: deepskyblue;">Clear</button>
+                                            <button (click)="clearImages()"
+                                                title="Clears all input elements (e.g. uploaded files, selected objects, keywords, selected sound events)"
+                                                class="btn"
+                                                style="width: 150px;height: 50px;background-color: deepskyblue;">Clear
+                                                all</button>
                                         </div>
 
 
@@ -91,7 +101,7 @@
                                         style="background-color: deepskyblue;">Add</button>
                                     </div> -->
 
-                                    <div class="input-group mt-1" *ngIf="!dropdownOpen && keywordBox && !soundEventBox">
+                                    <div class="input-group m-2" *ngIf="!dropdownOpen && keywordBox && !soundEventBox">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"
                                                 style="color: deepskyblue;">Keyword:</span>
@@ -105,7 +115,7 @@
                                             style="background-color: deepskyblue;">Add</button>
                                     </div>
 
-                                    <div class="input-group mt-1" *ngIf="!dropdownOpen && soundEventBox && !keywordBox">
+                                    <div class="input-group mt-2" *ngIf="!dropdownOpen && soundEventBox && !keywordBox">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1"
                                                 style="color: deepskyblue;">Sound event:</span>
@@ -114,7 +124,7 @@
                                             aria-label="Username" aria-describedby="basic-addon1" matInput
                                             [(ngModel)]="textBoxValue" [formControl]="textBoxControl"
                                             (click)="clearInputBox()" [matAutocomplete]="auto"
-                                            matTooltip="Select a sound event from autocomplete. To add multiple events, repeat selection and press Add button" />
+                                            matTooltip="Select a sound event from autocomplete. To add multiple events, select an event and press Add button and then repeat" />
                                         <mat-autocomplete #auto="matAutocomplete">
                                             <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                                                 {{ option }}
@@ -126,7 +136,7 @@
 
 
                                     <div *ngIf="dropdownOpen && !textboxOpen">
-                                        <button class="btn btn-primary dropdown-toggle"
+                                        <button class="btn btn-primary dropdown-toggle m-2"
                                             style="background-color: deepskyblue;" id="dropdownMenuButton" type="button"
                                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Select an object
@@ -183,11 +193,12 @@
                                     <audio [src]="objectURLs[i]" controls>
                                         <source type="audio/wav">
                                         Your browser does not support the audio element.
-                                    </audio>&nbsp;
+                                    </audio>&nbsp;&nbsp;
                                     <label
-                                        matTooltip="Does the audio file contain a sound event e.g. laughter, crying, engine sound etc.">
+                                        matTooltip="Please check if this audio file contains a sound event e.g. laughter, crying, engine sound etc.">
                                         <input type="checkbox" [(ngModel)]="selectedSoundEvent[i]"
-                                            (change)="updateSoundEventStatus(i, $event)"> Sound event?
+                                            (change)="updateSoundEventStatus(i, $event)" class="form-check-input"> Sound
+                                        event?
                                     </label>
                                 </div>
 
