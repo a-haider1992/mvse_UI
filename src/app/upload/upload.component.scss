@@ -1,52 +1,75 @@
 /* Blur effect class */
 .blur-effect {
-    filter: blur(5px); /* Adjust the blur radius as needed */
-    pointer-events: none; /* Prevent interactions with blurred elements */
-  }
-  a {
-    text-decoration: underline; /* Add underline to simulate a link */
-    color: blue; /* Set link color to blue */
-    cursor: pointer; /* Change cursor to pointer on hover to indicate interactivity */
-    margin-right: 5px;
-    font-size: smaller;
-  }
-  
-  a:hover {
-    text-decoration: none; /* Remove underline on hover (optional) */
-  }
-  .lower-z-index{
-    z-index: 1;
-  }
+  filter: blur(5px);
+  /* Adjust the blur radius as needed */
+  pointer-events: none;
+  /* Prevent interactions with blurred elements */
+}
 
-  .bootstrap-dropdown {
-    border-radius: 8px; /* Bootstrap border-radius */
-    width: 150px;
-    z-index: 99;
-    margin-right: 15px;
-    height: 100px;
-  }
-  
-  .bootstrap-dropdown-select {
-    border-radius: 8px; /* Bootstrap border-radius for the dropdown itself */
-  }
+a {
+  text-decoration: underline;
+  /* Add underline to simulate a link */
+  color: blue;
+  /* Set link color to blue */
+  cursor: pointer;
+  /* Change cursor to pointer on hover to indicate interactivity */
+  margin-right: 5px;
+  font-size: smaller;
+}
 
-  .drop-area {
-    border: 3px dashed #ccc;
-    padding: 20px;
-    margin: 2px;
-    text-align: center;
-    cursor: pointer;
-    height: 200px;
-    width: 1000px;
-  }
-  
-  .drop-area p {
-    margin: 0;
-  }
-  
-  .drop-area input[type='file'] {
-    display: none;
-  }
-  
-  
-  
+a:hover {
+  text-decoration: none;
+  /* Remove underline on hover (optional) */
+}
+
+.lower-z-index {
+  z-index: 1;
+}
+
+.bootstrap-dropdown {
+  border-radius: 8px;
+  /* Bootstrap border-radius */
+  width: 150px;
+  z-index: 99;
+  margin-right: 15px;
+  height: 100px;
+}
+
+.bootstrap-dropdown-select {
+  border-radius: 8px;
+  /* Bootstrap border-radius for the dropdown itself */
+}
+
+.drop-area {
+  border: 3px dashed #ccc;
+  padding: 20px;
+  margin: 2px;
+  text-align: center;
+  cursor: pointer;
+  height: 200px;
+  width: 1000px;
+}
+
+.drop-area p {
+  margin: 0;
+}
+
+.drop-area input[type='file'] {
+  display: none;
+}
+
+.container-1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.links {
+  flex: 1;
+  /* Takes up remaining space */
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+}
