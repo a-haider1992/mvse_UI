@@ -20,6 +20,7 @@ import { SoundEventDialogComponent } from './sound-event-dialog/sound-event-dial
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatAutocompleteModule,
     MatInputModule,
     ReactiveFormsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    DragDropModule
   ],
   providers: [ImageBasedSearchService, DataSharingServiceService, { provide: ErrorHandler, useClass: GlobalErrorHandler }],
   bootstrap: [AppComponent]

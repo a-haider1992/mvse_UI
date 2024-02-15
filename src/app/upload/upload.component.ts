@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { catchError, throwError } from 'rxjs';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-upload',
@@ -179,6 +180,8 @@ export class UploadComponent implements OnDestroy {
   keywords: string[] = [];// holds keywords
   events: string[] = [];//holds sound event text labels
   objects_categories: string[] = [];
+  keywordBox = false;
+  soundEventBox = false;
 
   ngOnInit() {
     // this.showProgressBarWithBlur();
@@ -223,6 +226,35 @@ export class UploadComponent implements OnDestroy {
   //     console.log("Unrecognized port!!");
   //   }
   // }
+
+  onDrop(event: DragEvent) {
+    console.log("Drop event!!", event);
+    event.preventDefault();
+    if (event.dataTransfer) {
+      console.log(event.dataTransfer.files);
+      this.selectedFiles = Array.from(event.dataTransfer.files);
+      this.selectedImages = this.selectedFiles.filter(file => this.isImageFile(file.name));
+      this.selectedVideos = this.selectedFiles.filter(file => this.isVideoFile(file.name));
+      this.selectedAudios = this.selectedFiles.filter(file => this.isAudioFile(file.name));
+
+      if (this.selectedImages.length > 0 && this.selectedVideos.length > 0) {
+        // alert("Eiher image(s) or video(s) can be choosen!!")
+        this.openSoundEventDialog("Eiher image(s) or video(s) can be choosen!");
+        this.clearImages();
+      }
+
+      else if (this.selectedImages.length == 0 && this.selectedAudios.length == 0 && this.selectedVideos.length == 0) {
+        // alert("Invalid file type!!");
+        this.openSoundEventDialog("Invalid file type!");
+      }
+      this.objectURLs = this.selectedFiles.map(file => URL.createObjectURL(file));
+    }
+  }
+  onDragOver(event: DragEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+    console.log("Drag over event!!");
+  }
 
   onArchiveSelectionChange(): void {
     console.log('Selected Archive:', this.selectedArchive);
@@ -277,21 +309,37 @@ export class UploadComponent implements OnDestroy {
     this.applyBlurEffect = true;
   }
 
-  openTextbox() {
-    this.textboxOpen = !this.textboxOpen;
-    this.applyBlurEffect_go_btn = this.textboxOpen;
+  openTextbox(query: string) {
+    // this.textboxOpen = !this.textboxOpen;
+    // this.applyBlurEffect_go_btn = this.textboxOpen;
+    this.keywordBox = false;
+    this.soundEventBox = false;
     this.dropdownOpen = false;
+    this.applyBlurEffect_go_btn = true;
+    console.log(query);
+    if (query === "Keyword") {
+      this.keywordBox = true;
+      this.soundEventBox = false;
+    }
+    else if (query === "Sound") {
+      this.soundEventBox = true;
+      this.keywordBox = false;
+    }
   }
 
   closeTextbox() {
     this.applyBlurEffect_go_btn = false;
     this.textboxOpen = false;
+    this.keywordBox = false;
+    this.soundEventBox = false;
   }
 
   openDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
     this.applyBlurEffect_go_btn = this.dropdownOpen;
     this.textboxOpen = false;
+    this.keywordBox = false;
+    this.soundEventBox = false;
   }
 
   closeDropdown() {
@@ -498,6 +546,7 @@ export class UploadComponent implements OnDestroy {
   // }
 
   isImageFile(fileName: string): boolean {
+    console.log(fileName);
     const trimmedFileName = fileName.trim();
     const withoutSpaces = trimmedFileName.replace(/\s/g, ''); // Replace spaces with an empty string
     const lowerCaseFileName = withoutSpaces.toLowerCase();
@@ -506,7 +555,10 @@ export class UploadComponent implements OnDestroy {
       lowerCaseFileName.endsWith('.jpeg') ||
       lowerCaseFileName.endsWith('.png') ||
       lowerCaseFileName.endsWith('.gif') ||
-      lowerCaseFileName.endsWith('.bmp');
+      lowerCaseFileName.endsWith('.bmp') ||
+      lowerCaseFileName.endsWith('.tiff') ||
+      lowerCaseFileName.endsWith('.webp') ||
+      lowerCaseFileName.endsWith('.jfif');
   }
 
   isVideoFile(fileName: string): boolean {

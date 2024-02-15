@@ -29,5 +29,24 @@
   .bootstrap-dropdown-select {
     border-radius: 8px; /* Bootstrap border-radius for the dropdown itself */
   }
+
+  .drop-area {
+    border: 3px dashed #ccc;
+    padding: 20px;
+    margin: 2px;
+    text-align: center;
+    cursor: pointer;
+    height: 200px;
+    width: 1000px;
+  }
+  
+  .drop-area p {
+    margin: 0;
+  }
+  
+  .drop-area input[type='file'] {
+    display: none;
+  }
+  
   
   

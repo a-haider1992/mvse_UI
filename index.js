@@ -135,7 +135,7 @@ const forwardFilenames2 = function (command, filenames, keywords, server_result)
 
 }
 
-const forwardFilenamesV2 = function (command, facenames, audionames, scenenames, objectnames, soundeventnames, eventnames, keywords, server_result) {
+const forwardFilenamesV2 = function (command, facenames, audionames, scenenames, objectnames, soundeventnames, eventnames, keywords, archive, server_result) {
 
 
 	var options = {
@@ -150,7 +150,8 @@ const forwardFilenamesV2 = function (command, facenames, audionames, scenenames,
 		res.pipe(server_result, { end: true });
 	});
 
-	var to_send = { "facenames": facenames, "scenenames": scenenames, "audionames": audionames, "objectnames": objectnames, "soundeventfiles": soundeventnames , "eventnames": eventnames, "keywords": keywords };
+	var to_send = { "facenames": facenames, "scenenames": scenenames, "audionames": audionames, "objectnames": objectnames, "soundeventfiles": soundeventnames , 
+	"eventnames": eventnames, "keywords": keywords, "option": "", "archive": archive };
 
 	console.log("send query to backend V2");
 	console.log(JSON.stringify(to_send));
@@ -247,6 +248,8 @@ const saveFilesV2 = function (uploadDir, uploadCommand, req, res) {
 
 	var endReceived = false;
 
+	var archive = "";
+
 	form.uploadDir = uploadDir;
 	console.log(form);
 	form.on('field', function (field, value) {
@@ -283,6 +286,10 @@ const saveFilesV2 = function (uploadDir, uploadCommand, req, res) {
 		else if (field == "keywords") {
 			console.log("keywords value is  " + path.basename(value));
 			keywords.push(value);
+		}
+		else if (field == "archive") {
+			console.log("archive value is  " + path.basename(value));
+			archive = value;
 		}
 	});
 
@@ -351,7 +358,7 @@ const saveFilesV2 = function (uploadDir, uploadCommand, req, res) {
 			}
 			console.log("Sound event files: " + n_soundeventnames);
 			//function (command, facenames,audionames,scenenames,objectnames,keywords,server_result)
-			forwardFilenamesV2(uploadCommand, n_facenames, n_audionames, n_scenenames, n_objectnames, n_soundeventnames, eventnames, keywords, res);
+			forwardFilenamesV2(uploadCommand, n_facenames, n_audionames, n_scenenames, n_objectnames, n_soundeventnames, eventnames, keywords, archive, res);
 		}
 	});
 	form.parse(req);
