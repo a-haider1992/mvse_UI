@@ -339,7 +339,7 @@ export class SearchedOutputComponent {
     // else if (currentPort === '8003'){
     //   this.source_video = 'http://' + window.location.hostname + ':8004/download?qfile=' + this.source_video;
     // }
-    this.source_video = 'https://' + window.location.hostname + '/download?qfile=' + this.source_video;
+    this.source_video = 'http://' + window.location.hostname + ':8008/download?qfile=' + this.source_video;
     console.log(this.source_video);
     // console.log(key);
     this.synopsis = this.videoDictionary[key].synopsis;

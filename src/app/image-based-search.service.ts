@@ -71,9 +71,9 @@ export class ImageBasedSearchService {
   ): Promise<any> {
     // Main Endpoint
     const formData = new FormData();
-    const currentHost = window.location.hostname;
+    const currentHost = window.location.host;
     console.log(this.getData());
-    const api_endpoint = `https://${currentHost}/multi_modals_search_video_V2`;
+    const api_endpoint = `http://${currentHost}/multi_modals_search_video_V2`;
 
     console.log("Inside apiV2"+_objects);
     
@@ -182,11 +182,11 @@ export class ImageBasedSearchService {
   }
 
   analyse_video(videoFile: File[]):Promise<any>{
-    const currentHost = window.location.hostname; // Add the base URL of your API server here
+    const currentHost = window.location.host; // Add the base URL of your API server here
     const formData = new FormData();
     formData.append('file', videoFile[0]);
     console.log(formData);
-    return this.http.post(`https://${currentHost}/analyse_video`, formData)
+    return this.http.post(`http://${currentHost}/analyse_video`, formData)
       .toPromise()
       .catch((error) => {
         console.error('HTTP Error:', error);
@@ -195,8 +195,8 @@ export class ImageBasedSearchService {
   }
 
   loadConfigData(): Observable<any> {
-    const currentHost = window.location.hostname;
-    return this.http.get(`https://${currentHost}/archive_dict`);
+    const currentHost = window.location.host;
+    return this.http.get(`http://${currentHost}/archive_dict`);
   }
 
 }
