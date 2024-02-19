@@ -25,6 +25,11 @@ export class SearchedOutputComponent {
   // videoList: string[] = [
   //   '../assets/videos/test2.mp4', '../assets/videos/test3.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test2.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4', '../assets/videos/test6.mp4'
   // ];
+  
+  videoList: any[] = [];
+  frames: any[] = [];
+  audios: any[] = [];
+
   frames_stamp: any[] = ["10", "10", "10", "10", "10"];
   audios_stamp: any[] = ["10", "10", "10", "10", "10", "10"];
   // topics: { topic: string; selected: boolean }[] = [
@@ -33,9 +38,6 @@ export class SearchedOutputComponent {
   //   { topic: 'Topic 3', selected: false },
   // ];
   topics: { topic: string; selected: boolean }[] = [];
-  videoList: any[] = [];
-  frames: any[] = [];
-  audios: any[] = [];
   Scenes: any[] = [];
 
   selectedTopics: string[] = [];

@@ -13,7 +13,7 @@
                 <tr class="border-bottom border-1">
                     <td style="float: left;">
                         <div class="m-1 p-2">
-                            <img src="../assets/images/logo.png" width="150px" height="60px">
+                            <img src="../assets/images/logo.png" width="150px" height="70px">
                         </div>
                     </td>
                     <td style="float: right;">
@@ -36,7 +36,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <div class="row-fluid m-2 p-5">
+                    <div class="row-fluid m-1 p-1">
                         <div class="span12 text-center">
                             <span style="font-size: xxx-large; color: deepskyblue;">
                                 Add or drop media here to begin your search query
@@ -55,14 +55,14 @@
                         <div class="custom-file span text-center">
                             <div class="col border border-dark container p-1" style="width:1000px;" [ngClass]="{'blur-effect': applyBlurEffect}">
                                 <div (drop)="onDrop($event)" (dragover)="onDragOver($event)" class="drop-area">
-                                    <h1>Drag and drop file(s) here</h1> <br><br>
+                                    <h1>Drag and drop file(s) here</h1>
                                     <label class="custom-file-label" for="fileInput"
                                         style="text-decoration: underline;">Upload
                                         file(s)</label>
                                     <input id="fileInput" type="file" multiple style="display:none;"
                                         (change)="onFileSelected($event)" #fileInput />
                                 </div>
-                                <div style="display:inline-block;">
+                                <div style="display:inline-block;" class="p-1">
 
                                     <div class="row-fluid">
                                         <div class="col m-2">
@@ -215,7 +215,7 @@
                                         Your browser does not support the audio element.
                                     </audio>&nbsp;&nbsp;
                                     <label class="form-check-label"
-                                        matTooltip="Please check if this audio file contains a sound event e.g. laughter, crying, engine sound etc.">
+                                        matTooltip="Please check if you are searching videos containing sound events only (e.g. laughter, crying, engine sound etc.)">
                                         <input type="checkbox" [(ngModel)]="selectedSoundEvent[i]"
                                             (change)="updateSoundEventStatus(i, $event)" class="form-check-input"
                                             [ngClass]="{'border-danger': !selectedSoundEvent[i]}">
@@ -240,7 +240,7 @@
                                     <img [src]="objectURLs[i]" class="uploaded-image img-fluid img-thumbnail mr-2"
                                         alt="" width="50" height="50">&nbsp;&nbsp;
                                     <label class="form-check-label"
-                                        matTooltip="Please check if this image contains a scene e.g. a beach, a forest, a city etc.">
+                                        matTooltip="Please check if you are searching videos based on a scene only (e.g. a beach, a forest, a city etc.)">
                                         <input type="checkbox" [(ngModel)]="selectedStatuses[i]"
                                             (change)="updateSelectedStatus(i, $event)" class="form-check-input"
                                             [ngClass]="{'border-danger': !selectedStatuses[i]}">
@@ -261,7 +261,7 @@
         <div class="container-flex fixed-bottom">
             <div class="col-sm-12 border-top p-1" style="background-color: white;">
                 <span style="font-size: small;color: deepskyblue;">
-                    Maintained and developed by: MVSE research group, QUB | Version: v2.0 (23-11-2023)
+                    Maintained and developed by: MVSE research group, QUB | Version: v2.1 (19-02-2024)
                 </span>
             </div>
         </div>
