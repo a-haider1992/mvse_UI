@@ -16,15 +16,17 @@
 }
 
 .audio-wrapper {
-  width: 120px;
+  width: fit-content;
   /* Set the width to desired size */
   height: 100px;
   /* Set the height to match the width for a square shape */
   background-color: #f2f2f2;
+  border-radius: 5px;
 }
 .selected {
   opacity: 0.7; /* Customize the opacity for selected images */
-  border-style: dashed;
+  border-style: solid;
+  border-color: #ff0000; /* Customize the border color for selected images */
 }
 .lower-z-index {
   z-index: 1; /* Set your desired lower z-index value */
