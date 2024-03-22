@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 # Screenshots
 
-![Screenshot from 2023-10-20 16-11-31](https://github.com/a-haider1992/mvse_UI/assets/119504769/3ac639af-8828-4251-bf60-9d7223b7057e)
+![Screenshot from 2024-03-22 10-53-29](https://github.com/a-haider1992/mvse_UI/assets/119504769/68f71ac5-10be-4fe5-89b2-1816472fa6e2)
 
 
 ## Development server
