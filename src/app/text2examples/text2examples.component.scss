@@ -1,0 +1,140 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto; /* 允许整个页面垂直滚动 */
+}
+.parent-container {
+  height: 100vh; /* 视口的完整高度 */
+  display: flex; /* 使用Flexbox布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+}
+
+.container {
+  position: relative; /* 改为相对定位 */
+  width: 90%; /* 或者设置一个最大宽度，如 max-width: 1200px; */
+  max-width: 1200px; /* 限制最大宽度 */
+  padding: 20px;
+}
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 10%;
+  // background-color: rebeccapurple;
+  z-index: 1000; /* 确保在其他内容之上 */
+}
+.fixed-bottom {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  z-index: 1000; /* 确保在其他内容之上 */
+}
+.image-container {
+  display: d-flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.image-item {
+  position: relative;
+  display: inline-block; /* 确保图片和复选框在同一行 */
+  margin-right: 20px; /* 图片之间的右边距 */
+  margin-bottom: 30px; /* 图片之间的下边距 */
+  text-align: center; /* 文本居中 */
+  width: 17%; /* 每个图片项的宽度，根据屏幕大小和需要进行调整 */
+  // background-color: rebeccapurple;
+}
+
+.image-item img {
+  max-width: 100%; /* 图片最大宽度占用父元素的宽度 */
+  // max-height: 150px; /* 图片最大高度 */
+  height: auto; /* 自动调整图片高度 */
+  border: 1px solid #ccc; /* 图片边框 */
+  border-radius: 8px; /* 图片圆角 */
+  display: block; /* 确保图片按照设置的宽度和高度显示 */
+  margin: 0 auto; /* 图片水平居中 */
+}
+
+
+.bottom-checkbox {
+  position: absolute;
+  bottom: -20px; /* 将复选框定位到图片底部 */
+  left: 50%; /* 水平居中 */
+  transform: translateX(-50%); /* 水平居中 */
+}
+.right-checkbox {
+  left: 20px;
+
+}
+
+.results-container {
+  margin-top: 20px;
+}
+.results-container h3 {
+  margin-bottom: 10px;
+}
+.results-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+.results-container li {
+  background: #f0f0f0;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+.matched-container {
+  display: block;
+  margin-top: 10px;
+}
+.matched-section {
+  margin-bottom: 10px;
+}
+.matched-items {
+  // display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.submit{
+  // display: flex;
+  margin: 0 auto;
+}
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  font-size: 14px;
+  height: fit-content;
+}
+button.enabled {
+  background-color: green; /* 当有复选框被选中时，按钮变为绿色 */
+  color: white;
+}
+
+button:disabled {
+  background-color: grey; 
+  color: darkgray;
+}
+
+// .image-container {
+//   position: relative; /* 为按钮定位做准备 */
+// }
+
+// .image-row {
+//   position: relative; /* 确保图片行可以包含绝对定位的按钮 */
+//   margin-bottom: 10px; /* 根据需要调整图片行之间的间距 */
+// }
+
+.refresh-button {
+  position: absolute; /* 绝对定位相对于图片容器 */
+  right: 0; /* 按钮右侧与图片容器对齐 */
+  top: 50%; /* 垂直居中 */
+  transform: translateY(-30%); /* 垂直居中 */
+  z-index: 10; /* 确保按钮在图片上方 */
+}
