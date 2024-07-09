@@ -1,0 +1,183 @@
+<html lang="en">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <div class="fixed-top ower-z-index" style="background-color: white;">
+        <table class="table">
+            <tr class="border-bottom border-1">
+                <td style="float: left;">
+                    <div class="m-1 p-2">
+                        <img src="../assets/images/logo.png" width="150px" height="70px">
+                    </div>
+                </td>
+                <td style="float: right;">
+                    <br>
+                    <mat-form-field class="bootstrap-dropdown">
+                        <mat-label>Select archive</mat-label>
+                        <mat-select [(value)]="selectedArchive" class="bootstrap-dropdown-select"
+                            (selectionChange)="onArchiveSelectionChange()">
+                            <mat-option *ngFor="let key of getObjectKeys(archive_dict)" [value]="key">
+                                {{ key }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="parent-container">
+        <div class="container">
+            <div class="row-fluid m-1 p-1">
+                <div class="span12 text-center">
+                    <span style="font-size: xxx-large; color: deepskyblue;">
+                        Type here to begin your search query
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="custom-file span text-center">
+                    <div class="col border border-dark container p-1" style="width:1000px;">
+                        <div style="display: flex;">
+                            <input id="textInput" [(ngModel)]="searchQuery" placeholder="Enter your search term here"
+                                class="form-control" (keyup.enter)="onSearch()" style="flex: 1;">
+                            <button class="btn btn-primary" (click)="onSearch()">Search</button>
+                        </div>
+                        <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+                       
+                        <!-- mathed places/sounds/objects/people start -->
+                        <div *ngIf="matchedsound.length > 0 || matchedObjects.length > 0 || imagesPeople.length > 0 || imagesPlace.length > 0 || sounds.length > 0" class="matched-container">
+                            <!-- Matched Sound -->
+                            <br>
+                            <!-- <div *ngIf="matchedsound.length > 0" class="matched-section">
+                                <div class="matched-items">
+                                    <p>Matched Sound:</p>
+                                    <div *ngFor="let sound of matchedsound; let i = index" class="item">
+                                        {{ sound }}
+                                        <input type="checkbox" (change)="toggleSelection('matchedsound', '',i)" [checked]="selectedStates['matchedsound'][i]" class="right-checkbox" />
+                                    </div>
+                                </div>
+                            </div> -->
+                            
+                            <!-- Matched Objects -->
+                            <div *ngIf="matchedObjects.length > 0" class="matched-section">
+                                <div class="matched-items">
+                                    <p>Matched Objects:</p>
+                                    <div *ngFor="let object of matchedObjects; let i = index" class="item">
+                                        {{ object }}
+                                        <input type="checkbox" (change)="toggleSelection('matchedObjects','', i)" [checked]="selectedStates['matchedObjects'][i]" class="right-checkbox" />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Matched People Images -->
+                            <div *ngIf="imagesPeople.length > 0" class="image-container">
+                                <p>Matched People Image:</p>
+                                <div *ngFor="let image of imagesPeople; let i = index" class="image-item">
+                                    <img [src]="image" alt="Image in the folder" />
+                                    <input type="checkbox" (change)="toggleSelection('imagesPeople','',i)" [checked]="selectedStates['imagesPeople'][i]" class="bottom-checkbox" />
+                                </div>
+                            </div>
+                            
+                            <!-- Matched Place Images -->
+                            <div *ngIf="imagesPlace.length > 0" class="image-container">
+                                <p>Matched Place Image:</p>
+                                <div *ngFor="let image of imagesPlace; let i = index" class="image-item">
+                                    <img [src]="image" alt="Image in the folder" />
+                                    <input type="checkbox" (change)="toggleSelection('imagesPlace','',i)" [checked]="selectedStates['imagesPlace'][i]" class="bottom-checkbox" />
+                                </div>
+                            </div>
+                        
+                            <!-- Matched Sounds -->
+                            <!-- <div *ngIf="matchedsound.length > 0" class="matched-section">
+                                <div class="matched-items">
+                                    <p>Matched Sound:</p>
+                                    <div *ngFor="let sound of matchedsound; let i = index" class="item">
+                                        {{ sound }}
+                                        <input type="checkbox" (change)="toggleSelection('matchedsound', '',i)" [checked]="selectedStates['matchedsound'][i]" class="right-checkbox" />
+                                    </div>
+                                </div>
+                            </div> -->
+                            <!-- Matched Sounds -->
+                            <div *ngIf="sounds.length > 0 && matchedsound.length > 0" class="sound-container">
+                                <div class="matched-items">
+                                    <p>Matched Sound:</p>
+                                    <div *ngFor="let sound of matchedsound; let i = index" class="item">
+                                        {{ sound }}
+                                        <input type="checkbox" (change)="toggleSelection('matchedsound', '',i)" [checked]="selectedStates['matchedsound'][i]" class="right-checkbox" />
+                                    </div>
+                                </div>
+                                <div *ngFor="let sound of sounds; let i = index" class="sound-item">
+                                    <audio controls>
+                                        <source [src]="sound" type="audio/mp3">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                    <input type="checkbox" (change)="toggleSelection('sounds', '', i)" [checked]="selectedStates['sounds'][i]" class="right-checkbox" style="left: 40px;"/>
+                                </div>
+                            </div>
+                            <!-- Submit button -->
+                            <!-- <button (click)="submitSelections()" [disabled]="!hasSelected()" [class.enabled]="hasSelected()" style="margin-top: 10px;">Submit Selections</button> -->
+                        </div>
+                        <!-- matched places/sounds/objects/people end -->              
+                        <!-- new keywords start-->
+                        <br>
+                        <div *ngIf="otherKeywords.length>0 && sounds.length===0 && matchedObjects.length===0 && matchedPeople.length ===0 && matchedPlace.length ===0" class="matched-items">
+                            <p>New Keyword(s):</p>
+                            <div *ngFor="let keyword of otherKeywords; let i = index" class="item">{{ keyword }}
+                                <input type="checkbox" (change)="toggleSelection('otherKeywords', '',i)" [checked]="selectedStates['otherKeywords'][i]" class="right-checkbox" />
+                            </div>
+                        </div>
+                        <!-- new keywords end-->
+                        <!-- new objects start -->
+                        <br>
+                        <div *ngIf="otherObjects.length>0 && sounds.length===0 && matchedObjects.length===0 && matchedPeople.length ===0 && matchedPlace.length ===0" class="matched-items text-center">
+                            <p>New Object(s):</p>
+                            <div *ngFor="let object of otherObjects; let i = index" class="item">{{object}}
+                                <input type="checkbox" (change)="toggleSelection('otherObjects', '',i)" [checked]="selectedStates['otherObjects'][i]" class="right-checkbox" />
+                            </div>
+                        </div>
+                        <!-- new objects end -->
+                          <!-- new people/place from internet start-->
+                        <div *ngIf="getObjectKeys(identiPeople).length > 0 && matchedPeople.length === 0 && matchedPlace.length === 0" class="matched-items">
+                            <!-- 遍历 identiPeople 中的每个人名 -->
+                            <div *ngFor="let name of getObjectKeys(identiPeople)" class="image-container">
+                              <p>New people from Internet:</p>
+                              <span class="badge bg-warning">{{name}}</span>
+                              <!-- 遍历当前人名对应的图像链接数组 -->
+                              <div *ngFor="let imageUrl of identiPeople[name];let i = index" class="image-item text-center">
+                                <img [src]="imageUrl" alt="People image from internet" />
+                                <input type="checkbox" (change)="toggleSelection('identiPeople', name,i)" [checked]="selectedStates['identiPeople'][name]&& selectedStates['identiPeople'][name][i]" class="bottom-checkbox" />
+                              </div>
+                              <button (click)="refreshImagesForAllPeople()" class="refresh-button">
+                                <i class="fa fa-sync-alt"></i> <!-- 使用Font Awesome的刷新图标 -->
+                              </button>
+                              <!-- 提交按钮，根据情况取消注释 -->
+                            </div>
+                        </div>
+                        <!-- if can't match nothing end -->
+                        <div class="text-center submit" *ngIf="showSubmitButton">
+                            <button (click)="submitSelections()" [disabled]="!hasSelected()" [class.enabled]="hasSelected()" class="btn btn-primary">Submit Selections</button>
+                        </div>
+                        <div style="display:inline-block;" class="p-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fixed-bottom">
+            <div class="container-flex">
+                <div class="col-sm-12 border-top p-1" style="background-color: white;">
+                    <span style="font-size: small;color: deepskyblue;">
+                        Maintained and developed by: MVSE research group, QUB | Version: v2.1 (19-02-2024)
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
+</html>
